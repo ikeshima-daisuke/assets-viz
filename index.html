@@ -1,0 +1,53 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>取り崩し検証 可視化</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet"></noscript>
+<style>
+ :root{--ink:#E8ECF5;--muted:#94A0B8;--line:rgba(255,255,255,.08);--teal:#22D3AA;--purple:#8B7DFF}
+ *{box-sizing:border-box}
+ body{font-family:Inter, 'IBM Plex Sans JP', system-ui, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;color:var(--ink);max-width:780px;margin:0 auto;padding:2.4rem 1rem 3rem;
+   background:radial-gradient(1100px 560px at 12% -12%,rgba(139,125,255,.22),transparent 60%),
+              radial-gradient(900px 480px at 112% 4%,rgba(34,211,170,.16),transparent 55%),#0B1020;
+   -webkit-font-smoothing:antialiased;min-height:100vh}
+ .kicker{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--teal);font-weight:600;margin:0 0 .5rem}
+ h1{font-size:23px;font-weight:700;margin:0 0 .4rem;letter-spacing:.01em}
+ .sub{color:var(--muted);font-size:13.5px;margin:0 0 1.6rem}
+ .vcard{display:flex;align-items:center;gap:1rem;text-decoration:none;color:inherit;
+   background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012));
+   border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem;margin:.7rem 0;
+   transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease}
+ .vcard:hover{transform:translateY(-2px);border-color:rgba(139,125,255,.55);
+   box-shadow:0 18px 50px -24px rgba(0,0,0,.85),0 0 0 1px rgba(139,125,255,.25)}
+ .vbadge{font-variant-numeric:tabular-nums;font-weight:700;font-size:13px;color:var(--teal);
+   border:1px solid rgba(34,211,170,.4);border-radius:9px;padding:.35rem .5rem;min-width:2.4rem;text-align:center}
+ .vbody{flex:1} .vtitle{font-weight:600;font-size:15px;line-height:1.4}
+ .vdesc{color:var(--muted);font-size:12.5px;margin-top:.25rem;line-height:1.55}
+ .varrow{color:var(--muted);font-size:18px} .vcard:hover .varrow{color:var(--teal)}
+ .foot{color:var(--muted);font-size:12px;margin-top:1.6rem}
+</style></head>
+<body>
+<div class="kicker">Withdrawal · Risk Lab</div>
+<h1>取り崩し・リスク検証 — 重要ポイントの可視化</h1>
+<p class="sub">すべて正規化（開始資産=1.0倍・%・枯渇率）。スマホ対応。</p>
+<a class="vcard" href="viz1_leverage_distribution.html">
+   <div class="vbadge">01</div>
+   <div class="vbody"><div class="vtitle">レバ比率 → 30年後の分布（対話・スライダー）</div><div class="vdesc">レバを下げるほど floor（最悪5%）が右へ。中央値はレバ20-30で頭打ち。</div></div>
+   <div class="varrow">→</div></a>
+<a class="vcard" href="viz2_floor_over_time.html">
+   <div class="vbadge">02</div>
+   <div class="vbody"><div class="vtitle">30年の資産推移・floor（アニメ・再生）</div><div class="vdesc">点線(floor)がレバ57で年と共に0へ沈む＝取り崩し中のシーケンスリスク。</div></div>
+   <div class="varrow">→</div></a>
+<a class="vcard" href="viz3_nisa_mechanism.html">
+   <div class="vbadge">03</div>
+   <div class="vbody"><div class="vtitle">旧NISA満期メカニズム（静的）</div><div class="vdesc">今売っても満期保持でも含み益は非課税。温存の得は満期までの短い窓だけ。</div></div>
+   <div class="varrow">→</div></a>
+<a class="vcard" href="viz4_nisa_scenarios.html">
+   <div class="vbadge">04</div>
+   <div class="vbody"><div class="vtitle">NISA先売り vs 特定先売り（静的）</div><div class="vdesc">Aが上前税・累計税 最小で税引後も最高（一貫して僅かに優位）。</div></div>
+   <div class="varrow">→</div></a>
+<a class="vcard" href="viz5_goldplus_allocation.html">
+   <div class="vbadge">05</div>
+   <div class="vbody"><div class="vtitle">脱レバ配分マップ：ゴールドプラス × 金（対話・ヒートマップ）</div><div class="vdesc">レバナス残し%×(ゴールドプラスNASDAQ:現物金)の2軸。指標を切替えて最適配分を決める。</div></div>
+   <div class="varrow">→</div></a>
+<p class="foot">※ MC集計のみ（個人の資産額は非表示）。条件付きの目安・投資助言ではない。</p>
+</body></html>
