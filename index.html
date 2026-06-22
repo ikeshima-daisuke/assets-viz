@@ -33,51 +33,16 @@
  .foot{color:var(--muted);font-size:12px;margin-top:1.6rem}
 </style></head>
 <body>
-<div class="kicker">Portfolio Migration · Decision in 4 Steps</div>
-<h1>ポートフォリオ移行 — 決定の4ステップ</h1>
-<p class="sub-lead">いまレバナス（NASDAQ100の2倍レバ）に偏った資産を、ゴールドプラス(GP)と現物金へ少しずつ移すか——を決めるための<b>4ステップ</b>。<br>
+<div class="kicker">Portfolio Migration · One Decision Board</div>
+<h1>ポートフォリオ移行 — 意思決定ボード</h1>
+<p class="sub-lead">いまレバナス（NASDAQ100の2倍レバ）に偏った資産を、ゴールドプラス(GP)と現物金へどれだけ移すか——を決める<b>1枚のボード</b>。<br>
 毎月 生活費を取り崩しながら<b>30年もつか</b>を、過去相場のくじ引き（モンテカルロ）で試算。金額は出さず倍率・%で表示・スマホ対応。</p>
-<div class="sechead">決定の4ステップ <span class="hint">なぜ減らす → 何%にする → 30年もつか → かかる費用</span></div>
-<a class="vcard core" href="viz2_floor_over_time.html">
+<div class="sechead">考え方は3ステップ <span class="hint">危険を消す → 安全域で伸びを比べる → 非対称性で1点に詰める</span></div>
+<p class="sub-lead" style="margin:.2rem 0 1rem">レバレッジは積立期の道具で、取り崩し期は順序リスクの増幅器。<b>①</b>悲観相場で破綻する案（灰＝候補外）を消し、<b>②</b>残った安全域で中央値（ふやす力）が高い所を選び、<b>③</b>「下げすぎの後悔（成長を少し諦める）」と「下げなさすぎの後悔（資産が尽きる＝不可逆）」の非対称性で詰める。</p>
+<div class="sechead muted">ボードを開く <span class="hint">3つの相場 × 2つのつまみ（レバ% × GP割合）を一枚で</span></div>
+<a class="vcard core" href="viz_decision_board.html">
    <div class="vbadge">1</div>
-   <div class="vbody"><div class="vtitle">なぜレバナスを減らすのか — 取り崩し中の暴落で戻れなくなる</div><div class="vdesc">生活費を取り崩している最中に暴落が来ると、回復する前に資産が削られて戻れなくなる。今のレバナス57%は、運が悪い20回に1回のケースで30年後にゼロ近くまで沈む。まず“下げたい理由”を体感する。</div></div>
+   <div class="vbody"><div class="vtitle">意思決定ボード — レバナス% × GP割合 を決める（正本）</div><div class="vdesc">横＝レバナス%・縦＝GP割合の地図を、悲観／中位／楽観の3つの相場で同時に。色＝守る力（お金が尽きる確率・灰＝候補外）、マスにカーソルでふやす力（中央値）。下段＝誤りコストの非対称性マップで“膝”を選ぶ。毎月の取り崩し額・守る指標を切替。</div></div>
    <div class="varrow">→</div></a>
-<a class="vcard core" href="viz_cockpit.html">
-   <div class="vbadge">2</div>
-   <div class="vbody"><div class="vtitle">決定コックピット — レバナスを何%にするか決める（中心）</div><div class="vdesc">横軸＝レバナスを何%残すか。上で「どこまで増えるか（ふやす力）」、下で「お金が尽きる確率・一番の落ち込み（守る力）」を同時に見る。毎月の取り崩し額・想定相場・GPの割合を動かすと全部つながって変わる。○いまの57 → ★候補の30。</div></div>
-   <div class="varrow">→</div></a>
-<a class="vcard core" href="viz_durability.html">
-   <div class="vbadge">3</div>
-   <div class="vbody"><div class="vtitle">取り崩し耐久性 — 選んだ配分で30年もつか</div><div class="vdesc">現状57／候補30／脱レバ0で30年の資産推移を比較。実線＝ふつう、点線＝かなり悪い、凡例の%＝尽きる確率。想定相場・取崩額で連動。</div></div>
-   <div class="varrow">→</div></a>
-<a class="vcard core" href="viz11_transition_tax.html">
-   <div class="vbadge">4</div>
-   <div class="vbody"><div class="vtitle">移行コスト — 減らすとき一度だけかかる税金</div><div class="vdesc">レバナスを売って配分を変えると、その時だけ譲渡益に税金がかかる（資産全体の何%か）。57→15%で約4%、57→0%で約6%。②③で得る“安全”と引き換えの一度きりの費用。</div></div>
-   <div class="varrow">→</div></a>
-<div class="sechead muted">もっと詳しく <span class="hint">②の元になった細かい地図（配分マップ・総合ブレンド・レバ分布）／NISA・税の別の話</span></div>
-<a class="vcard sub" href="viz5_goldplus_allocation.html">
-   <div class="vbadge sub">＋</div>
-   <div class="vbody"><div class="vtitle">配分の細かい地図 — ②の元になった全マス（レバ × GP:現物金）</div><div class="vdesc">レバを何%残し、空いた分を GP と現物金にどう割るかを細かく試した地図。相場や“もしも”を切り替えて頑健さを見る。コックピット②の詳しい版。</div></div>
-   <div class="varrow">→</div></a>
-<a class="vcard sub" href="viz8_blend.html">
-   <div class="vbadge sub">＋</div>
-   <div class="vbody"><div class="vtitle">相場の重みづけで総合する — ②の補助</div><div class="vdesc">悲観/中位/楽観のどれが来るか分からない問題を、確率の重みと“安全をどれだけ重視するか”で折り合わせる詳しい版。</div></div>
-   <div class="varrow">→</div></a>
-<a class="vcard sub" href="viz10_frontier.html">
-   <div class="vbadge sub">＋</div>
-   <div class="vbody"><div class="vtitle">残す力 × 守る力のフロンティア（詳しく・対話）</div><div class="vdesc">配分を「増やす力」と「最悪の生活水準」の2軸で散布した詳しい効率比較。③耐久性をもう一歩深掘りしたいとき用。</div></div>
-   <div class="varrow">→</div></a>
-<a class="vcard sub" href="viz1_leverage_distribution.html">
-   <div class="vbadge sub">＋</div>
-   <div class="vbody"><div class="vtitle">レバナス別の“結果のばらつき” — ②に内包</div><div class="vdesc">レバを下げると悪い側の裾がどれだけ締まるか、分布の“形”を見たいとき用。</div></div>
-   <div class="varrow">→</div></a>
-<a class="vcard sub" href="viz3_nisa_mechanism.html">
-   <div class="vbadge sub">＋</div>
-   <div class="vbody"><div class="vtitle">NISAの満期メカニズム（税の別の話・静的）</div><div class="vdesc">配分とは別テーマ。満期まで持てば含み益は非課税。温存の得は満期までの短い窓だけ。</div></div>
-   <div class="varrow">→</div></a>
-<a class="vcard sub" href="viz4_nisa_scenarios.html">
-   <div class="vbadge sub">＋</div>
-   <div class="vbody"><div class="vtitle">NISAと特定、どちらを先に売る？（税の別の話・静的）</div><div class="vdesc">配分とは別テーマ。売却順序の税効率比較（NISA先売りが一貫して僅かに有利）。</div></div>
-   <div class="varrow">→</div></a>
-<p class="foot">※ 過去の相場をくじ引きでつなぐ試算（モンテカルロ）。金額は非表示。数値は前提しだいで動く目安で、投資助言ではない。</p>
+<p class="foot">※ 過去の相場をくじ引きでつなぐ試算（モンテカルロ）。金額は非表示。数値は前提しだいで動く目安で、投資助言ではない。<br>旧グラフ（viz1〜11・コックピット・耐久性ほか）は2026-06-23にこのボードへ集約・アーカイブした。</p>
 </body></html>
