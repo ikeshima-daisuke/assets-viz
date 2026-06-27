@@ -291,6 +291,13 @@
       outline: 2px solid rgba(21, 145, 95, 0.28);
       background: #f3fbf6;
     }
+    tr.row-active td {
+      background: #e4effd !important;
+      box-shadow: inset 0 0 0 9999px rgba(47, 128, 237, 0.06);
+    }
+    tr.row-active td:first-child {
+      box-shadow: inset 3px 0 0 0 #2f80ed;
+    }
     .table-head {
       display: flex;
       align-items: baseline;
@@ -749,6 +756,7 @@
         textposition: "top center",
         hovertext: rs.map(hover),
         hoverinfo: "text",
+        customdata: rs.map(r => r.label),
         marker: {
           size: rs.map(r => picks.has(r.label) ? 14 : 9),
           color: rs.map(r => r.maxdd),
@@ -769,6 +777,7 @@
         text: frontier.points.map(r => r.label),
         hovertext: frontier.points.map(hover),
         hoverinfo: "text",
+        customdata: frontier.points.map(r => r.label),
         name: "効率的フロンティア",
         line: { color: "#15915f", width: 3 },
         marker: { size: 8, color: "#15915f" }
@@ -886,7 +895,7 @@
       // 「条件外／比較基準」は判定バッジで分かるので配分セルには重ねない（幅を詰める）。
       const star = r.label === bestCalLabel ? `<span class="starmark" title="許容条件内で効率(Calmar)が最大">★</span> ` : "";
       return `
-        <tr class="${cls}" data-x="${r.median}" data-y="${r.dep}">
+        <tr class="${cls}" data-x="${r.median}" data-y="${r.dep}" data-label="${r.label}">
           <td class="alloc">${star}${r.label}</td>
           <td>${statusCell(r, basis, frontier)}</td>
           ${metricCell(r, basis, "score", r.score.toFixed(1), "high")}
@@ -1021,8 +1030,34 @@
       clearScatterHighlight();
     });
 
+    // 散布図のドットホバー → 表の対応行をアクティブ表示＆スクロールで見せる（逆方向連動）。
+    function activateRow(label) {
+      let target = null;
+      document.querySelectorAll("#ranking tbody tr").forEach(tr => {
+        const on = tr.dataset.label === label;
+        tr.classList.toggle("row-active", on);
+        if (on) target = tr;
+      });
+      if (target) target.scrollIntoView({ block: "nearest" });
+    }
+    function clearRowActive() {
+      document.querySelectorAll("#ranking tbody tr.row-active").forEach(tr => tr.classList.remove("row-active"));
+    }
+    const scatterGd = document.getElementById("scatter");
+    scatterGd.addEventListener("mouseleave", clearRowActive);
+    function bindScatterHover() {
+      if (typeof scatterGd.on !== "function" || scatterGd.dataset.hoverBound) return;
+      scatterGd.dataset.hoverBound = "1";  // Plotly.react は再呼び出しでも listener を消さないので一度だけ
+      scatterGd.on("plotly_hover", (d) => {
+        const p = d.points && d.points[0];
+        if (p && p.customdata) activateRow(p.customdata);
+      });
+      scatterGd.on("plotly_unhover", clearRowActive);
+    }
+
     restoreState();
     draw();
+    bindScatterHover();
   </script>
 </body>
 </html>
