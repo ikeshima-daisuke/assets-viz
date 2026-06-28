@@ -65,7 +65,7 @@
       line-height: 1.55;
     }
     .setting-card.wide {
-      grid-row: span 3;
+      /* 前提カードを左の広い列に置く（上級設定は別の details へ分離したので行スパンは不要）。 */
     }
     .controls {
       display: flex;
@@ -412,6 +412,41 @@
       font-weight: 700;
     }
     .guide .caveat { margin-top: 8px; font-size: 12px; color: #5b6578; }
+    /* マーク凡例（★3種＋膝）を色つきチップで整理。ガイド内では縦並びの説明、
+       チャート上では常時見える横並みチップ（markchips）として再利用する。 */
+    .marklegend { display: grid; gap: 8px; margin: 6px 0 4px; }
+    .marklegend .ml-row {
+      display: grid; grid-template-columns: 1.6em 1fr; gap: 8px; align-items: start;
+      background: rgba(255,255,255,0.55); border-radius: 6px; padding: 6px 9px;
+    }
+    .marklegend .ml-mark { font-size: 17px; font-weight: 900; line-height: 1.4; text-align: center; }
+    .marklegend .ml-row b { display: block; font-size: 13.5px; }
+    .marklegend .ml-row span { display: block; font-size: 12.5px; color: #38435a; line-height: 1.55; }
+    /* チャート直上に常時出す凡例チップ（ガイドを閉じても意味が分かるように）。 */
+    .markchips {
+      display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center;
+      margin: 0 0 10px; font-size: 12.5px; color: #38435a;
+    }
+    .markchips .chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: #f5f7fb; border: 1px solid var(--line); border-radius: 999px;
+      padding: 3px 9px; white-space: nowrap;
+    }
+    .markchips .chip b { font-size: 14px; }
+    /* 上級者向け設定（許容条件・重み）はたたんで初期表示を軽くする。 */
+    .adv-settings {
+      margin: 0 0 14px; border: 1px solid var(--line); border-radius: 8px;
+      background: var(--panel); padding: 4px 12px;
+    }
+    .adv-settings > summary {
+      cursor: pointer; font-weight: 700; font-size: 14px; color: #2b3448;
+      padding: 8px 0; list-style: revert;
+    }
+    .adv-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+      margin: 6px 0 10px; align-items: start;
+    }
+    .adv-grid .setting-card { border: 1px solid var(--line); }
     .method {
       margin: 22px 0 8px;
       max-width: 1080px;
@@ -439,6 +474,8 @@
     @media (max-width: 980px) {
       main { padding: 14px; }
       .settings-grid { grid-template-columns: 1fr; }
+      .adv-grid { grid-template-columns: 1fr; }
+      .markchips { font-size: 12px; }
       .grid { grid-template-columns: 1fr; }
       .grid-st { grid-template-columns: 1fr; }
       .compare-grid { grid-template-columns: 1fr; }
@@ -452,10 +489,16 @@
     <p>GP/USA360/長期債を外した3資産だけの地図。株式と金の年率リターン前提を切り替え、中位相場の中央値・悲観相場の枯渇率・悲観相場の最大下落を同時に見る。</p>
   </header>
   <main>
-    <details class="guide" open>
-      <summary>使い方ガイド：最終配分の決め方（6ステップ）</summary>
+    <details class="guide">
+      <summary>使い方ガイド：マークの意味と最終配分の決め方（6ステップ・クリックで開く）</summary>
       <div class="guide-body">
-        <p class="band"><span class="starmark">★</span><b>＝どの前提でもNASDAQ100 100%を上回る配分</b>：全12前提（株3×金4）すべてで、成長（中位中央値）がNASDAQ100より高く、守り3指標（悲観枯渇・2022型枯渇・悲観最大下落）のどれも悪化しない＝「成長で勝ち、守りで負けない」配分。<b>前提スライダーに依存しない固定の集合</b>で、三角図・散布図・表（★NASDAQ超バッジ）すべてに付く。まずこの“NASDAQ超え帯”の中から選ぶのが安全。<br><span class="starmark edge">★</span><b>濃い★（効率端）</b>＝そのうち<b>現在の前提</b>で効率フロンティア（同じ枯渇なら最も成長が高い＝攻めの端）。<b>こちらは前提で動く</b>（フロンティアは前提依存）。<br><span class="starmark always">★</span><b>黒縁★（全前提効率端）</b>＝<b>全前提で</b>効率フロンティアに残る最攻2件（レバ33/金36・レバ36/金34・固定）。<b>注意：これは「いちばん良い配分」ではなく「最も攻めた端」</b>。37★はどれも全前提で枯渇がNASDAQ100以下なので、その中で成長最大を取ると必ず高レバ・厚金の角に行き着くだけ。<b>悲観MaxDDは約−62〜64%と深く、バランス点でも安全側でもない</b>（暴落許容が前提）。最低ライン＝オレンジ★、攻め切る＝黒縁★、守りとの折り合いは膝（ガイド④）で選ぶ。</p>
+        <div class="marklegend">
+          <div class="ml-row"><span class="ml-mark" style="color:#ff8c1a">★</span><div><b>NASDAQ100超え（基本の★・前提に依存しない固定集合）</b><span>全12前提（株3×金4）すべてで、成長（中位中央値）がNASDAQ100より高く、守り3指標（悲観枯渇・2022型枯渇・悲観最大下落）のどれも悪化しない＝「成長で勝ち、守りで負けない」配分。まずこの帯の中から選ぶのが安全。</span></div></div>
+          <div class="ml-row"><span class="ml-mark" style="color:#d6336c">★</span><div><b>効率端（濃い★・現在の前提で動く）</b><span>★のうち、いま選んでいる前提で効率フロンティア（同じ枯渇なら最も成長が高い＝攻めの端）。フロンティアは前提依存なので前提を変えると動く。</span></div></div>
+          <div class="ml-row"><span class="ml-mark" style="color:#111">★</span><div><b>全前提効率端（黒縁★・最攻2件で固定）</b><span>全前提で効率フロンティアに残る最攻2件（レバ33/金36・レバ36/金34）。<b>「いちばん良い」ではなく「最も攻めた端」</b>＝悲観MaxDDは約−62〜64%と深い。暴落許容が前提。</span></div></div>
+          <div class="ml-row"><span class="ml-mark" style="color:#0d9488">◆</span><div><b>膝（コスパの境目・前提と許容条件で動く）</b><span>これ以上レバを上げても中央値が伸びず枯渇だけ増える折れ目（Kneedle法で自動検出）。膝まで＝おトク／膝の先＝割高。守りとの折り合いを1点に詰める目安。</span></div></div>
+        </div>
+        <p class="caveat">使い分け：最低ライン＝オレンジ★／攻め切る＝黒縁★／守りとの折り合い＝膝（◆・ガイド④）。</p>
         <p class="step"><span class="step-no">①</span><b>前提を固定</b>：下の「1. 前提を選ぶ」で<b>株式リターン11% / 金リターン7%</b>（本人信念）に。頂点（効率/破綻調整トップ）はこの前提で動くので、まずここを揃える（★自体は全前提共通なので動かない）。</p>
         <p class="step"><span class="step-no">②</span><b>保守アンカー（守りの端）を読む</b>：表の<b>「効率」</b>見出しをクリックして降順ソート → 先頭が下落あたりの効率の頂点（例：レバ15/金46/NAS39・Calmar 0.17・枯渇2%・中央10倍）。</p>
         <p class="step"><span class="step-no">③</span><b>成長アンカー（攻めの端）を読む</b>：表の<b>「破綻調整」</b>見出しをクリックして降順ソート → 先頭が破綻を割り引いた成長の頂点（例：レバ27〜30/金36〜40・中央13〜14倍・枯渇4%台）。「総合」でソートしてもほぼ同じ帯。</p>
@@ -520,28 +563,40 @@
           <button data-metric="calmar">効率</button>
         </div>
       </section>
-      <section class="setting-card">
-        <h2>3. ランキングの許容条件</h2>
-        <p class="desc">表と散布図の効率的フロンティア候補を絞り込む条件です。三角図では条件外の点が薄くなります。</p>
-        <div class="filters">
-          <label>悲観MaxDD 下限 <input id="limitMaxdd" type="range" min="-80" max="-45" step="5" value="-60"><span id="limitMaxddVal">-60%</span></label>
-          <label>悲観枯渇率 上限 <input id="limitDep" type="range" min="2" max="20" step="1" value="8"><span id="limitDepVal">8%</span></label>
-          <label>2022年型ストレス枯渇率 上限 <input id="limitDep2022" type="range" min="2" max="25" step="1" value="12"><span id="limitDep2022Val">12%</span></label>
-          <label>中位中央値 下限 <input id="limitMedian" type="range" min="0" max="30" step="1" value="10"><span id="limitMedianVal">10倍</span></label>
-        </div>
-      </section>
-      <section class="setting-card">
-        <h2>4. 総合点の重み</h2>
-        <p class="desc">三角図で「総合」を選んだ時と、表の総合点に使います。効率的フロンティア判定そのものは許容条件と中央値・枯渇率で決まります。</p>
-        <div class="weights" aria-label="総合スコアの重み">
-          <label>中央値 <input id="wMedian" type="range" min="1" max="5" step="1" value="4"><span id="wMedianVal">4</span></label>
-          <label>枯渇率 <input id="wDep" type="range" min="1" max="5" step="1" value="4"><span id="wDepVal">4</span></label>
-          <label>MaxDD <input id="wMaxdd" type="range" min="1" max="5" step="1" value="3"><span id="wMaxddVal">3</span></label>
-        </div>
-      </section>
     </div>
+    <details class="adv-settings">
+      <summary>詳細設定：ランキングの許容条件・総合点の重み（上級者向け・クリックで開く）</summary>
+      <div class="adv-grid">
+        <section class="setting-card">
+          <h2>3. ランキングの許容条件</h2>
+          <p class="desc">表と散布図の効率的フロンティア候補を絞り込む条件です。三角図では条件外の点が薄くなります。</p>
+          <div class="filters">
+            <label>悲観MaxDD 下限 <input id="limitMaxdd" type="range" min="-80" max="-45" step="5" value="-60"><span id="limitMaxddVal">-60%</span></label>
+            <label>悲観枯渇率 上限 <input id="limitDep" type="range" min="2" max="20" step="1" value="8"><span id="limitDepVal">8%</span></label>
+            <label>2022年型ストレス枯渇率 上限 <input id="limitDep2022" type="range" min="2" max="25" step="1" value="12"><span id="limitDep2022Val">12%</span></label>
+            <label>中位中央値 下限 <input id="limitMedian" type="range" min="0" max="30" step="1" value="10"><span id="limitMedianVal">10倍</span></label>
+          </div>
+        </section>
+        <section class="setting-card">
+          <h2>4. 総合点の重み</h2>
+          <p class="desc">三角図で「総合」を選んだ時と、表の総合点に使います。効率的フロンティア判定そのものは許容条件と中央値・枯渇率で決まります。</p>
+          <div class="weights" aria-label="総合スコアの重み">
+            <label>中央値 <input id="wMedian" type="range" min="1" max="5" step="1" value="4"><span id="wMedianVal">4</span></label>
+            <label>枯渇率 <input id="wDep" type="range" min="1" max="5" step="1" value="4"><span id="wDepVal">4</span></label>
+            <label>MaxDD <input id="wMaxdd" type="range" min="1" max="5" step="1" value="3"><span id="wMaxddVal">3</span></label>
+          </div>
+        </section>
+      </div>
+    </details>
     <section class="panel">
       <h2>三角図</h2>
+      <div class="markchips" aria-label="マークの意味">
+        <span class="chip"><b style="color:#ff8c1a">★</b>NASDAQ100超え（固定）</span>
+        <span class="chip"><b style="color:#d6336c">★</b>効率端（前提で動く）</span>
+        <span class="chip"><b style="color:#111">★</b>全前提効率端（最攻2件）</span>
+        <span class="chip"><b style="color:#0d9488">◆</b>膝＝コスパの境目</span>
+        <span class="chip">○ 現状ポート</span>
+      </div>
       <div id="ternary"></div>
       <div class="note" id="legendNote">三角図は上がレバ、左下が金、右下がNASDAQ。悲観枯渇の色は固定条件で、緑=7%以下、黄=10%前後、橙=12%前後、赤=15%以上。</div>
     </section>
