@@ -1328,7 +1328,7 @@
 
       const filtered = rs.filter(r => {
         if (r.label === basis.label) return true;            // 比較基準は常に表示
-        if (frontierOnly) return frontier.labels.has(r.label) || beatAllLabels.has(r.label);  // フロンティア＋★
+        if (frontierOnly) return frontier.labels.has(r.label);  // フロンティアのみ（比較基準は上で別途表示）
         return passesLimits(r) || picks.has(r.label) || beatAllLabels.has(r.label);  // ★は常に表示
       });
       // 比較基準のみ先頭固定。残りは選択中の列で並べ替え（既定=総合点の降順）。
