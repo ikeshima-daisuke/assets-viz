@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>信念別・配分早見表 — レバナス/ゴールド/無レバ株式</title>
+<style>
+  :root{
+    --paper:#f6f5f1; --ink:#23282b; --sub:#666f6a; --line:#ddd8ce; --line-strong:#c7c1b3;
+    --card:#ffffff; --accent:#3d5a80; --accent-ink:#ffffff;
+    --lev:#c2410c; --gold:#a9791f; --stk:#0d7d6b;
+    --lev-soft:#f3e2d6; --gold-soft:#f2e9d3; --stk-soft:#dcece7;
+    --risk-safe:#2f7d4f; --risk-ok:#7a9a2e; --risk-warn:#c08a1e; --risk-bad:#c2571f; --risk-severe:#a5333f;
+    --risk-safe-bg:#e4f0e7; --risk-ok-bg:#eef2df; --risk-warn-bg:#f8ecd7; --risk-bad-bg:#f8e2d4; --risk-severe-bg:#f5dde0;
+    --ring:#1c2321;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#14171a; --ink:#e7e5df; --sub:#9aa39a; --line:#2c3134; --line-strong:#3c4247;
+      --card:#1b1f22; --accent:#8fb3d9; --accent-ink:#0d1114;
+      --lev:#e2782f; --gold:#d4ac53; --stk:#3fa695;
+      --lev-soft:#3a2818; --gold-soft:#39331c; --stk-soft:#173330;
+      --risk-safe:#5cbb85; --risk-ok:#a6c95a; --risk-warn:#e0b24d; --risk-bad:#e2793f; --risk-severe:#e1616f;
+      --risk-safe-bg:#173225; --risk-ok-bg:#2a3020; --risk-warn-bg:#3a2f18; --risk-bad-bg:#3a2418; --risk-severe-bg:#3a1e22;
+      --ring:#f1efe9;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#14171a; --ink:#e7e5df; --sub:#9aa39a; --line:#2c3134; --line-strong:#3c4247;
+    --card:#1b1f22; --accent:#8fb3d9; --accent-ink:#0d1114;
+    --lev:#e2782f; --gold:#d4ac53; --stk:#3fa695;
+    --lev-soft:#3a2818; --gold-soft:#39331c; --stk-soft:#173330;
+    --risk-safe:#5cbb85; --risk-ok:#a6c95a; --risk-warn:#e0b24d; --risk-bad:#e2793f; --risk-severe:#e1616f;
+    --risk-safe-bg:#173225; --risk-ok-bg:#2a3020; --risk-warn-bg:#3a2f18; --risk-bad-bg:#3a2418; --risk-severe-bg:#3a1e22;
+    --ring:#f1efe9;
+  }
+  :root[data-theme="light"]{
+    --paper:#f6f5f1; --ink:#23282b; --sub:#666f6a; --line:#ddd8ce; --line-strong:#c7c1b3;
+    --card:#ffffff; --accent:#3d5a80; --accent-ink:#ffffff;
+    --lev:#c2410c; --gold:#a9791f; --stk:#0d7d6b;
+    --lev-soft:#f3e2d6; --gold-soft:#f2e9d3; --stk-soft:#dcece7;
+    --risk-safe:#2f7d4f; --risk-ok:#7a9a2e; --risk-warn:#c08a1e; --risk-bad:#c2571f; --risk-severe:#a5333f;
+    --risk-safe-bg:#e4f0e7; --risk-ok-bg:#eef2df; --risk-warn-bg:#f8ecd7; --risk-bad-bg:#f8e2d4; --risk-severe-bg:#f5dde0;
+    --ring:#1c2321;
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0}
+  .page{
+    background:var(--paper); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+    line-height:1.65; -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:20px 18px 70px}
+  .fig{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+
+  .breadcrumb{font-size:12px;color:var(--sub);margin:0 0 18px}
+  .breadcrumb a{color:var(--accent);text-decoration:none}
+  .breadcrumb a:hover{text-decoration:underline}
+
+  header{margin-bottom:8px}
+  .eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub);
+    font-weight:600;margin:0 0 10px}
+  h1{
+    font-family:ui-serif,"Hiragino Mincho ProN","Noto Serif JP",Georgia,serif;
+    font-weight:600; font-size:clamp(24px,4vw,32px); margin:0 0 10px; letter-spacing:.005em;
+    text-wrap:balance; color:var(--ink);
+  }
+  .lede{font-size:15.5px;color:var(--sub);max-width:66ch;margin:0 0 4px}
+  .lede b{color:var(--ink);font-weight:600}
+  .disclaimer{font-size:11.5px;color:var(--sub);margin:14px 0 0;padding:9px 12px;
+    border-left:3px solid var(--line-strong);background:var(--card);border-radius:0 6px 6px 0}
+
+  section{margin:38px 0}
+  h2{
+    font-family:ui-serif,"Hiragino Mincho ProN","Noto Serif JP",Georgia,serif;
+    font-size:18px;font-weight:600;margin:0 0 6px;letter-spacing:.005em;text-wrap:balance;
+    display:flex;align-items:baseline;gap:9px;
+  }
+  h2 .idx{font-family:ui-monospace,monospace;font-size:12px;color:var(--sub);font-weight:500}
+  .h2-note{font-size:13px;color:var(--sub);margin:0 0 18px;max-width:70ch}
+
+  /* ---- axis explainer ---- */
+  .axes{display:flex;gap:14px;flex-wrap:wrap;margin:16px 0 6px}
+  .axis-card{flex:1 1 260px;background:var(--card);border:1px solid var(--line);
+    border-radius:10px;padding:13px 15px}
+  .axis-card .lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--sub);
+    font-weight:700;margin:0 0 4px}
+  .axis-card p{margin:0;font-size:13.5px;color:var(--ink)}
+  .axis-card.lev-tone{border-top:3px solid var(--lev)}
+  .axis-card.gold-tone{border-top:3px solid var(--gold)}
+
+  /* ---- matrix ---- */
+  .matrix-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:4px}
+  .matrix{
+    display:grid; grid-template-columns:118px repeat(4,1fr); gap:7px; min-width:760px;
+  }
+  .corner{display:flex;align-items:flex-end;padding:2px 4px 8px;font-size:11px;color:var(--sub)}
+  .colhead, .rowhead{
+    font-size:12.5px; font-weight:600; color:var(--ink); display:flex; flex-direction:column;
+    justify-content:center; padding:8px 10px; border-radius:8px; background:var(--gold-soft);
+    border:1px solid var(--line);
+  }
+  .rowhead{background:var(--lev-soft)}
+  .colhead .pct, .rowhead .pct{font-family:ui-monospace,monospace;color:var(--sub);font-size:11px;font-weight:500}
+  .colhead.current, .rowhead.current{border-color:var(--ring);box-shadow:inset 0 0 0 1px var(--ring)}
+
+  .cell{
+    background:var(--card); border:1px solid var(--line); border-radius:9px;
+    padding:9px 8px 8px; display:flex; flex-direction:column; gap:6px; position:relative;
+    transition:box-shadow .12s ease;
+  }
+  .cell.current{box-shadow:0 0 0 2px var(--ring);border-color:transparent}
+  .cell .star{position:absolute;top:6px;right:7px;font-size:11px;color:var(--sub)}
+  .ratio-bar{height:7px;border-radius:4px;overflow:hidden;display:flex;border:1px solid var(--line)}
+  .ratio-bar span{display:block;height:100%}
+  .ratio-label{font-family:ui-monospace,monospace;font-size:13px;font-weight:600;text-align:center;
+    font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .stat-chip{
+    font-size:10.5px; border-radius:6px; padding:3px 6px; text-align:center;
+    font-family:ui-monospace,monospace; font-weight:600; letter-spacing:-.01em;
+  }
+  .stat-chip .sep{color:var(--sub);font-weight:400;margin:0 2px}
+  .risk-safe{background:var(--risk-safe-bg);color:var(--risk-safe)}
+  .risk-ok{background:var(--risk-ok-bg);color:var(--risk-ok)}
+  .risk-warn{background:var(--risk-warn-bg);color:var(--risk-warn)}
+  .risk-bad{background:var(--risk-bad-bg);color:var(--risk-bad)}
+  .risk-severe{background:var(--risk-severe-bg);color:var(--risk-severe)}
+  .extra-stats{display:none;font-size:10px;color:var(--sub);text-align:center;font-family:ui-monospace,monospace}
+
+  /* detail toggle (CSS-only) */
+  .toggle-row{display:flex;align-items:center;gap:8px;margin:14px 0 10px;font-size:12.5px;color:var(--sub)}
+  .toggle-row input{accent-color:var(--accent)}
+  .toggle-row label{cursor:pointer}
+  #detail:checked ~ .matrix-scroll .extra-stats{display:block}
+
+  .legend-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:11.5px;color:var(--sub)}
+  .legend-row .sw{display:inline-flex;align-items:center;gap:5px}
+  .legend-row .sw i{width:10px;height:10px;border-radius:2px;display:inline-block}
+
+  .callout{margin-top:18px;background:var(--card);border:1px solid var(--line);
+    border-left:3px solid var(--risk-bad);border-radius:0 10px 10px 0;padding:13px 16px;font-size:13.5px}
+  .callout b{color:var(--ink)}
+
+  /* ---- FX / spending sections ---- */
+  .cardrow{display:flex;gap:12px;flex-wrap:wrap}
+  .fxcard{flex:1 1 200px;background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:14px 16px}
+  .fxcard .fxlbl{font-size:12.5px;font-weight:600;margin:0 0 10px;display:flex;align-items:center;gap:6px}
+  .fxcard .fxlbl .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+  .fxstat{display:flex;justify-content:space-between;font-size:13px;margin:4px 0}
+  .fxstat .v{font-family:ui-monospace,monospace;font-weight:700}
+
+  .flexcompare{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .flexcard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .flexcard h3{margin:0 0 10px;font-size:13.5px;font-weight:600}
+  .flexbar-row{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:12.5px}
+  .flexbar-row .tag{width:76px;flex:0 0 auto;color:var(--sub)}
+  .flexbar{flex:1;height:16px;background:var(--line);border-radius:4px;overflow:hidden;position:relative}
+  .flexbar > span{display:block;height:100%;background:var(--risk-bad)}
+  .flexbar-row .num{width:52px;text-align:right;font-family:ui-monospace,monospace;font-weight:600}
+  .flex-delta{margin-top:10px;font-size:12px;color:var(--sub)}
+  .flex-delta b{color:var(--risk-safe)}
+
+  footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);
+    font-size:11.5px;color:var(--sub);text-align:center}
+  footer a{color:var(--accent)}
+
+  @media (max-width:640px){
+    .matrix{grid-template-columns:88px repeat(4,1fr);gap:5px}
+    .colhead,.rowhead{padding:6px 5px;font-size:11px}
+    .flexcompare{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+<div class="wrap">
+
+<p class="breadcrumb"><a href="index.html">← ポートフォリオ移行 一覧</a> ／
+  <a href="viz_decision_2026q3.html">配分の確定（15/30/55）</a></p>
+
+<header>
+  <p class="eyebrow">Portfolio Migration · 感度分析</p>
+  <h1>結局、配分は「何を信じるか」で変わる</h1>
+  <p class="lede">2026-07-09 に確定した <b>レバナス15% / ゴールド30% / 無レバ株式55%</b> は、
+    「NASDAQ100は年11%・金は年8.5%（実績とCMAの中間）」という<b>本人の信念</b>を前提にした最適解。
+    信念が変われば、最適な比率もこの表のとおり動く。</p>
+  <p class="disclaimer">⚠️ 投資助言ではなく本人の保有データに基づく試算。数値は条件付きの目安。
+    各セルは実際に8,000パスのモンテカルロで計算した結果（架空の概算ではない）。</p>
+</header>
+
+<section>
+  <h2><span class="idx">1</span>2つの信念が、独立に効いている</h2>
+  <p class="h2-note">「株をどれだけ信じるか」は主に<b style="color:var(--lev)">レバナス比率</b>を、
+    「金をどれだけ信じるか」は主に<b style="color:var(--gold)">ゴールド比率</b>を動かす。
+    この2つはほぼ独立（「両方強気」「両方悲観」でも掛け合わせどおりの結果になることを検証済み）
+    ——だから下の表は、縦横それぞれの信念を選ぶだけで読める。</p>
+  <div class="axes">
+    <div class="axis-card lev-tone">
+      <p class="lbl">縦軸：株(NASDAQ100)への信念</p>
+      <p>年7%(悲観CMA)なら<b>レバなし</b>が枯渇・成長とも最良。年14%(実績)を信じるなら<b>レバ30%</b>まで
+        増やす価値がある——中央値が+40%以上伸びる一方、枯渇はわずかしか増えない。</p>
+    </div>
+    <div class="axis-card gold-tone">
+      <p class="lbl">横軸：金への信念</p>
+      <p>年0%(プレミアム消滅)なら金は<b>最小限</b>でよい。年12%(実績)を信じるなら<b>金34%</b>まで
+        厚くする価値がある——枯渇を下げながら中央値も上がる「フリーランチ」の領域。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="idx">2</span>信念 × 信念 → 推奨配分（早見表）</h2>
+  <p class="h2-note">各セル＝<span class="fig">レバナス/ゴールド/無レバ株式</span>の比率、
+    その下＝50年枯渇率・65歳時点の実質資産中央値（基準：中位相場・支出ガードレールあり・調達コスト年3%）。
+    枠のあるセルが現在の決定。</p>
+
+  <div class="toggle-row">
+    <input type="checkbox" id="detail">
+    <label for="detail">最大下落・元本維持率も表示する</label>
+  </div>
+
+  <div class="matrix-scroll">
+  <div class="matrix">
+    <div class="corner">株 ＼ 金</div>
+    <div class="colhead">消滅<span class="pct">金 年0%</span></div>
+    <div class="colhead">CMA<span class="pct">金 年5%</span></div>
+    <div class="colhead current">実績とCMAの中間・本人信念<span class="pct">金 年8.5%</span></div>
+    <div class="colhead">実績<span class="pct">金 年12%</span></div>
+
+    <!-- 行はJSで生成 -->
+    <div id="grid-body" style="display:contents"></div>
+  </div>
+  </div>
+
+  <div class="legend-row">
+    <span class="sw"><i style="background:var(--lev)"></i>レバナス</span>
+    <span class="sw"><i style="background:var(--gold)"></i>ゴールド</span>
+    <span class="sw"><i style="background:var(--stk)"></i>無レバ株式</span>
+    <span class="sw">｜</span>
+    <span class="sw"><i style="background:var(--risk-safe)"></i>枯渇 &lt;2%</span>
+    <span class="sw"><i style="background:var(--risk-ok)"></i>2〜5%</span>
+    <span class="sw"><i style="background:var(--risk-warn)"></i>5〜10%</span>
+    <span class="sw"><i style="background:var(--risk-bad)"></i>10〜20%</span>
+    <span class="sw"><i style="background:var(--risk-severe)"></i>20%〜</span>
+  </div>
+
+  <div class="callout">
+    <b>左下（株もCMA以下・金もほぼ消滅）の2マスだけは、配分をどう変えても50年枯渇が10〜22%と高いまま。</b>
+    これは配分の失敗ではなく、その相場観そのものが厳しいということ——配分では守りきれない領域で、
+    ここに現実味を感じるなら、取り崩し額そのものを見直す話になる。
+  </div>
+  <p class="h2-note" style="margin-top:10px">
+    ※「現在の決定」セルは確定ドキュメントの数値と完全一致。他のセルはSP500の想定リターンを
+    NASDAQ100の信念に比例させた簡易推定のため、絶対値より<b style="color:var(--ink)">方向・大小関係</b>を見る目安。
+  </p>
+</section>
+
+<section>
+  <h2><span class="idx">3</span>為替観でも変わる（比率は同じ、結果が変わる）</h2>
+  <p class="h2-note">配分は15/30/55のまま、円安がどれだけ続くと考えるかで結果だけが変わる。
+    レバナスは為替ヘッジなしで持つ決定なので、円の見通しがそのまま効く。</p>
+  <div class="cardrow" id="fx-cards"></div>
+</section>
+
+<section>
+  <h2><span class="idx">4</span>支出を柔軟にできるかどうかでも変わる</h2>
+  <p class="h2-note">暴落時に月50万→40万へ減らせるという前提（ガードレール）が、どれだけ枯渇率を下げるか。
+    悪い相場（株9%・金0%・為替中立・金株相関0.7の複合最悪）で比較。</p>
+  <div class="flexcompare" id="flex-cards"></div>
+  <p class="flex-delta">どちらの配分でも、支出を柔軟にできると50年枯渇が<b>約8pt</b>下がる——
+    これは配分をどう変えるより効く場合がある。「暴落時に減額できるか」を自分に問う価値がある。</p>
+</section>
+
+<footer>
+  詳細な前提・検証プロセスは
+  <a href="https://github.com/ikeshima-daisuke/assets-tracker/blob/master/%E3%83%9D%E3%83%BC%E3%83%88%E3%83%95%E3%82%A9%E3%83%AA%E3%82%AA%E7%A7%BB%E8%A1%8C/docs/%E9%85%8D%E5%88%86%E8%A6%8B%E7%9B%B4%E3%81%972026-07-09.md">配分見直し2026-07-09.md</a>
+  を参照。投資助言ではなく本人の保有データに基づく条件付き試算。
+</footer>
+
+</div>
+</div>
+
+<script>
+const ROWS = [
+  {label:"悲観CMA", pct:"年7%"},
+  {label:"CMA",     pct:"年9%"},
+  {label:"本人信念", pct:"年11%", current:true},
+  {label:"実績",     pct:"年14%"},
+];
+const COLS = ["消滅","CMA本人信念","実績/CMA中間","実績"];
+
+// stock_label × gold_label → {lev,gold,stock,dep50,med30,dd,elig}
+const DATA = {
+"悲観CMA|消滅":{lev:0,gold:10,stock:90,dep50:22.44,med30:1.75,dd:-67,elig:64},
+"悲観CMA|CMA本人信念":{lev:0,gold:25,stock:75,dep50:17.27,med30:2.00,dd:-61,elig:69},
+"悲観CMA|実績/CMA中間":{lev:0,gold:30,stock:70,dep50:11.14,med30:2.72,dd:-57,elig:76},
+"悲観CMA|実績":{lev:0,gold:34,stock:66,dep50:5.14,med30:4.12,dd:-52,elig:86},
+"CMA|消滅":{lev:0,gold:10,stock:90,dep50:10.84,med30:3.60,dd:-62,elig:79},
+"CMA|CMA本人信念":{lev:0,gold:25,stock:75,dep50:7.89,med30:3.69,dd:-57,elig:82},
+"CMA|実績/CMA中間":{lev:0,gold:30,stock:70,dep50:4.78,med30:4.74,dd:-53,elig:87},
+"CMA|実績":{lev:0,gold:34,stock:66,dep50:2.23,med30:6.78,dd:-49,elig:93},
+"本人信念|消滅":{lev:15,gold:10,stock:75,dep50:5.67,med30:7.24,dd:-62,elig:88},
+"本人信念|CMA本人信念":{lev:15,gold:25,stock:60,dep50:4.14,med30:6.96,dd:-58,elig:90},
+"本人信念|実績/CMA中間":{lev:15,gold:30,stock:55,dep50:2.70,med30:8.49,dd:-56,elig:93,current:true},
+"本人信念|実績":{lev:15,gold:34,stock:51,dep50:1.34,med30:11.70,dd:-52,elig:96},
+"実績|消滅":{lev:30,gold:10,stock:60,dep50:1.82,med30:23.27,dd:-63,elig:96},
+"実績|CMA本人信念":{lev:30,gold:25,stock:45,dep50:1.39,med30:20.06,dd:-58,elig:97},
+"実績|実績/CMA中間":{lev:30,gold:30,stock:40,dep50:0.95,med30:23.65,dd:-56,elig:98},
+"実績|実績":{lev:30,gold:34,stock:36,dep50:0.54,med30:31.01,dd:-54,elig:99},
+};
+
+function riskClass(dep){
+  if(dep<2) return "risk-safe";
+  if(dep<5) return "risk-ok";
+  if(dep<10) return "risk-warn";
+  if(dep<20) return "risk-bad";
+  return "risk-severe";
+}
+
+const body = document.getElementById("grid-body");
+ROWS.forEach(row=>{
+  const rh = document.createElement("div");
+  rh.className = "rowhead" + (row.current?" current":"");
+  rh.innerHTML = `${row.label}<span class="pct">株 ${row.pct}</span>`;
+  body.appendChild(rh);
+
+  COLS.forEach(col=>{
+    const d = DATA[`${row.label}|${col}`];
+    const cell = document.createElement("div");
+    cell.className = "cell" + (d.current? " current":"");
+    const rc = riskClass(d.dep50);
+    cell.innerHTML = `
+      ${d.current?'<span class="star">★現在</span>':''}
+      <div class="ratio-bar">
+        <span style="width:${d.lev}%;background:var(--lev)"></span>
+        <span style="width:${d.gold}%;background:var(--gold)"></span>
+        <span style="width:${d.stock}%;background:var(--stk)"></span>
+      </div>
+      <div class="ratio-label">${d.lev}/${d.gold}/${d.stock}</div>
+      <div class="stat-chip ${rc}">枯渇${d.dep50.toFixed(1)}%<span class="sep">・</span>中央値${d.med30.toFixed(1)}倍</div>
+      <div class="extra-stats">DD${d.dd}%・元本維持${d.elig}%</div>
+    `;
+    body.appendChild(cell);
+  });
+});
+
+// FX cards
+const FX = [
+  {label:"円安継続（実績）", dot:"var(--risk-safe)", dep50:2.70, med30:8.49, elig:93},
+  {label:"為替中立", dot:"var(--risk-warn)", dep50:8.94, med30:3.72, elig:81},
+  {label:"持続円高（年-2%）", dot:"var(--risk-severe)", dep50:22.19, med30:1.66, elig:63},
+];
+const fxWrap = document.getElementById("fx-cards");
+FX.forEach(f=>{
+  const c = document.createElement("div");
+  c.className = "fxcard";
+  c.innerHTML = `
+    <p class="fxlbl"><span class="dot" style="background:${f.dot}"></span>${f.label}</p>
+    <div class="fxstat"><span>50年枯渇</span><span class="v">${f.dep50.toFixed(1)}%</span></div>
+    <div class="fxstat"><span>65歳中央値</span><span class="v">${f.med30.toFixed(1)}倍</span></div>
+    <div class="fxstat"><span>元本維持</span><span class="v">${f.elig}%</span></div>
+  `;
+  fxWrap.appendChild(c);
+});
+
+// spending flexibility cards
+const FLEX = [
+  {title:"15/30/55（決定配分）", on:37.45, off:45.56},
+  {title:"0/30/70（全脱レバ）", on:35.76, off:43.95},
+];
+const flexWrap = document.getElementById("flex-cards");
+const FLEX_MAX = 48;
+FLEX.forEach(f=>{
+  const c = document.createElement("div");
+  c.className = "flexcard";
+  c.innerHTML = `
+    <h3>${f.title}（複合最悪相場・50年枯渇）</h3>
+    <div class="flexbar-row"><span class="tag">柔軟あり</span>
+      <div class="flexbar"><span style="width:${f.on/FLEX_MAX*100}%;background:var(--risk-safe)"></span></div>
+      <span class="num">${f.on.toFixed(1)}%</span></div>
+    <div class="flexbar-row"><span class="tag">柔軟なし</span>
+      <div class="flexbar"><span style="width:${f.off/FLEX_MAX*100}%"></span></div>
+      <span class="num">${f.off.toFixed(1)}%</span></div>
+  `;
+  flexWrap.appendChild(c);
+});
+</script>
+</body>
+</html>
