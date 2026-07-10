@@ -155,6 +155,23 @@
   .flow{margin:6px 0 0;padding-left:20px;font-size:13px}
   .flow li{margin:4px 0}
 
+  .ref-anchors{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:13px 15px 11px}
+  .ref-anchors .gt{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);
+    font-weight:700;margin:0 0 3px}
+  .ref-anchors .rlede{font-size:12px;color:var(--sub);margin:0 0 10px;line-height:1.5}
+  .ref-wrap{overflow-x:auto}
+  table.ref{border-collapse:collapse;width:100%;min-width:440px;font-size:12.5px}
+  table.ref th,table.ref td{padding:7px 10px;text-align:left;border-bottom:1px solid var(--line);
+    vertical-align:top}
+  table.ref thead th{font-size:11px;letter-spacing:.03em;color:var(--sub);font-weight:600;
+    border-bottom:1px solid var(--line-strong)}
+  table.ref tbody th{font-weight:600;color:var(--ink);white-space:nowrap}
+  table.ref td b{color:var(--accent);font-weight:700}
+  table.ref .sub{color:var(--sub);font-size:11px;display:block;margin-top:1px}
+  .ref-note{font-size:11.5px;color:var(--sub);margin:10px 0 0;line-height:1.55}
+  .ref-note b{color:var(--ink);font-weight:600}
+  @media (max-width:640px){table.ref{font-size:12px}}
   .glossary{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:10px;
     padding:12px 15px}
   .glossary .gt{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);
@@ -223,6 +240,36 @@
       <input type="checkbox" id="ghost-toggle">
       <label for="ghost-toggle" id="ghost-label">同じ株×金信念で「悲観相場」にした場合を薄く重ねて表示する</label>
     </div>
+  </div>
+  <div class="ref-anchors">
+    <p class="gt">信念の目安（この数字を選ぶ手がかり）</p>
+    <p class="rlede">各数字が現実の何に対応するか。<b>控えめ寄り＝将来予測(CMA)・学術／強気寄り＝過去実績</b>。本人信念はその中間。</p>
+    <div class="ref-wrap">
+      <table class="ref">
+        <thead>
+          <tr><th>資産</th><th>控えめ（将来予測 CMA・学術）</th><th>本人信念（中間）</th><th>強気（過去実績）</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>株<span class="sub">NASDAQ100</span></th>
+            <td><b>9%</b><span class="sub">市場コンセンサス CMA</span></td>
+            <td><b>11%</b><span class="sub">実績14%とCMA9%の中間</span></td>
+            <td><b>14%</b><span class="sub">過去実績（幾何・USD）</span></td>
+          </tr>
+          <tr>
+            <th>金<span class="sub">ゴールド</span></th>
+            <td><b>0%</b> / <b>5%</b><span class="sub">0%＝実質≈0の学術説／5%＝CMA</span></td>
+            <td><b>8.5%</b><span class="sub">実績12%とCMA5%の中間</span></td>
+            <td><b>12%</b><span class="sub">過去実績（名目・USD）</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="ref-note">
+      <b>信念の作り方</b>は株も金も同じルール＝「過去実績」と「将来予測(CMA)」の中間を採る。株は11%、金は8.5%が本人の主前提。<br>
+      <b>出典</b>：金CMA 5%＝JPM 2026 LTCMA 5.5%・WGC GLTER 5.2%。金0%＝Erb &amp; Harvey「黄金の定数」（金の長期実質リターンは≈0＝名目でもインフレ並み）。株CMA 9%＝運用各社の長期期待リターン水準。<br>
+      <b>読み方</b>：過去実績（株14%・金12%）は「その調子が今後も続く」楽観の上限、CMA・学術は「割高圏からの平均回帰」を織り込んだ下限。どちらを重く見るかで下の②③④の最適配分が動く。
+    </p>
   </div>
   <div class="glossary">
     <p class="gt">用語解説</p>
