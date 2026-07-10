@@ -171,6 +171,16 @@
   table.ref .sub{color:var(--sub);font-size:11px;display:block;margin-top:1px}
   .ref-note{font-size:11.5px;color:var(--sub);margin:10px 0 0;line-height:1.55}
   .ref-note b{color:var(--ink);font-weight:600}
+  .ref-src{margin-top:12px;padding-top:11px;border-top:1px dashed var(--line-strong)}
+  .ref-src .gt2{font-size:11px;letter-spacing:.06em;color:var(--sub);font-weight:700;margin:0 0 8px}
+  .srcdl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:11.5px;
+    color:var(--sub);line-height:1.55}
+  .srcdl dt{color:var(--ink);font-weight:600;white-space:nowrap}
+  .srcdl dd{margin:0}
+  .srcdl b{color:var(--ink);font-weight:600}
+  .ref-cite{font-size:10.5px;color:var(--sub);margin:9px 0 0;line-height:1.5;opacity:.85}
+  @media (max-width:640px){.srcdl{grid-template-columns:1fr}.srcdl dt{margin-top:6px}
+    .srcdl dt:first-child{margin-top:0}}
   @media (max-width:640px){table.ref{font-size:12px}}
   .glossary{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:10px;
     padding:12px 15px}
@@ -267,9 +277,22 @@
     </div>
     <p class="ref-note">
       <b>信念の作り方</b>は株も金も同じルール＝「過去実績」と「将来予測(CMA)」の中間を採る。株は11%、金は8.5%が本人の主前提。<br>
-      <b>出典</b>：金CMA 5%＝JPM 2026 LTCMA 5.5%・WGC GLTER 5.2%。金0%＝Erb &amp; Harvey「黄金の定数」（金の長期実質リターンは≈0＝名目でもインフレ並み）。株CMA 9%＝運用各社の長期期待リターン水準。<br>
       <b>読み方</b>：過去実績（株14%・金12%）は「その調子が今後も続く」楽観の上限、CMA・学術は「割高圏からの平均回帰」を織り込んだ下限。どちらを重く見るかで下の②③④の最適配分が動く。
     </p>
+    <div class="ref-src">
+      <p class="gt2">CMA（将来予測）の出典と、なぜ「市場コンセンサス」といえるか</p>
+      <dl class="srcdl">
+        <dt>そもそもCMAとは</dt>
+        <dd>Capital Market Assumptions＝大手運用会社が毎年公表する、今後10〜15年の資産別期待リターン。<b>各社が実際に顧客の資産配分を設計するのに使う数字</b>（＝資金が動く前提で、個人の願望ではない）。</dd>
+        <dt>なぜ「コンセンサス」か</dt>
+        <dd>1社の予想ではなく、<b>独立した複数機関が別々の手法で公表し、近い水準に収束している</b>から。分布の中心を指す。ただし各社のレンジ自体は広く（株で3〜8%）、これは「将来は不確実」の裏返し＝だからこのツールで実績寄り／CMA寄りを振り、結論が頑健かを見る。</dd>
+        <dt>株 9% の根拠</dt>
+        <dd>2026年版のUS株式CMAは <b>14社集計で中央値6.0%（レンジ3.1〜7.6%）</b>（Morningstar）、Vanguard 3.5〜5.5%、BlackRock 約5%。いずれも過去実績（S&amp;P500で約10%）を大きく下回り、<b>「forward＜実績」は全社共通</b>。これらは広義市場(S&amp;P500)ベースで、NASDAQ100は成長株偏重ぶん実績が3〜4pt高い＝forwardも上乗せして本ツールは<b>9%</b>を採用（広義市場の中央値6%＋成長ティルト。実績14%からの対称マークダウンとも整合）。</dd>
+        <dt>金 5% / 0% の根拠</dt>
+        <dd><b>5%＝JPM 2026 LTCMA 5.5%（名目USD）と World Gold Council GLTER 5.2%</b>。ビルディングブロック法とGDPモデル(R²≈92%)という<b>別手法の2機関が同じ5%台に収束</b>したのが根拠。<b>0%＝Erb &amp; Harvey の査読論文「黄金の定数」</b>＝金の長期"実質"リターンは≈0（名目ではインフレ並みで、株のような実質成長プレミアムは無いという学説）。</dd>
+      </dl>
+      <p class="ref-cite">出典: Morningstar「Experts Forecast Stock and Bond Returns: 2026 Edition」／Vanguard Capital Markets Model／BlackRock Capital Market Assumptions／J.P. Morgan 2026 Long-Term Capital Market Assumptions／World Gold Council GLTER／Erb &amp; Harvey (2013, "The Golden Dilemma")。</p>
+    </div>
   </div>
   <div class="glossary">
     <p class="gt">用語解説</p>
