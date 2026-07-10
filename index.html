@@ -1,20 +1,24 @@
 <!doctype html><html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ポートフォリオ移行 — 決定の4ステップ</title>
+<title>ポートフォリオ移行 — 検証と結論</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet"></noscript>
 <style>
- :root{--ink:#E8ECF5;--muted:#94A0B8;--line:rgba(255,255,255,.08);--teal:#22D3AA;--purple:#8B7DFF}
+ :root{--ink:#E8ECF5;--muted:#94A0B8;--line:rgba(255,255,255,.08);--teal:#22D3AA;--purple:#8B7DFF;--gold:#E6B84A;--red:#F87171}
  *{box-sizing:border-box}
- body{font-family:Inter, 'IBM Plex Sans JP', system-ui, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;color:var(--ink);max-width:780px;margin:0 auto;padding:2.4rem 1rem 3rem;
+ body{font-family:Inter, 'IBM Plex Sans JP', system-ui, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;color:var(--ink);max-width:820px;margin:0 auto;padding:2.4rem 1rem 3rem;
    background:radial-gradient(1100px 560px at 12% -12%,rgba(139,125,255,.22),transparent 60%),
               radial-gradient(900px 480px at 112% 4%,rgba(34,211,170,.16),transparent 55%),#0B1020;
    -webkit-font-smoothing:antialiased;min-height:100vh}
  .kicker{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--teal);font-weight:600;margin:0 0 .5rem}
  h1{font-size:23px;font-weight:700;margin:0 0 .4rem;letter-spacing:.01em}
- .sub-lead{color:var(--muted);font-size:13.5px;margin:0 0 1.4rem}
+ .sub-lead{color:var(--muted);font-size:13.5px;margin:0 0 1.2rem;line-height:1.7}
+ .sub-lead b{color:var(--ink)}
+ .alloc{display:flex;height:40px;border-radius:9px;overflow:hidden;font-size:12.5px;font-weight:700;margin:.2rem 0 .45rem}
+ .alloc div{display:flex;align-items:center;justify-content:center;color:#08121f;white-space:nowrap}
+ .alloc .lev{background:#FB923C}.alloc .gld{background:var(--gold)}.alloc .stk{background:var(--teal)}
+ .alloc-cap{color:var(--muted);font-size:12px;margin:0 0 1.6rem}
  .sechead{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);font-weight:600;
-   margin:1.8rem 0 .2rem;display:flex;align-items:center;gap:.6rem}
- .sechead.muted{color:var(--muted)}
+   margin:1.9rem 0 .2rem;display:flex;align-items:center;gap:.6rem}
  .sechead .hint{font-size:11.5px;letter-spacing:0;text-transform:none;color:var(--muted);font-weight:400}
  .vcard{display:flex;align-items:center;gap:1rem;text-decoration:none;color:inherit;
    background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012));
@@ -22,42 +26,84 @@
    transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease}
  .vcard:hover{transform:translateY(-2px);border-color:rgba(139,125,255,.55);
    box-shadow:0 18px 50px -24px rgba(0,0,0,.85),0 0 0 1px rgba(139,125,255,.25)}
- .vcard.core{border-color:rgba(34,211,170,.28)}
- .vcard.sub{opacity:.78} .vcard.sub:hover{opacity:1}
  .vbadge{font-variant-numeric:tabular-nums;font-weight:700;font-size:14px;color:#08121f;background:var(--teal);
    border-radius:9px;padding:.4rem .6rem;min-width:2.2rem;text-align:center}
- .vbadge.sub{color:var(--muted);background:transparent;border:1px solid var(--line);font-size:15px}
+ .vbadge.sub{color:var(--gold);background:transparent;border:1px solid rgba(230,184,74,.5);font-size:15px}
  .vbody{flex:1} .vtitle{font-weight:600;font-size:15px;line-height:1.4}
  .vdesc{color:var(--muted);font-size:12.5px;margin-top:.25rem;line-height:1.55}
  .varrow{color:var(--muted);font-size:18px} .vcard:hover .varrow{color:var(--teal)}
- .foot{color:var(--muted);font-size:12px;margin-top:1.6rem}
+ .vrf{background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));
+   border:1px solid var(--line);border-radius:14px;padding:1rem 1.15rem;margin:.7rem 0}
+ .vrf .q{font-weight:600;font-size:14px;line-height:1.5}
+ .vrf .q .tag{display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.06em;color:var(--purple);
+   border:1px solid rgba(139,125,255,.4);border-radius:8px;padding:.08rem .5rem;margin-right:.55rem;vertical-align:1px}
+ .vrf .a{color:var(--muted);font-size:12.5px;line-height:1.65;margin-top:.4rem}
+ .vrf .a b{color:var(--ink)}
+ .vrf .a .cite{display:block;margin-top:.3rem;font-size:11px;color:rgba(148,160,184,.75)}
+ .vrf .a code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;color:rgba(148,160,184,.9);
+   background:rgba(255,255,255,.05);border-radius:4px;padding:.05rem .3rem}
+ .foot{color:var(--muted);font-size:12px;margin-top:1.8rem;line-height:1.7}
 </style></head>
 <body>
 <div class="kicker">Portfolio Migration · Decision Finalized</div>
-<h1>ポートフォリオ移行 — 配分の確定</h1>
-<p class="sub-lead"><b>2026-07-09 に配分を確定：レバナス15% / ゴールド30% / 無レバ株式(NASDAQ100+SP500)55%。</b><br>
-50年・税込み・調達コスト込みのモンテカルロで再検証し、暫定案33/34/33を改訂（レバナスの調達コスト未計上バイアスの是正）→ 同日、金の期待リターン信念を「実績とCMAの中間8.5%」へ引き上げ、金25→30・株60→55へ再調整。金額は出さず倍率・%で表示・スマホ対応。</p>
-<div class="sechead">確定した配分（2026-07-09・現行の正本）</div>
-<a class="vcard core" href="viz_decision_2026q3.html" style="border-color:rgba(34,211,170,.55)">
+<h1>ポートフォリオ移行 — 検証と結論</h1>
+<p class="sub-lead"><b>結論（2026-07-09 確定）：移行対象内で レバナス（無ヘッジ）15% ／ ゴールド30% ／ 無レバ株式（NASDAQ100+SP500）55%。</b><br>
+50年・税込み・レバの調達コスト込みモンテカルロで検証。このページは「何を検証して、何が結論になったか」の総覧。金額は非表示・倍率と%のみ・スマホ対応。</p>
+<div class="alloc">
+  <div class="lev" style="width:15%">15%</div>
+  <div class="gld" style="width:30%">30%</div>
+  <div class="stk" style="width:55%">55%</div>
+</div>
+<p class="alloc-cap">🟠 レバナス（無ヘッジ）15　🟡 ゴールド 30　🟢 無レバ株式（NASDAQ100+SP500）55　※個別株・FANG+・仮想通貨・DC は対象外の独立枠</p>
+
+<div class="sechead">決定の詳細（2ページ）</div>
+<a class="vcard" href="viz_decision_2026q3.html" style="border-color:rgba(34,211,170,.55)">
    <div class="vbadge">★</div>
-   <div class="vbody"><div class="vtitle">配分の確定 — レバナス15 / ゴールド30 / 無レバ株式55</div><div class="vdesc">なぜ33→15か（レバの調達コストを課すと成長優位が消える）／なぜ金25→30か（金信念8.5%への改訂）／どの前提でも崩れない頑健性テーブル（中位・悲観・円安除去・株CMA・金0%・複合最悪）／移行プラン（税込み）／反転条件。<b>50年・税込み・支出ガードレール・調達コスト込みの再検証＝これが現行の結論。</b></div></div>
+   <div class="vbody"><div class="vtitle">配分の確定 — レバナス15 / ゴールド30 / 無レバ株式55</div><div class="vdesc">なぜレバナスを15まで削るのか（調達コストを課すとレバの成長優位が消える）／なぜ金30か（金信念8.5%）／6前提での頑健性テーブル／移行プラン（税込み）／この結論が変わる条件。</div></div>
    <div class="varrow">→</div></a>
-<a class="vcard core" href="viz_belief_matrix_2026q3.html" style="border-color:rgba(34,211,170,.4)">
+<a class="vcard" href="viz_belief_matrix_2026q3.html" style="border-color:rgba(230,184,74,.4)">
    <div class="vbadge sub">☆</div>
-   <div class="vbody"><div class="vtitle">信念別・配分早見表 — 前提が変わったらどう動くか</div><div class="vdesc">株(NASDAQ100)と金それぞれの期待リターン信念を軸にした4×4の早見表。「両方強気」「両方悲観」でも掛け合わせどおりに動くことを検証（軸はほぼ独立）。為替観・支出柔軟性による違いも併記。<b>信念が変わったときにどこへ動くべきかを引くための表。</b></div></div>
+   <div class="vbody"><div class="vtitle">信念別・配分早見表 — 前提が変わったらどう動くか</div><div class="vdesc">株と金それぞれの期待リターン信念を軸にした4×4早見表（2軸はほぼ独立）。為替観・支出柔軟性による違いも併記。信念が変わったときにどこへ動くかを引く表。</div></div>
    <div class="varrow">→</div></a>
-<div class="sechead muted">検証の経緯（旧フレーム・レバナス%×GP割合の地図） <span class="hint">下の3枚は株32%固定・調達コスト未計上の旧モデル＝経緯として保存。現行結論は上の★</span></div>
-<a class="vcard core" href="viz_decision_board.html">
-   <div class="vbadge">1</div>
-   <div class="vbody"><div class="vtitle">意思決定ボード — レバナス% × GP割合 を決める（正本・株forward11%）</div><div class="vdesc">横＝レバナス%・縦＝GP割合の地図を、悲観／中位／楽観の3つの相場で同時に。色＝守る力（お金が尽きる確率・灰＝候補外）、マスにカーソルでふやす力（中央値）。⚠️<b>株 forward 11% 前提（実績14%とCMA9%の中間＝本人信念）</b>＝<b>レバを上げると中央値は伸びるが枯渇も増える＝安全域は中レバ(〜25)＋金</b>。下段＝誤りコストの非対称性マップで“膝”を選ぶ。</div></div>
-   <div class="varrow">→</div></a>
-<a class="vcard core" href="viz_robustness.html">
-   <div class="vbadge">2</div>
-   <div class="vbody"><div class="vtitle">前提が外れたら — ロバスト評価（②モデル不確実性）</div><div class="vdesc">ボードの「全勝」は前提を1つずらしても生き残るか。各配分が“何に賭けているか”（賭けマップ）／金リターンを下げると全勝が崩れる“崖”／配分×23前提の全勝○×ヒートマップ。結論＝全勝は実績級(+12%)かつ低相関の金前提の産物（実務CMAの+5%でも・相関が株寄りでも崩れる）。</div></div>
-   <div class="varrow">→</div></a>
-<a class="vcard core" href="viz_sleeve.html">
-   <div class="vbadge">3</div>
-   <div class="vbody"><div class="vtitle">受け皿の選び方＋前提のフェアネス補正（2026-06-25）</div><div class="vdesc">レバナス25/無レバNASDAQ75 を起点に薄い受け皿（長期債/金/USA360/GP）を足すと中央値を保ったまま下落・破綻を下げられるか。<b>金と債券は壊れる場面が逆</b>／USA360は2022型に脆い／<b>GPは成長専用で受け皿不適</b>。⚠️<b>前提のフェアネス補正</b>＝株も将来想定(CMA9%)へ対称に削ると「脱レバ＋金＋USA360 が同じ期待値で下落・枯渇を大きく下げる」へ結論が動く（末尾節）。</div></div>
-   <div class="varrow">→</div></a>
-<p class="foot">※ <b>2026-06-25 更新</b>：受け皿の結論を「現物金/GP中心」から<b>「薄い長期債＋金（USA360は薄く・金とセットの時のみ）」へ更新</b>。意思決定ボードは依然レバナス%×GP割合の地図だが、最新の受け皿比較・2022型ストレス・プロファイル別の最終形は3枚目「受け皿の選び方」を参照（正本＝SSOT §6項10-12・§9）。<br>※ 過去の相場をくじ引きでつなぐ試算（モンテカルロ）。金額は非表示。数値は前提しだいで動く目安で、投資助言ではない。旧グラフ（viz1〜11・コックピット・耐久性ほか）は2026-06-23にこのボードへ集約・アーカイブした。</p>
+
+<div class="sechead">検証の総覧 <span class="hint">何を検証して、何が結論になったか</span></div>
+
+<div class="vrf"><div class="q"><span class="tag">レバ比率</span>レバナスは何%が最適か</div>
+  <div class="a">実物の2倍レバ投信は先物で+100%分を建て、その短期金利（年1.7〜4%）を恒常的に払う。<b>この調達コストを課すと「レバ33が成長最適」は消え、効率の膝はレバ10〜15へ移動</b>。50年・税込み・8,000パスのMCで、レバ15は枯渇・中央値・最大下落のすべてで旧案33/34/33を上回った。レバを0にせず15残すのは本人の成長選好（全脱レバとの差＝中央値+5〜6%を枯渇+1pt強で買う）。
+  <span class="cite">再現: <code>analysis/withdrawal_sim50_2026q3.py</code>／記録: <code>docs/配分見直し2026-07-09.md</code></span></div></div>
+
+<div class="vrf"><div class="q"><span class="tag">金比率</span>ゴールドは何%持つべきか</div>
+  <div class="a">金の期待リターンは3層（学術=実質≈0％／実務CMA≈5％／直近実績≈12％）で、株と同じ信念形成ルール「実績とCMAの中間」を金にも適用して<b>信念8.5%→金30%が悲観・株弱気の両前提で枯渇・中央値とも優位</b>。負けるのは「金の前提が全部外れる」複合最悪のみ。一方、金だけに頼るのも危険＝<b>現物金単独はロバストな安全資産ではない</b>（金プレミアム消滅で成長・安全とも最下位）。
+  <span class="cite">再現: <code>analysis/withdrawal_sim50_2026q3.py</code>（金信念の感度）</span></div></div>
+
+<div class="vrf"><div class="q"><span class="tag">株の前提</span>そのシミュレーション、株に甘くないか</div>
+  <div class="a">当初のMCは金・債券だけ将来想定（CMA）へ削り、株は実績14%のままという非対称があった。<b>株にも対称に削ると結論は「株の将来リターンをいくつと信じるか」の一点に帰着</b>：9%（CMA）ならレバ0が最良／14%（実績）ならレバ25〜33が復活。本人信念は中間の11%＝レバはまだ中央値を買うが枯渇も一緒に増える帯＝薄いレバ15で確定。
+  <span class="cite">再現: <code>analysis/iso_fair_markdown.py</code>（株信念の梯子 14.3/12/11/9%）</span></div></div>
+
+<div class="vrf"><div class="q"><span class="tag">為替ヘッジ</span>レバナスは「ヘッジあり」と「なし」どちらで持つか</div>
+  <div class="a">為替×株の月次相関は≈0＝「円高×暴落の同時被弾をヘッジが守る」仮説は否定。ヘッジは守り（floor・枯渇）をほぼ改善せず、<b>ヘッジコスト年≈2.7%を確実に漏らすだけ→ヘッジなしへ移行（一括・現金ブリッジが最良）</b>。含み益への税526万は大半が前払い＋簿価ステップアップで、円高観がなければ約5年で回収。ヘッジが得になるのは「持続的な年3%超の円高」を信じる場合のみ。
+  <span class="cite">記録: <code>docs/為替ヘッジ（レバナスあり→なし）移行の検証まとめ.md</code></span></div></div>
+
+<div class="vrf"><div class="q"><span class="tag">受け皿</span>レバナスを売った資金はどこへ置くか（GP/USA360/長期債/金）</div>
+  <div class="a"><b>ゴールドプラス（株100+金100）は受け皿に不適</b>＝中央値は上げるが下落・枯渇を一切下げない（金の防御を同梱レバが相殺）。<b>USA360は2022年型（株と債券の同時安）で枯渇が3倍化＝最も脆い</b>。米国長期債は本物の逆相関だが2022年型に弱く、金はインフレ・金利ショックに無傷＝壊れる場面が逆。最終的に受け皿はゴールド中心（30%）へ集約。Zテック20・USA360は全売却。
+  <span class="cite">再現: <code>analysis/iso_expected_sweep_gp.py</code>／<code>analysis/usa360_model.py</code>（実NAV較正済み）</span></div></div>
+
+<div class="vrf"><div class="q"><span class="tag">対照実験</span>いっそ NASDAQ100 や S&amp;P500 一本にすれば？</div>
+  <div class="a">毎月の取り崩しがある限り、単一指数100%は暴落の底で売らされ回復前に資産が削られる（順序リスク）。<b>悲観相場では単一指数が最弱＝分散ポートフォリオが枯渇・下振れ・中央値のすべてで優位</b>。単一指数が輝くのは大暴落が来ない楽観相場のみ。
+  <span class="cite">検証: 同一MCで NASDAQ100/S&amp;P500 100% を直接比較</span></div></div>
+
+<div class="vrf"><div class="q"><span class="tag">頑健性</span>前提が外れたら結論はどこまで保つか（23前提のロバスト評価）</div>
+  <div class="a">相場レジーム・ブロック長・金リターン・金株相関・コスト・インフレ・円高の23前提で総当たり。<b>万能配分は存在せず、各配分は固有の急所を抱えた条件付きの賭け</b>：レバ/株偏重は「持続的弱気相場が来ないこと」に、金偏重は「金プレミアム（高リターン＋低相関の二段）」に、無レバ株100%は「円高が来ないこと」に賭けている。指数に全勝する配分は金+12%前提の産物で、実務CMA水準でも崩れる。だから結論は一点最適ではなく、外れ方に強い薄いレバ＋金30の形。
+  <span class="cite">再現: <code>analysis/robust_model_risk_sweep.py</code>（23前提×焦点配分×5,000パス）</span></div></div>
+
+<div class="vrf"><div class="q"><span class="tag">税・実行</span>移行の税コストと売り方・リバランス</div>
+  <div class="a">移行の一回限り譲渡税は<b>総資産の約3.8%＝floor・枯渇の改善に対して小さく、移行を遅らせる理由にならない</b>（大半はヘッジあり→なし変換で、年約0.9%のキャリー漏れ解消により約5年で回収）。含み益273%のSP500は強制売却せず無レバ株式枠に算入（不足分の新規買付はNASDAQ100無ヘッジへ）。FANG+はNISA枠内で数年かけ税0で置換。リバランスは毎年きっちりでなく±10ptの帯＋取り崩しを超過枠から充当（50年で数億円の税の空回りを防ぐ）。
+  <span class="cite">再現: <code>run_migration_plan.py</code>（最新データで売買プランを都度算出）</span></div></div>
+
+<div class="vrf"><div class="q"><span class="tag">支出側</span>配分では下げられないリスクはあるか</div>
+  <div class="a">ある。<b>円安の追い風を外すと全配分の50年枯渇が10〜12%で並ぶ＝これは配分の選び方では下げられず、支出側の領分</b>。暴落時に月50万→40万へ減額する支出ガードレールを織り込み済み（これが不可能なら金厚め＋支出再設計）。結論は5年ごと・大きな下落の後に再検証する。
+  <span class="cite">記録: <code>docs/配分見直し2026-07-09.md</code> §9（反転条件）</span></div></div>
+
+<p class="foot">※ 過去の相場をくじ引きでつなぐ試算（モンテカルロ・ブートストラップ）。数値は前提しだいで動く条件付きの目安で、投資助言ではない。過去の成績は将来を保証しない。<br>
+※ 検証の完全な記録・前提・再現手順の正本はリポジトリ内 <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px">docs/SSOT.md</code>・<code style="font-family:ui-monospace,Menlo,monospace;font-size:11px">docs/配分見直し2026-07-09.md</code>。旧フレームの対話グラフ（意思決定ボード・ロバスト評価ほか）は結論確定に伴い公開を終了した。</p>
 </body></html>
