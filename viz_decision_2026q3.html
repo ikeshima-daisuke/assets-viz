@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>配分の確定（2026-07-09）レバナス15 / ゴールド30 / 無レバ株式55</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#ffffff; --ink:#1a1d24; --sub:#5b6472; --line:#e3e7ee;
+    --accent:#0d7d6b; --accent2:#c2410c; --star:#b8860b;
+    --g1:#1a9e6f; --g2:#8bc34a; --g3:#f0ad4e; --g4:#e8743b; --g5:#c0392b;
+    --hl:#fff8e1; --hlline:#e6c65a;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#12151b; --card:#1b1f27; --ink:#e8ebf0; --sub:#9aa4b2; --line:#2c323d;
+      --accent:#2dd4bf; --accent2:#fb923c; --star:#e6b84a; --hl:#2a2410; --hlline:#5c4f1e;}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+    line-height:1.6;-webkit-text-size-adjust:100%}
+  .wrap{max-width:940px;margin:0 auto;padding:20px 16px 60px}
+  header h1{font-size:22px;margin:0 0 4px;letter-spacing:.01em}
+  header .date{color:var(--sub);font-size:13px}
+  .disc{font-size:12px;color:var(--sub);margin:8px 0 0;padding:8px 12px;
+    border-left:3px solid var(--line);background:var(--card);border-radius:0 6px 6px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:18px 18px 20px;margin:18px 0;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  h2{font-size:16px;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+  h2 .n{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--accent);
+    color:#fff;font-size:12px;align-items:center;justify-content:center;flex:0 0 auto}
+  .hero{display:flex;flex-wrap:wrap;gap:20px;align-items:center}
+  .hero .bar{flex:1 1 320px;min-width:280px}
+  .split{display:flex;height:44px;border-radius:8px;overflow:hidden;font-size:13px;font-weight:600}
+  .split div{display:flex;align-items:center;justify-content:center;color:#fff}
+  .lev{background:#c2410c}.gld{background:var(--star)}.stk{background:#0d7d6b}
+  .legend{display:flex;gap:16px;margin-top:8px;font-size:12px;color:var(--sub);flex-wrap:wrap}
+  .legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;
+    margin-right:5px;vertical-align:middle}
+  .legend .l1::before{background:#c2410c}.legend .l2::before{background:var(--star)}
+  .legend .l3::before{background:#0d7d6b}
+  .hero .why{flex:1 1 260px;font-size:13.5px;color:var(--sub)}
+  .hero .why b{color:var(--ink)}
+  table{border-collapse:collapse;width:100%;font-size:13px}
+  th,td{padding:7px 9px;text-align:center;border-bottom:1px solid var(--line)}
+  th{color:var(--sub);font-weight:600;font-size:12px}
+  td.lab{text-align:left;font-weight:600;white-space:nowrap}
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  tr.star td{background:var(--hl)}
+  tr.star td.lab{border-left:3px solid var(--hlline)}
+  .cell{border-radius:5px;padding:4px 2px;color:#0d1b16;font-weight:600}
+  .d1{background:var(--g1);color:#fff}.d2{background:var(--g2)}.d3{background:var(--g3)}
+  .d4{background:var(--g4);color:#fff}.d5{background:var(--g5);color:#fff}
+  .cell small{display:block;font-weight:400;font-size:10px;opacity:.85}
+  .note{font-size:11.5px;color:var(--sub);margin-top:8px}
+  .fund{width:auto;margin:0 auto}
+  .fund td,.fund th{padding:6px 14px}
+  .fund .drop{color:var(--accent2);font-weight:700}
+  .steps{margin:6px 0 0;padding-left:20px;font-size:13.5px}
+  .steps li{margin:3px 0}
+  .pill{display:inline-block;font-size:11px;padding:1px 8px;border-radius:10px;
+    background:var(--line);color:var(--sub);margin-left:6px}
+  .rev{font-size:13px;margin:0;padding-left:18px}
+  .rev li{margin:4px 0}
+  .rev b{color:var(--accent2)}
+  a{color:var(--accent)}
+  .foot{font-size:11.5px;color:var(--sub);text-align:center;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>配分の確定 — レバナス15 / ゴールド30 / 無レバ株式55</h1>
+  <div class="date">2026-07-09 ゼロベース見直し（15/25/60）→ 同日、金信念8.5%への改訂で15/30/55へ再調整 ／ 50年・税込み・調達コスト込みモンテカルロ（8,000パス）</div>
+  <p class="disc">投資助言ではなく本人の保有データに基づく試算。数値は条件付きの目安（標本・前提で動く）。
+  金額は非表示（相対表記）。中央値＝30年後=65歳時点の<b>実質</b>資産倍率、枯渇＝50年内に資産が尽きたパス割合。</p>
+</header>
+
+<!-- 1. 決定 -->
+<section class="card">
+  <h2><span class="n">1</span>決定した配分（移行対象＝レバナス/ゴールド/無レバ株式）</h2>
+  <div class="hero">
+    <div class="bar">
+      <div class="split">
+        <div class="lev" style="width:15%">15%</div>
+        <div class="gld" style="width:30%">30%</div>
+        <div class="stk" style="width:55%">55%</div>
+      </div>
+      <div class="legend">
+        <span class="l1">レバナス（無ヘッジ）15%</span>
+        <span class="l2">ゴールド 30%</span>
+        <span class="l3">無レバ株式(NASDAQ100+SP500) 55%</span>
+      </div>
+    </div>
+    <div class="why">
+      暫定案 <b>33/34/33</b> からレバナスを大きく削り株を厚くした（15/25/60）。理由は選好ではなく、
+      既存の全シミュレーションに<b>レバナスの調達コスト（先物の金利負担）が未計上</b>という
+      片側の甘さがあり、それを正すとレバ33の成長優位が消えるため（次節）。同日、金の期待リターン
+      信念を「実績とCMAの中間8.5%」（株と同じ信念形成ルール）へ引き上げたことに伴い、
+      金25→30・株60→55へ再調整（レバ15は不変）。
+    </div>
+  </div>
+</section>
+
+<!-- 2. なぜ33→15 -->
+<section class="card">
+  <h2><span class="n">2</span>なぜ 33 → 15 か：調達コストを課すとレバの優位が消える</h2>
+  <p style="font-size:13.5px;color:var(--sub);margin:0 0 12px">
+    実物の2倍レバ投信は先物で+100%分を建て、その<b style="color:var(--ink)">短期金利（現行 年3%超）を恒常的に払う</b>。
+    既存MCはこれを無視し（<code>2q−q²</code>）、レバ側だけ年1.7〜4%甘かった。控除すると膝はレバ10〜15へ動く。
+  </p>
+  <div class="scroll">
+  <table class="fund">
+    <tr><th>65歳中央値（実質倍率）</th><th>調達コスト<br>控除なし（旧）</th><th>年1.7%<br>（実績）</th><th>年3%<br>（現行金利）</th></tr>
+    <tr><td class="lab">33/34/33</td><td>8.4</td><td>7.3</td><td class="drop">6.5 ↓</td></tr>
+    <tr><td class="lab">25/25/50</td><td>8.7</td><td>7.7</td><td>7.1</td></tr>
+    <tr><td class="lab">15/25/60</td><td>7.3</td><td>7.3</td><td>7.0</td></tr>
+  </table>
+  </div>
+  <p class="note">レバが厚い配分ほど調達コストで中央値が削られ、33/34/33 の見かけの優位が消える。
+  レバ15%は調達コスト前提にほぼ非感応。この節は金5%信念時点のレバ判断（33→15）を示す参考値。
+  金25→30・株60→55の再調整は次節（金8.5%信念で全配分を再計算）。</p>
+</section>
+
+<!-- 3. 頑健性 -->
+<section class="card">
+  <h2><span class="n">3</span>頑健性：金8.5%信念のもとでどの前提でも 15/30/55 は崩れない</h2>
+  <p style="font-size:13.5px;color:var(--sub);margin:0 0 10px">
+    セルの<b style="color:var(--ink)">色＝50年枯渇率</b>（緑=安全→赤=危険）、<b style="color:var(--ink)">数字＝65歳中央値</b>（実質倍率）。
+    調達コスト年3%・支出ガードレール（暴落時 月50万→40万）・<b style="color:var(--ink)">金の期待リターン信念8.5%（実績とCMAの中間）</b>込み
+    （「金0%」「複合最悪」列は金の前提そのものが外れた場合の意図的ストレスで、金0%を上書き）。
+  </p>
+  <div class="scroll">
+  <table>
+    <thead><tr>
+      <th class="lab" style="text-align:left">配分（レバ/金/株）</th>
+      <th>中位<br><small style="font-weight:400">主前提</small></th>
+      <th>悲観<br><small style="font-weight:400">2000〜</small></th>
+      <th>円安除去<br><small style="font-weight:400">為替中立</small></th>
+      <th>株CMA<br><small style="font-weight:400">9%</small></th>
+      <th>金0%<br><small style="font-weight:400">プレミア消滅</small></th>
+      <th>複合最悪<br><small style="font-weight:400">全部同時</small></th>
+    </tr></thead>
+    <tbody id="tb"></tbody>
+  </table>
+  </div>
+  <p class="note">金8.5%信念では 15/30/55 が 33/34/33・15/25/60 を中位・悲観・株CMAで上回る
+  （悲観・株CMAでは金30%が枯渇・中央値とも支配）。円安除去では15/25/60がわずかに成長優位、
+  「金0%」「複合最悪（金の前提が全部外れる）」ストレスでは15/25/60が優位＝これが金30%の唯一の弱点。
+  0/30/70（全脱レバ）はさらに安全だが中央値を約6%落とす（＝レバ15は本人の成長選好で残した薄いエンジン）。</p>
+</section>
+
+<!-- 4. 移行プラン -->
+<section class="card">
+  <h2><span class="n">4</span>移行プラン（現状 → 15/30/55）</h2>
+  <ol class="steps">
+    <li><b>売却</b>：為替ヘッジありレバナス全額（auAM＋iFree＝目論見書でフルヘッジ確認）／Zテック20（NISA=無税）／USA360／無ヘッジレバナスを15%まで薄くトリム</li>
+    <li><b>買付</b>：ゴールドを厚めに（低コスト品＝314A 0.22%・SBIゴールドF 0.15〜0.18%）／NASDAQ100無レバも買付（新規はすべてこちら）</li>
+    <li><b>SP500は売らない</b>（含み益が大きい）＝無レバ株式枠に算入し保有継続。FANG+はNISA枠内で数年かけNASDAQ100へ置換（税0）</li>
+    <li><b>個別株・仮想通貨・DCは不可触</b></li>
+  </ol>
+  <p class="note">移行の一回限り税は<b>総資産の約3.8%</b><span class="pill">うち大半はヘッジあり→なし変換</span>。
+  変換分は年約0.9%のキャリー・信託報酬漏れの解消で約5年で回収。リバランスは±10ptの帯＋取り崩しを
+  超過枠から充当（毎年きっちり戻すと50年で税が数億円の空回り）。15/25/60からの追加調整（金5%分の
+  追加買付）自体の税負担はごく小さい。</p>
+</section>
+
+<!-- 5. 反転条件 -->
+<section class="card">
+  <h2><span class="n">5</span>この結論が変わる条件</h2>
+  <ul class="rev">
+    <li>NASDAQ100の期待リターン信念を <b>7%（CMA水準）</b>まで下げる → レバ0（全脱レバ）が最良に</li>
+    <li>逆に <b>14%（実績）</b>を信じる → レバ25〜33が復活</li>
+    <li>金の信念が <b>8%以上（採用済み＝8.5%）</b> → 金30〜34へ<span class="pill">2026-07-09 適用済み</span></li>
+    <li><b>持続的な円高</b>が来ると考える → 為替ヘッジ枠の再検討（今は唯一のヘッジ資産を売り切る計画）</li>
+    <li>暴落時の <b>月40万への減額が現実に不可能</b> → 金を厚め＋支出計画の再設計</li>
+  </ul>
+  <p class="note">為替の追い風を外すと全配分の50年枯渇が10〜12%で並ぶ＝<b>これは配分では下げられない（支出側の領分）</b>。
+  5年ごと・大きな下落の後に再検証する。全記録は <code>docs/配分見直し2026-07-09.md</code>、
+  エンジンは <code>analysis/withdrawal_sim50_2026q3.py</code>。
+  信念ごとにどこへ動くべきかは <a href="viz_belief_matrix_2026q3.html">信念別・配分早見表</a> を参照。</p>
+</section>
+
+<div class="foot">2026-07-09 ／ 本人の保有データに基づく条件付き試算。過去の成績は将来を保証しない。</div>
+</div>
+
+<script>
+// 頑健性テーブル（色=50年枯渇率、数字=65歳中央値）
+const PREM = ["base","pess","fx0","qqq9","gold0","worst"];
+const DATA = {
+ "現状維持":            {star:0, base:[4.9,7.1], pess:[9.9,4.3],  fx0:[13.3,3.3], qqq9:[8.8,3.8], gold0:[8.6,5.9], worst:[33.3,1.1]},
+ "33/34/33（旧）":      {star:0, base:[3.8,8.7], pess:[10.3,6.6], fx0:[10.4,3.9], qqq9:[8.5,4.5], gold0:[8.1,4.4], worst:[41.1,0.7]},
+ "25/34/41":           {star:0, base:[3.1,8.6], pess:[8.8,6.7],  fx0:[9.5,3.8],  qqq9:[7.2,4.6], gold0:[7.2,4.4], worst:[40.0,0.7]},
+ "15/25/60（前回決定）": {star:0, base:[3.1,8.6], pess:[8.9,6.6],  fx0:[9.7,3.8],  qqq9:[7.3,4.6], gold0:[6.2,5.1], worst:[35.4,0.9]},
+ "15/30/55 ★":         {star:1, base:[2.7,8.5], pess:[7.8,6.6],  fx0:[8.9,3.7],  qqq9:[6.7,4.7], gold0:[6.4,4.6], worst:[37.2,0.8]},
+ "0/30/70（全脱レバ）":  {star:0, base:[1.8,8.0], pess:[5.5,6.4],  fx0:[7.6,3.5],  qqq9:[4.7,4.8], gold0:[5.3,4.4], worst:[35.5,0.9]},
+};
+function dclass(d){ return d<5?"d1":d<10?"d2":d<20?"d3":d<30?"d4":"d5"; }
+const tb=document.getElementById("tb");
+for(const [name,row] of Object.entries(DATA)){
+  const tr=document.createElement("tr"); if(row.star) tr.className="star";
+  let html=`<td class="lab">${name}</td>`;
+  for(const p of PREM){ const [dep,med]=row[p];
+    html+=`<td><div class="cell ${dclass(dep)}" title="50年枯渇 ${dep}% / 65歳中央値 ${med}倍">${med}<small>枯${dep}%</small></div></td>`;
+  }
+  tr.innerHTML=html; tb.appendChild(tr);
+}
+</script>
+</body>
+</html>
