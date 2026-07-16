@@ -345,7 +345,7 @@
     点1つ＝1配分（レバナス%・ゴールド%・無レバ株式%）。灰色＝50年枯渇率が5%を超える候補外。
     点線＝候補内でのパレート先頭集団（同じリスクでより高い中央値を出す配分が他に無い点）。
     <b>点をクリックすると番号バッジが付き、同じ配分が④ヒートマップと③比較表にも同じ色・番号でハイライトされる</b>
-    （最大4件・もう一度クリックで解除・★と○現状は常時表示）。</p>
+    （最大6件・もう一度クリックで解除・★と○現状は常時表示）。</p>
   <div class="frontier-toolbar">
     <div class="axis-toggle" id="x-toggle"></div>
     <span class="cmp-note"><span id="pin-hint"></span><button class="clear-pins" id="clear-pins">選択をすべて解除</button></span>
@@ -379,7 +379,7 @@
 <section>
   <h2><span class="idx">3</span>比較テーブル（詳細指標）</h2>
   <p class="h2-note">★・○現状は常時表示。②のフロンティアか④ヒートマップで点・マスをクリックすると、
-    番号付きの列として最大4件まで追加される（各列の番号バッジは②④のマーカーと同じ色・番号）。</p>
+    番号付きの列として最大6件まで追加される（各列の番号バッジは②④のマーカーと同じ色・番号）。</p>
   <div class="cmp-scroll">
     <table class="cmp" id="cmp-table"></table>
   </div>
@@ -510,7 +510,7 @@
       <li>①でまず自分の信念（株・金）と相場（中位/悲観）を選ぶ</li>
       <li>②で灰色（候補外）を除き、パレート先頭集団の中から好みの点を探す</li>
       <li>相場を「悲観」に切り替える、またはゴースト表示で、順位が入れ替わらないか確認する</li>
-      <li>気になる点は②か④で点・マスをクリック。番号バッジが③の比較表・②④の両方に同じ色で付き、複数の配分を横並びで見比べられる（最大4件）</li>
+      <li>気になる点は②か④で点・マスをクリック。番号バッジが③の比較表・②④の両方に同じ色で付き、複数の配分を横並びで見比べられる（最大6件）</li>
     </ol>
   </details>
   <p class="h2-note" style="margin-top:14px">各用語の意味は①〜③のセクション末尾にある「用語解説」ボックスを参照。</p>
@@ -544,8 +544,8 @@ const RB_MIDX = {}; RB.meta.metric_keys.forEach((k,i)=>RB_MIDX[k]=i);
 const CUR_IDX = ALLOCS.length - 1;
 const STAR_IDX = ALLOCS.findIndex(a => a.lev === 15 && a.gold === 30 && !a.special);
 
-// クリックで選んだ配分の識別色（②③④で共通。番号バッジと同じ並び）。両テーマで視認できる中間トーン。
-const PIN_COLORS = ["#8b5cf6", "#3b82f6", "#ec4899", "#06b6d4"];
+// クリックで選んだ配分の識別色（②③④⑤で共通。番号バッジと同じ並び）。両テーマで視認できる6色。
+const PIN_COLORS = ["#8b5cf6", "#3b82f6", "#ec4899", "#06b6d4", "#f59e0b", "#22c55e"];
 const MAX_PINS = PIN_COLORS.length;
 
 const STRESS_KEYS = ["fx_zero","fx_m2","fund_hist","guard_off","corr07","worst"];
