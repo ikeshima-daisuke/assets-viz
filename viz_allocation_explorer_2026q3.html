@@ -114,7 +114,31 @@
   .pt-star{cursor:pointer}
   .ghost-pt{opacity:.5}
   .ghost-link{stroke:var(--sub);stroke-width:.8;stroke-dasharray:2 2;opacity:.5}
-  .pin-ring{fill:none;stroke:var(--ink);stroke-width:2}
+
+  /* ---- クリック連動ハイライト（フロンティア⇄表⇄ヒートマップ共通の番号バッジ）---- */
+  .pin-badge{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;
+    border-radius:50%;color:#fff;font-size:10.5px;font-weight:700;margin-right:6px;flex:none;
+    font-family:ui-monospace,monospace;box-shadow:0 0 0 1.5px var(--card);vertical-align:middle}
+  .pin-swatch{display:inline-flex;align-items:center;gap:6px}
+  .pin-swatch i{width:14px;height:14px;border-radius:50%;color:#fff;font-size:9.5px;font-weight:700;
+    display:inline-flex;align-items:center;justify-content:center;font-family:ui-monospace,monospace}
+  .clear-pins{font-size:11.5px;color:var(--accent);background:none;border:1px solid var(--line);
+    border-radius:8px;padding:4px 10px;cursor:pointer;margin-left:8px}
+  .clear-pins:hover{border-color:var(--accent)}
+  .clear-pins[disabled]{opacity:.4;cursor:default}
+
+  /* ---- 折りたたみ式の説明ブロック（既定は閉じる）---- */
+  details.fold > summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--sub);font-weight:700;
+    -webkit-tap-highlight-color:transparent;user-select:none}
+  details.fold > summary::-webkit-details-marker{display:none}
+  details.fold > summary::before{content:"\25B8";font-size:11px;color:var(--accent);
+    display:inline-block;transition:transform .15s ease;flex:none}
+  details.fold[open] > summary::before{transform:rotate(90deg)}
+  details.fold > summary:hover{color:var(--ink)}
+  details.fold[open] > summary{margin-bottom:11px}
+  details.glossary,details.ref-anchors{display:block}
+
   .tooltip{position:absolute;pointer-events:none;background:var(--ink);color:var(--paper);
     font-size:11.5px;line-height:1.5;border-radius:8px;padding:8px 10px;max-width:220px;
     box-shadow:0 8px 22px rgba(0,0,0,.25);opacity:0;transition:opacity .08s ease;z-index:20}
@@ -251,8 +275,8 @@
       <label for="ghost-toggle" id="ghost-label">同じ株×金信念で「悲観相場」にした場合を薄く重ねて表示する</label>
     </div>
   </div>
-  <div class="ref-anchors">
-    <p class="gt">信念の目安（この数字を選ぶ手がかり）</p>
+  <details class="ref-anchors fold">
+    <summary>信念の目安（この数字を選ぶ手がかり）</summary>
     <p class="rlede">各数字が現実の何に対応するか。<b>控えめ寄り＝将来予測(CMA)・学術／強気寄り＝過去実績</b>。本人信念はその中間。</p>
     <div class="ref-wrap">
       <table class="ref">
@@ -293,9 +317,9 @@
       </dl>
       <p class="ref-cite">出典: Morningstar「Experts Forecast Stock and Bond Returns: 2026 Edition」／Vanguard Capital Markets Model／BlackRock Capital Market Assumptions／J.P. Morgan 2026 Long-Term Capital Market Assumptions／World Gold Council GLTER／Erb &amp; Harvey (2013, "The Golden Dilemma")。</p>
     </div>
-  </div>
-  <div class="glossary">
-    <p class="gt">用語解説</p>
+  </details>
+  <details class="glossary fold">
+    <summary>用語解説</summary>
     <dl>
       <dt>株信念・金信念</dt><dd>NASDAQ100・金それぞれが将来、年平均どれくらい値上がりすると考えるか、という前提の数字。過去の実績をそのまま信じるか、将来予測(CMA=市場の専門家が出す長期期待リターン)を信じるかで数字が変わる。9%・0%＝将来予測寄り(控えめ)、14%・12%＝過去の実績寄り(強気)、本人信念(11%・8.5%)＝その中間。</dd>
       <dt>相場（中位／悲観）</dt><dd>シミュレーションのお手本にする「過去の値動きの期間」。中位＝2004年〜（ドットコム崩壊は除いた現実的なケース）。悲観＝2000年〜（ドットコム崩壊とリーマンショックの2大暴落を含む・長期の判断で主に見るべきケース）。</dd>
@@ -306,7 +330,7 @@
       <dt>金株相関0.7</dt><dd>金と株価が同じ方向に動きやすくなった場合。金は本来「株が下がる時にも強い」という分散効果が期待リターンの一部を支えているため、相関が上がるとこの効果が薄れる。</dd>
       <dt>複合最悪</dt><dd>上の厳しい前提（株信念9%・金信念0%・悲観相場・持続円高・金株相関0.7）を全部同時に組み合わせた、最も厳しいケース。</dd>
     </dl>
-  </div>
+  </details>
 </section>
 
 <section>
@@ -314,10 +338,11 @@
   <p class="h2-note">縦=65歳時点の実質資産中央値（ふやす力）、横=リスク指標（下のトグルで切替）。
     点1つ＝1配分（レバナス%・ゴールド%・無レバ株式%）。灰色＝50年枯渇率が5%を超える候補外。
     点線＝候補内でのパレート先頭集団（同じリスクでより高い中央値を出す配分が他に無い点）。
-    クリックで③の比較表にピン留め（最大3件・★と○現状は常時表示）。</p>
+    <b>点をクリックすると番号バッジが付き、同じ配分が④ヒートマップと③比較表にも同じ色・番号でハイライトされる</b>
+    （最大4件・もう一度クリックで解除・★と○現状は常時表示）。</p>
   <div class="frontier-toolbar">
     <div class="axis-toggle" id="x-toggle"></div>
-    <span class="cmp-note" id="pin-hint"></span>
+    <span class="cmp-note"><span id="pin-hint"></span><button class="clear-pins" id="clear-pins">選択をすべて解除</button></span>
   </div>
   <div class="frontier-wrap">
     <svg class="frontier" id="frontier-svg" viewBox="0 0 920 480"></svg>
@@ -329,9 +354,10 @@
     <span class="sw"><i class="circle" style="background:var(--gray)"></i>候補外(枯渇&gt;5%)</span>
     <span class="sw">★ 15/30/55（確定配分）</span>
     <span class="sw">○ 現状</span>
+    <span class="sw pin-swatch" id="pin-legend"></span>
   </div>
-  <div class="glossary">
-    <p class="gt">用語解説</p>
+  <details class="glossary fold">
+    <summary>用語解説</summary>
     <dl>
       <dt>効率的フロンティア</dt><dd>「同じ安全性でもっと増える配分はないか」「同じ増え方でもっと安全な配分はないか」を突き詰めた配分だけを結んだ線。この線の上にある配分は無駄がない選択（線より内側の配分は、同じリスクでもっと増える配分が他にある＝あえて選ぶ理由が薄い）。</dd>
       <dt>65歳中央値</dt><dd>シミュレーションを何千回も繰り返した時、65歳時点の資産（インフレ調整後の実質倍率）がちょうど真ん中の順位に来る結果。「うまくもなく悪くもなく、普通にいけばこれくらい」という目安。</dd>
@@ -341,19 +367,20 @@
       <dt>パレート先頭集団</dt><dd>グラフ上で「同じリスクでこれより高いリターンの配分が他に無い」点だけを選び出したもの＝効率的フロンティア（点線）を形づくる点の集まり。</dd>
       <dt>総レバ低め／高め</dt><dd>レバナス・ゴールド・株式それぞれの実質的な倍率を足し合わせた「総レバレッジ」の高低。高いほど値動きが大きく、リスクを取っていることを示す（点の色分けに使用）。</dd>
     </dl>
-  </div>
+  </details>
 </section>
 
 <section>
   <h2><span class="idx">3</span>比較テーブル（詳細指標）</h2>
-  <p class="h2-note">★・○現状は常時表示。②のフロンティアで点をクリックすると最大3件まで追加でピン留めできる。</p>
+  <p class="h2-note">★・○現状は常時表示。②のフロンティアか④ヒートマップで点・マスをクリックすると、
+    番号付きの列として最大4件まで追加される（各列の番号バッジは②④のマーカーと同じ色・番号）。</p>
   <div class="cmp-scroll">
     <table class="cmp" id="cmp-table"></table>
   </div>
   <p class="cmp-note">※参考Sharpeは取り崩し（順序リスク）を評価できないためこの問題には本来不適。
     リターン÷枯渇（成長/破綻）の方がこの意思決定には近い指標。<span id="ghost-note-2"></span></p>
-  <div class="glossary">
-    <p class="gt">用語解説（②で出てきた枯渇率・最大DD・標準偏差の解説は②を参照）</p>
+  <details class="glossary fold">
+    <summary>用語解説（②で出てきた枯渇率・最大DD・標準偏差の解説は②を参照）</summary>
     <dl>
       <dt>下位25%／下位5%=floor</dt><dd>シミュレーション結果を悪い方から並べた時、下から25%目・5%目に来る結果。「かなり悪いケースでもこの水準は確保できる」という安全マージンの目安。floor＝床、これ以上は沈みにくいラインという意味。</dd>
       <dt>最大DD悪い方5%</dt><dd>最大下落幅（DD）を悪い方から並べた時の下位5%＝最悪クラスの落ち込み。②の「最大DD(中央値)」が典型的な落ち込みなのに対し、こちらは運が悪かった場合の落ち込み。</dd>
@@ -362,13 +389,14 @@
       <dt>参考Sharpe</dt><dd>リターンをリスク(標準偏差)で割った、投資の世界でよく使われる「効率の良さ」を示す指標。ただし、今回のように取り崩しながら資産を減らしていく場面では、暴落が来るタイミングの悪さ（順序リスク）を評価できないため本来は不向き。あくまで参考として掲載。</dd>
       <dt>リターン÷枯渇(成長/破綻)</dt><dd>「ふやす力」（65歳中央値）を「資産が尽きる確率」（50年枯渇率）で割った指標。数字が大きいほど、少ない破綻リスクで大きく増やせている＝効率が良いということ。取り崩しながら資産を使う今回のような場面では、参考Sharpeより実態に近い「効率」の目安。</dd>
     </dl>
-  </div>
+  </details>
 </section>
 
 <section>
   <h2><span class="idx">4</span>決定空間ヒートマップ</h2>
   <p class="h2-note">横=レバナス%・縦=ゴールド%。色=50年枯渇率（常にこの指標で固定＝候補外の
-    灰マスクと同じ基準）、数字=65歳中央値（実質倍率）。クリックで③にピン留め。</p>
+    灰マスクと同じ基準）、数字=65歳中央値（実質倍率）。<b>マスをクリックすると番号バッジが付き、
+    ②フロンティアと③比較表にも同じ色・番号でハイライトされる</b>（もう一度クリックで解除）。</p>
   <div class="heat-wrap">
     <svg class="heat" id="heat-svg"></svg>
     <div class="tooltip" id="tooltip-heat"></div>
@@ -384,15 +412,15 @@
 
 <section>
   <h2><span class="idx">5</span>読み方</h2>
-  <div class="callout">
-    <b>判断フロー：</b>
+  <details class="callout fold">
+    <summary>判断フロー</summary>
     <ol class="flow">
       <li>①でまず自分の信念（株・金）と相場（中位/悲観）を選ぶ</li>
       <li>②で灰色（候補外）を除き、パレート先頭集団の中から好みの点を探す</li>
       <li>相場を「悲観」に切り替える、またはゴースト表示で、順位が入れ替わらないか確認する</li>
-      <li>気になる点は③の比較表にピン留めして詳細指標を横並びで見る</li>
+      <li>気になる点は②か④で点・マスをクリック。番号バッジが③の比較表・②④の両方に同じ色で付き、複数の配分を横並びで見比べられる（最大4件）</li>
     </ol>
-  </div>
+  </details>
   <p class="h2-note" style="margin-top:14px">各用語の意味は①〜③のセクション末尾にある「用語解説」ボックスを参照。</p>
 </section>
 
@@ -419,6 +447,10 @@ const ALLOCS = D.allocs;
 const CELLS = D.cells;
 const CUR_IDX = ALLOCS.length - 1;
 const STAR_IDX = ALLOCS.findIndex(a => a.lev === 15 && a.gold === 30 && !a.special);
+
+// クリックで選んだ配分の識別色（②③④で共通。番号バッジと同じ並び）。両テーマで視認できる中間トーン。
+const PIN_COLORS = ["#8b5cf6", "#3b82f6", "#ec4899", "#06b6d4"];
+const MAX_PINS = PIN_COLORS.length;
 
 const STRESS_KEYS = ["fx_zero","fx_m2","fund_hist","guard_off","corr07","worst"];
 const STRESS = {}; const CORE = {};
@@ -570,6 +602,19 @@ function el(tag, attrs){
   return e;
 }
 
+// 選択中の配分に付ける番号バッジ（SVG）。②フロンティア・④ヒートマップで共通の見た目にする。
+function pinBadge(cx, cy, pos, r){
+  const g = el("g", {"pointer-events":"none"});
+  g.appendChild(el("circle", {cx, cy, r: r || 7, fill: PIN_COLORS[pos],
+    stroke:"var(--card)", "stroke-width":1.5}));
+  const t = el("text", {x:cx, y:cy + (r || 7)*0.36 + 0.3, "text-anchor":"middle",
+    "font-size": (r || 7)*1.35, fill:"#fff", "font-weight":"700",
+    "font-family":"ui-monospace,monospace"});
+  t.textContent = String(pos + 1);
+  g.appendChild(t);
+  return g;
+}
+
 function xVal(row, key){
   const v = metric(row, key);
   if (v === null) return null;
@@ -672,16 +717,20 @@ function renderFrontier(){
   }
   function hideTip(){ tip.style.opacity = 0; }
 
+  const pinnedBadges = [];
   gridPts.forEach(p=>{
     if (p.x === null || p.y === null) return;
     const g = el("g", {class:"pt"});
-    const pinned = state.pinned.includes(p.i);
-    if (pinned) g.appendChild(el("circle", {class:"pin-ring", cx:px(p.x), cy:py(p.y), r:8}));
+    const pinPos = state.pinned.indexOf(p.i);
+    const pinned = pinPos >= 0;
+    if (pinned) g.appendChild(el("circle", {cx:px(p.x), cy:py(p.y), r:8.5, fill:"none",
+      stroke:PIN_COLORS[pinPos], "stroke-width":2.6}));
     g.appendChild(el("circle", {cx:px(p.x), cy:py(p.y), r: pinned?6:4.3, fill: leverColor(p.a.totlev, p.gray), opacity: p.gray?0.55:0.9}));
     g.addEventListener("mousemove", e=>showTip(e,p));
     g.addEventListener("mouseleave", hideTip);
     g.addEventListener("click", ()=>togglePin(p.i));
     svg.appendChild(g);
+    if (pinned) pinnedBadges.push([px(p.x), py(p.y), pinPos]);
   });
 
   const sx = px(gridPts[STAR_IDX].x), sy = py(gridPts[STAR_IDX].y);
@@ -697,6 +746,12 @@ function renderFrontier(){
   cg.addEventListener("mousemove", e=>showTip(e,curPt));
   cg.addEventListener("mouseleave", hideTip);
   svg.appendChild(cg);
+
+  // 番号バッジは最前面に描く（★・○現状・他の点に隠れないように）。点の色を隠さぬよう右上へ少しずらす
+  pinnedBadges.forEach(([bx, by, pos])=>{
+    const ox = Math.min(bx + 12, W - 8), oy = Math.max(by - 11, MT + 8);
+    svg.appendChild(pinBadge(ox, oy, pos, 7));
+  });
 }
 
 function togglePin(i){
@@ -704,10 +759,31 @@ function togglePin(i){
   const idx = state.pinned.indexOf(i);
   if (idx >= 0){ state.pinned.splice(idx,1); }
   else {
-    if (state.pinned.length >= 3) state.pinned.shift();
+    if (state.pinned.length >= MAX_PINS) state.pinned.shift();
     state.pinned.push(i);
   }
   refresh();
+}
+
+function clearPins(){ if (state.pinned.length){ state.pinned = []; refresh(); } }
+
+// ②の凡例に、選択中の配分を番号バッジ＋簡易ラベルで一覧表示する
+function renderPinLegend(){
+  const box = document.getElementById("pin-legend");
+  box.innerHTML = "";
+  if (!state.pinned.length){ box.style.display = "none"; return; }
+  box.style.display = "inline-flex";
+  const head = document.createElement("span");
+  head.textContent = "選択中:";
+  box.appendChild(head);
+  state.pinned.forEach((ci, pos)=>{
+    const a = ALLOCS[ci];
+    const chip = document.createElement("span");
+    chip.className = "pin-swatch";
+    chip.innerHTML = `<i style="background:${PIN_COLORS[pos]}">${pos+1}</i>` +
+      `<span>レバ${a.lev}/金${a.gold}</span>`;
+    box.appendChild(chip);
+  });
 }
 
 const TABLE_ROWS = [
@@ -726,7 +802,10 @@ function renderTable(){
 
   const cols = [STAR_IDX, CUR_IDX, ...state.pinned];
   document.getElementById("pin-hint").textContent =
-    state.pinned.length ? `ピン留め ${state.pinned.length}/3` : "点をクリックすると比較表に追加されます";
+    state.pinned.length ? `選択中 ${state.pinned.length}/${MAX_PINS}　` : "②か④で点・マスをクリックすると比較列に追加　";
+  const clearBtn = document.getElementById("clear-pins");
+  clearBtn.disabled = state.pinned.length === 0;
+  renderPinLegend();
 
   const table = document.getElementById("cmp-table");
   table.innerHTML = "";
@@ -737,7 +816,10 @@ function renderTable(){
     const th = document.createElement("th");
     const isSpecial = ci === STAR_IDX || ci === CUR_IDX;
     const label = ci === CUR_IDX ? "現状" : (ci === STAR_IDX ? "★ 15/30/55" : `レバ${a.lev}/金${a.gold}/株${a.stock}`);
-    th.innerHTML = `<span class="cmp-head-lbl">${label}</span>` +
+    const pinPos = state.pinned.indexOf(ci);
+    const badge = pinPos >= 0
+      ? `<span class="pin-badge" style="background:${PIN_COLORS[pinPos]}">${pinPos+1}</span>` : "";
+    th.innerHTML = badge + `<span class="cmp-head-lbl">${label}</span>` +
       (isSpecial ? "" : `<span class="unpin" data-i="${ci}">✕外す</span>`);
     thead.appendChild(th);
   });
@@ -832,11 +914,16 @@ function renderHeatmap(){
       const med = metric(row, "med");
       const [bg, fg] = riskBg(dep);
       const isStar = idx === STAR_IDX;
+      const pinPos = state.pinned.indexOf(idx);
       const g2 = el("g", {class:"heat-cell" + (isStar ? " star" : "")});
-      g2.appendChild(el("rect", {x, y, width: cw, height: ch, fill: bg}));
+      const rect = el("rect", {x, y, width: cw, height: ch, fill: bg});
+      // 選択中のマスは識別色で縁取り（インラインstyleでCSSの既定strokeを上書き）
+      if (pinPos >= 0) rect.setAttribute("style", `stroke:${PIN_COLORS[pinPos]};stroke-width:3`);
+      g2.appendChild(rect);
       const txt = el("text", {x: x+cw/2, y: y+ch/2+3, "text-anchor":"middle", fill: fg});
       txt.textContent = med.toFixed(1) + "x";
       g2.appendChild(txt);
+      if (pinPos >= 0) g2.appendChild(pinBadge(x+10, y+9, pinPos, 6.5));
       g2.addEventListener("click", ()=>togglePin(idx));
       const tip = document.getElementById("tooltip-heat");
       g2.addEventListener("mousemove", e=>{
@@ -874,6 +961,7 @@ function refresh(){
 }
 
 document.getElementById("ghost-toggle").addEventListener("change", e=>{ state.ghost = e.target.checked; refresh(); });
+document.getElementById("clear-pins").addEventListener("click", clearPins);
 
 refresh();
 })();
