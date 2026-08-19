@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>信用取引×証券担保ローン — 二層レバレッジの安全域（2026-07-22 試算）</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#ffffff; --ink:#1a1d24; --sub:#5b6472; --line:#e3e7ee;
+    --accent:#0d7d6b; --accent2:#c2410c;
+    /* データ系列（dataviz 検証済みパレット slot1-3） */
+    --s1:#2a78d6; --s2:#008300; --s3:#e87ba4;
+    --good:#0ca30c; --critical:#d03b3b;
+    --hl:#fff8e1; --hlline:#e6c65a;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#12151b; --card:#1b1f27; --ink:#e8ebf0; --sub:#9aa4b2; --line:#2c323d;
+      --accent:#2dd4bf; --accent2:#fb923c;
+      --s1:#3987e5; --s2:#008300; --s3:#d55181;
+      --hl:#2a2410; --hlline:#5c4f1e;}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+    line-height:1.6;-webkit-text-size-adjust:100%}
+  .wrap{max-width:940px;margin:0 auto;padding:20px 16px 60px}
+  header h1{font-size:21px;margin:0 0 4px;letter-spacing:.01em}
+  header .date{color:var(--sub);font-size:13px}
+  .disc{font-size:12px;color:var(--sub);margin:8px 0 0;padding:8px 12px;
+    border-left:3px solid var(--line);background:var(--card);border-radius:0 6px 6px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:18px 18px 20px;margin:18px 0;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  h2{font-size:16px;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+  h2 .n{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--accent);
+    color:#fff;font-size:12px;align-items:center;justify-content:center;flex:0 0 auto}
+  .hero{display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline}
+  .hero .big{font-size:44px;font-weight:800;color:var(--accent);line-height:1.1}
+  .hero .cap{font-size:13.5px;color:var(--sub);flex:1 1 300px}
+  .hero .cap b{color:var(--ink)}
+  /* 仕組みフロー図 */
+  .flow{display:flex;flex-wrap:wrap;gap:6px;align-items:stretch;margin-top:6px}
+  .fbox{flex:1 1 150px;min-width:140px;border:1.5px solid var(--line);border-radius:10px;
+    padding:10px 12px;font-size:12.5px;background:var(--bg)}
+  .fbox b{display:block;font-size:13px;margin-bottom:2px}
+  .fbox .amt{font-weight:700;font-size:15px}
+  .fb1{border-color:var(--s1)} .fb1 .amt{color:var(--s1)}
+  .fb2{border-color:var(--s2)} .fb2 .amt{color:var(--s2)}
+  .fb3{border-color:var(--s3)} .fb3 .amt{color:var(--s3)}
+  .farr{align-self:center;color:var(--sub);font-size:12px;text-align:center;flex:0 0 auto;
+    padding:0 2px;max-width:86px}
+  .fnote{font-size:11.5px;color:var(--sub);margin-top:8px}
+  /* 前提テーブル */
+  table{border-collapse:collapse;width:100%;font-size:13px}
+  th,td{padding:7px 9px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--sub);font-weight:600;font-size:12px;white-space:nowrap}
+  td.num,th.num{text-align:right;white-space:nowrap}
+  td.ctr,th.ctr{text-align:center}
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  tr.star td{background:var(--hl)}
+  tr.star td:first-child{border-left:3px solid var(--hlline)}
+  /* 積み上げバー（フロンティア） */
+  .frow{margin:14px 0 4px}
+  .flab{font-size:12.5px;margin-bottom:3px;display:flex;justify-content:space-between;gap:8px}
+  .flab .tot{font-weight:800}
+  .fbar{display:flex;height:26px;border-radius:5px;overflow:hidden;background:var(--bg);
+    border:1px solid var(--line)}
+  .fbar div{height:100%}
+  .fbar .g{width:2px;background:var(--card);flex:0 0 auto}
+  .seg1{background:var(--s1)} .seg2{background:var(--s2)} .seg3{background:var(--s3)}
+  .legend{display:flex;gap:14px;margin-top:10px;font-size:12px;color:var(--sub);flex-wrap:wrap}
+  .legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;
+    margin-right:5px;vertical-align:middle}
+  .legend .l1::before{background:var(--s1)}
+  .legend .l2::before{background:var(--s2)}
+  .legend .l3::before{background:var(--s3)}
+  /* ストレスタイル */
+  .tiles{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+  .tile{flex:1 1 260px;border-radius:10px;padding:12px 14px;font-size:13px;border:1.5px solid}
+  .tile.ok{border-color:var(--good)}
+  .tile.ng{border-color:var(--critical)}
+  .tile .st{font-weight:800;font-size:14px;display:flex;gap:6px;align-items:center}
+  .tile.ok .st{color:var(--good)} .tile.ng .st{color:var(--critical)}
+  .tile ul{margin:6px 0 0;padding-left:18px}
+  .tile li{margin:2px 0}
+  /* レンジプロット（MC 終端純資産・対数目盛） */
+  .rp{margin-top:8px}
+  .rrow{display:flex;align-items:center;gap:10px;margin:9px 0}
+  .rname{flex:0 0 168px;font-size:12.5px;text-align:right;color:var(--ink)}
+  .rname small{display:block;color:var(--sub);font-size:11px;line-height:1.3}
+  .rtrack{position:relative;flex:1;height:22px}
+  .raxis{position:absolute;left:0;right:0;top:50%;height:1px;background:var(--line)}
+  .rband{position:absolute;top:50%;height:4px;transform:translateY(-50%);
+    background:var(--s1);opacity:.30;border-radius:2px}
+  .rmed{position:absolute;top:50%;width:12px;height:12px;border-radius:50%;
+    background:var(--s1);transform:translate(-50%,-50%);border:2px solid var(--card)}
+  .bench .rband{background:var(--sub)}
+  .bench .rmed{background:var(--sub)}
+  .rstart{position:absolute;top:-4px;bottom:-4px;width:1px;background:var(--line)}
+  .rticks{display:flex;position:relative;height:16px;margin-left:178px;font-size:10.5px;color:var(--sub)}
+  .rticks span{position:absolute;transform:translateX(-50%)}
+  /* 追証率バー */
+  .cb{display:flex;align-items:center;gap:10px;margin:7px 0}
+  .cbname{flex:0 0 168px;font-size:12.5px;text-align:right}
+  .cbtrack{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:4px;height:18px}
+  .cbfill{height:100%;background:var(--s3);border-radius:3px 0 0 3px}
+  .cbval{flex:0 0 90px;font-size:12.5px;font-weight:700}
+  .note{font-size:11.5px;color:var(--sub);margin-top:8px}
+  /* 方式カード・Q&A */
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-top:6px}
+  .mcard{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12.5px;background:var(--bg)}
+  .mcard b{display:block;font-size:13px;margin-bottom:2px}
+  .vrf{margin:12px 0}
+  .vrf .q{font-weight:700;font-size:14px}
+  .vrf .q .tag{display:inline-block;font-size:11px;font-weight:600;padding:1px 8px;border-radius:10px;
+    background:var(--line);color:var(--sub);margin-right:6px;vertical-align:1px}
+  .vrf .a{font-size:13px;color:var(--sub);margin-top:3px}
+  .vrf .a b{color:var(--ink)}
+  code{font-size:11.5px;background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:0 4px}
+  .foot{font-size:11.5px;color:var(--sub);text-align:center;margin-top:24px}
+  a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>信用取引 × 証券担保ローン — 二層レバレッジの安全域</h1>
+  <div class="date">2026-07-22 試算 ／ 日次データ2000–2026・モンテカルロ2,000パス×10年＋歴史リプレイ33窓 ／ <code>analysis/margin_loan_sim.py</code></div>
+  <p class="disc">投資助言ではなく試算。<b>既存資産とは独立のパラメトリックモデル</b>で、金額はすべて「自己資金1,000万円・積立なし」という説明用の丸数字（実際の保有額ではない。比率はそのままスケールする）。制度パラメータは2026-07-22に公式ページで確認した現行値。</p>
+</header>
+
+<!-- 1. 結論 -->
+<section class="card">
+  <h2><span class="n">1</span>結論 — ロスカットされない上限は</h2>
+  <div class="hero">
+    <div class="big">約1.32倍</div>
+    <div class="cap"><b>リーマン級暴落（NASDAQ100 −55%＋円高10%が一夜で来る想定）でも追証・担保処分にかからず、かつ限界を攻めない（余裕込み）</b>条件で組める総レバレッジの上限。内訳は「借入は自己資金の<b>23.1%</b>まで・信用建玉は代用現物の<b>36.2%</b>まで」。担保も投資先も同じ指数に連動するため、暴落時に担保価値と建玉損失が同時に悪化する——これがこの構造の急所で、想像より狭い。</div>
+  </div>
+</section>
+
+<!-- 2. 仕組み -->
+<section class="card">
+  <h2><span class="n">2</span>仕組み — お金の流れ（採用フロンティアの数字入り）</h2>
+  <div class="flow">
+    <div class="fbox fb1"><b>自己資金（野村の現物）</b><span class="amt">1,000万</span>NASDAQ100連動を仮定。野村Webローンの担保に差し入れ→拘束される</div>
+    <div class="farr">担保に差入れ<br>→ 現金を借入</div>
+    <div class="fbox fb2"><b>野村Webローン</b><span class="amt">借入 231万</span>金利 年2.40%。担保充足率70%割れで処分（余裕α=0.8で借入を抑制）</div>
+    <div class="farr">借りた現金で<br>SBIに現物購入</div>
+    <div class="fbox fb2"><b>SBI現物（2840想定）</b><span class="amt">231万</span>これが代用有価証券になる（掛目80%）</div>
+    <div class="farr">代用を保証金に<br>信用買い建て</div>
+    <div class="fbox fb3"><b>SBI一般信用（無期限）</b><span class="amt">建玉 84万</span>金利 年2.80%。維持率20%割れで追証（＋10ptの余裕を確保）</div>
+  </div>
+  <p class="fnote">総露出 1,000＋231＋84 ＝ <b>1,315万（1.32倍）</b>。実務制約：担保に入れた現物は信用の代用有価証券には使えない（代用にできるのは借入で買ったSBI現物のみ）。</p>
+</section>
+
+<!-- 3. 前提 -->
+<section class="card">
+  <h2><span class="n">3</span>前提 — 制度パラメータ（2026-07-22 公式確認）と暴落シナリオ</h2>
+  <div class="scroll"><table>
+    <tr><th style="width:9em">区分</th><th>項目</th><th class="num">値</th><th>備考</th></tr>
+    <tr><td rowspan="4">野村Webローン<br>（野村信託銀行）</td>
+        <td>貸付金利</td><td class="num"><b>年2.40%</b></td><td>2026-07-15適用・変動。あんしんスイープ利用なら1.90%</td></tr>
+    <tr><td>担保掛目</td><td class="num"><b>50%</b></td><td>国内上場株式・ETF（投信は60%）</td></tr>
+    <tr><td>処分ライン</td><td class="num"><b>充足率70%</b></td><td>掛目後評価額÷借入残高が70%割れ→翌営業日10時までに回復なければ処分</td></tr>
+    <tr><td>利息</td><td class="num">日割</td><td>6ヶ月毎に元本組入（モデルは月次元加で近似）</td></tr>
+    <tr><td rowspan="4">SBI証券<br>信用取引</td>
+        <td>一般信用（無期限）買方金利</td><td class="num"><b>年2.80%</b></td><td>2840は制度・一般とも買建可（日々公表銘柄の注意喚起あり）</td></tr>
+    <tr><td>代用有価証券の掛目</td><td class="num"><b>80%</b></td><td>前営業日終値ベース。評価益は保証金に算入しない（モデルも同じ）</td></tr>
+    <tr><td>委託保証金率（新規建て）</td><td class="num">30%</td><td>最低30万円</td></tr>
+    <tr><td>追証ライン</td><td class="num"><b>維持率20%</b></td><td>3営業日以内に解消できなければ強制決済</td></tr>
+    <tr><td rowspan="2">想定暴落<br>（設計条件）</td>
+        <td>リーマン級</td><td class="num"><b>−55%＋円高10%</b></td><td>一夜で来ても耐えることを要求（円建て残存率 f=0.405）</td></tr>
+    <tr><td>余裕（限界を攻めない）</td><td class="num">α=0.8 ／ +10pt</td><td>借入は処分ラインの8割まで・暴落後も維持率30%を確保</td></tr>
+    <tr><td rowspan="2">市場データ</td>
+        <td>指数・為替</td><td class="num">^NDX × USDJPY</td><td>日次 2000–2026（配当抜き＝株式リターンはやや保守的）</td></tr>
+    <tr><td>ベンチのレバナス</td><td class="num">2倍・0.77%</td><td>ヘッジなし想定＋先物調達コスト年4%仮置き（配当利回りと短期金利の差）</td></tr>
+  </table></div>
+</section>
+
+<!-- 4. 安全フロンティア -->
+<section class="card">
+  <h2><span class="n">4</span>安全フロンティア — 耐える暴落の深さで上限がどう変わるか</h2>
+
+  <div class="frow">
+    <div class="flab"><span>★ リーマン級（−55%＋円高10%）・余裕あり<b>【採用】</b></span><span class="tot">1.32倍</span></div>
+    <div class="fbar" title="自己資金1.0＋借入現物0.231＋信用建玉0.084">
+      <div class="seg1" style="width:66.7%"></div><div class="g"></div>
+      <div class="seg2" style="width:15.4%"></div><div class="g"></div>
+      <div class="seg3" style="width:5.6%"></div></div>
+  </div>
+  <div class="frow">
+    <div class="flab"><span>リーマン級・余裕なし（限界いっぱい）</span><span class="tot">1.41倍</span></div>
+    <div class="fbar" title="自己資金1.0＋借入現物0.289＋信用建玉0.118">
+      <div class="seg1" style="width:66.7%"></div><div class="g"></div>
+      <div class="seg2" style="width:19.3%"></div><div class="g"></div>
+      <div class="seg3" style="width:7.9%"></div></div>
+  </div>
+  <div class="frow">
+    <div class="flab"><span>ドットコム級（−83%＋円高10%）・余裕あり</span><span class="tot">1.10倍</span></div>
+    <div class="fbar" title="自己資金1.0＋借入現物0.087＋信用建玉0.009">
+      <div class="seg1" style="width:66.7%"></div><div class="g"></div>
+      <div class="seg2" style="width:5.8%"></div><div class="g"></div>
+      <div class="seg3" style="width:0.7%"></div></div>
+  </div>
+  <div class="frow">
+    <div class="flab"><span>ドットコム級・余裕なし</span><span class="tot">1.12倍</span></div>
+    <div class="fbar" title="自己資金1.0＋借入現物0.109＋信用建玉0.013">
+      <div class="seg1" style="width:66.7%"></div><div class="g"></div>
+      <div class="seg2" style="width:7.3%"></div><div class="g"></div>
+      <div class="seg3" style="width:0.9%"></div></div>
+  </div>
+  <div class="legend"><span class="l1">自己資金（野村担保現物）</span><span class="l2">借入で買った現物（SBI・代用）</span><span class="l3">信用建玉</span></div>
+  <p class="note">横軸は自己資金=1としたときの総露出（右端=1.5倍）。「余裕を攻めても1.41倍・ドットコム級まで耐えるなら1.10倍」——どう置いてもこの構造で取れるレバレッジは薄い。</p>
+</section>
+
+<!-- 5. ストレス -->
+<section class="card">
+  <h2><span class="n">5</span>採用ポジションに暴落を当てると何が起きるか</h2>
+  <div class="tiles">
+    <div class="tile ok">
+      <div class="st">✓ リーマン級（設計どおり）— 無事故</div>
+      <ul>
+        <li>信用の維持率: <b>30.0%</b>（追証ライン20%に対し+10pt残す）</li>
+        <li>ローンの担保充足率: <b>87.5%</b>（処分ライン70%の手前で止まる）</li>
+      </ul>
+    </div>
+    <div class="tile ng">
+      <div class="st">⚠ ドットコム級（−83%）— 両方発動</div>
+      <ul>
+        <li>信用の維持率: <b>−50.9%</b> → 追証・強制決済</li>
+        <li>ローンの担保充足率: <b>33%</b> → 担保処分</li>
+        <li>数ヶ月かけた下落なら途中の追証で早期決済され残債は回避。<b>一夜で来る極端想定では残債（純資産マイナス）</b>になり得る</li>
+      </ul>
+    </div>
+  </div>
+  <p class="note">歴史リプレイ（10年窓×33本）でも、ドットコム崩壊を含む2000年前後開始の2〜3窓で実際に追証・担保不足が発生した（＝リーマン級設計はドットコム級では守れない、が実データでも再現される）。</p>
+</section>
+
+<!-- 6. 投入方式 -->
+<section class="card">
+  <h2><span class="n">6</span>資金投入4方式 — 「一括を避けたい」への答え</h2>
+  <div class="grid2">
+    <div class="mcard"><b>① 一括</b>初月に枠いっぱいまで投入し、以後は追加しない。市場が育つとレバは自然に低下（平均1.21倍）</div>
+    <div class="mcard"><b>② 定額分割（24ヶ月）</b>毎月1/24ずつ枠を埋める。心理負荷は最小だが、金利を払う期間が長い</div>
+    <div class="mcard"><b>③ 押し目加速（36ヶ月）</b>基本ペース＋高値から15%下落で2倍・30%下落で4倍のペースに増速</div>
+    <div class="mcard"><b>④ 維持率ターゲット</b>毎月その時点の枠まで埋め直す。上昇で自動買い増し・下落では停止（売らない）。露出は最大（平均1.36倍）</div>
+  </div>
+
+  <h3 style="font-size:14px;margin:18px 0 4px">10年後の純資産（モンテカルロ2,000パス・自己資金1,000万起点・対数目盛）</h3>
+  <div class="rp">
+    <div class="rrow"><div class="rname">① 一括</div>
+      <div class="rtrack"><div class="raxis"></div><div class="rstart" style="left:34.9%"></div>
+        <div class="rband" style="left:8.1%;width:81.2%" title="下位5% 290万〜上位5% 1.22億"></div>
+        <div class="rmed" style="left:59.2%" title="中央値 3,053万"></div></div></div>
+    <div class="rrow"><div class="rname">② 定額分割24M</div>
+      <div class="rtrack"><div class="raxis"></div><div class="rstart" style="left:34.9%"></div>
+        <div class="rband" style="left:8.7%;width:86.5%" title="下位5% 298万〜上位5% 1.60億"></div>
+        <div class="rmed" style="left:58.7%" title="中央値 2,988万"></div></div></div>
+    <div class="rrow"><div class="rname">③ 押し目加速36M</div>
+      <div class="rtrack"><div class="raxis"></div><div class="rstart" style="left:34.9%"></div>
+        <div class="rband" style="left:7.8%;width:87.1%" title="下位5% 287万〜上位5% 1.58億"></div>
+        <div class="rmed" style="left:58.8%" title="中央値 3,002万"></div></div></div>
+    <div class="rrow"><div class="rname">④ 維持率ターゲット</div>
+      <div class="rtrack"><div class="raxis"></div><div class="rstart" style="left:34.9%"></div>
+        <div class="rband" style="left:6.0%;width:90.1%" title="下位5% 264万〜上位5% 1.67億"></div>
+        <div class="rmed" style="left:59.3%" title="中央値 3,072万"></div></div></div>
+    <div class="rrow bench"><div class="rname">無レバ現物のみ<small>ベンチマーク</small></div>
+      <div class="rtrack"><div class="raxis"></div><div class="rstart" style="left:34.9%"></div>
+        <div class="rband" style="left:24.7%;width:59.4%" title="下位5% 624万〜上位5% 9,623万"></div>
+        <div class="rmed" style="left:56.1%" title="中央値 2,643万"></div></div></div>
+    <div class="rrow bench"><div class="rname">レバナス混合 1.32倍<small>ベンチマーク（追証なし）</small></div>
+      <div class="rtrack"><div class="raxis"></div><div class="rstart" style="left:34.9%"></div>
+        <div class="rband" style="left:18.0%;width:73.0%" title="下位5% 459万〜上位5% 1.32億"></div>
+        <div class="rmed" style="left:53.7%" title="中央値 2,367万"></div></div></div>
+    <div class="rticks">
+      <span style="left:0%">200万</span><span style="left:19.9%">500万</span>
+      <span style="left:35.0%">1000万</span><span style="left:50%">2000万</span>
+      <span style="left:69.9%">5000万</span><span style="left:85.0%">1億</span>
+      <span style="left:100%">2億</span></div>
+  </div>
+  <p class="note">帯＝下位5%〜上位5%、●＝中央値、縦線＝スタートの1,000万。</p>
+
+  <h3 style="font-size:14px;margin:18px 0 4px">追証・担保不足の発生率（10年内に一度でも）</h3>
+  <div class="cb"><div class="cbname">① 一括</div>
+    <div class="cbtrack"><div class="cbfill" style="width:40.5%"></div></div><div class="cbval">8.1%</div></div>
+  <div class="cb"><div class="cbname">② 定額分割24M</div>
+    <div class="cbtrack"><div class="cbfill" style="width:82.5%"></div></div><div class="cbval">16.5%</div></div>
+  <div class="cb"><div class="cbname">③ 押し目加速36M</div>
+    <div class="cbtrack"><div class="cbfill" style="width:78.0%"></div></div><div class="cbval">15.6%</div></div>
+  <div class="cb"><div class="cbname">④ 維持率ターゲット</div>
+    <div class="cbtrack"><div class="cbfill" style="width:93.0%"></div></div><div class="cbval">18.6%</div></div>
+  <div class="cb"><div class="cbname">ベンチマーク2種</div>
+    <div class="cbtrack"></div><div class="cbval" style="font-weight:400;color:var(--sub)">構造上ゼロ</div></div>
+  <p class="note">発生源はブートストラップが「リーマン級超」の系列（ドットコム級の連鎖など）を引いたパス。①が低いのは追加投入しない分レバが年々自然低下するため。②③④は露出を維持する分、後年の暴落にも当たり続ける。</p>
+
+  <div class="scroll" style="margin-top:14px"><table>
+    <tr><th>方式/ベンチ</th><th class="num">追証率</th><th class="num">中央値</th><th class="num">下位5%</th><th class="num">上位5%</th><th class="num">CAGR中央</th><th class="num">金利累計中央</th><th class="num">平均レバ</th></tr>
+    <tr><td>① 一括</td><td class="num">8.1%</td><td class="num">3,053万</td><td class="num">290万</td><td class="num">1.22億</td><td class="num">11.8%</td><td class="num">85万</td><td class="num">1.21</td></tr>
+    <tr><td>② 定額分割24M</td><td class="num">16.5%</td><td class="num">2,988万</td><td class="num">298万</td><td class="num">1.60億</td><td class="num">11.6%</td><td class="num">176万</td><td class="num">1.32</td></tr>
+    <tr><td>③ 押し目加速36M</td><td class="num">15.6%</td><td class="num">3,002万</td><td class="num">287万</td><td class="num">1.58億</td><td class="num">11.6%</td><td class="num">173万</td><td class="num">1.32</td></tr>
+    <tr><td>④ 維持率ターゲット</td><td class="num">18.6%</td><td class="num">3,072万</td><td class="num">264万</td><td class="num">1.67億</td><td class="num">11.9%</td><td class="num">192万</td><td class="num">1.36</td></tr>
+    <tr><td>無レバ現物のみ</td><td class="num">−</td><td class="num">2,643万</td><td class="num">624万</td><td class="num">9,623万</td><td class="num">10.2%</td><td class="num">−</td><td class="num">1.00</td></tr>
+    <tr><td>レバナス混合1.32倍</td><td class="num">−</td><td class="num">2,367万</td><td class="num">459万</td><td class="num">1.32億</td><td class="num">9.0%</td><td class="num">−</td><td class="num">1.32</td></tr>
+  </table></div>
+
+  <h3 style="font-size:14px;margin:18px 0 4px">歴史リプレイ（実系列の10年窓・半年ずらし33本）</h3>
+  <div class="scroll"><table>
+    <tr><th>方式</th><th class="ctr">事故った窓</th><th class="num">最低維持率（全窓の最小）</th><th class="num">終端中央値</th><th>最悪窓</th></tr>
+    <tr><td>① 一括</td><td class="ctr">3/33</td><td class="num">16.2%</td><td class="num">4,171万</td><td>2000-07開始 → 177万</td></tr>
+    <tr><td>② 定額分割24M</td><td class="ctr">2/33</td><td class="num">17.9%</td><td class="num">5,059万</td><td>2000-07開始 → 182万</td></tr>
+    <tr><td>③ 押し目加速36M</td><td class="ctr">2/33</td><td class="num">16.3%</td><td class="num">5,256万</td><td>2000-07開始 → 170万</td></tr>
+    <tr><td>④ 維持率ターゲット</td><td class="ctr">3/33</td><td class="num">9.9%</td><td class="num">4,694万</td><td>2000-07開始 → 153万</td></tr>
+  </table></div>
+</section>
+
+<!-- 7. 結論Q&A -->
+<section class="card">
+  <h2><span class="n">7</span>この試算から言えること</h2>
+
+  <div class="vrf"><div class="q"><span class="tag">上限</span>結局いくらまでやれるのか</div>
+    <div class="a">リーマン級＋余裕込みで<b>総レバ約1.32倍（借入は自己資金の23%）</b>。二層に重ねても取れるレバは薄い——担保・代用・建玉が全部同じ指数に連動し、暴落で三重に効くため。ドットコム級まで守るなら1.10倍でほぼ意味がなくなる。</div></div>
+
+  <div class="vrf"><div class="q"><span class="tag">投入方式</span>一括と積立、どちらがいいか</div>
+    <div class="a">中央値はほぼ差がない（2,988〜3,072万）。違いはリスクの形：<b>①一括は追証率が最も低く（8%）金利も半分以下</b>だが心理負荷が最大。②③④は入り方が緩やかな分、露出を維持し続けるので<b>追証率はむしろ上がる（16〜19%）</b>。「積立なら安全」は、この構造では成り立たない。</div></div>
+
+  <div class="vrf"><div class="q"><span class="tag">対レバナス</span>投信のレバナスと比べてどうか</div>
+    <div class="a">円で借りるDIYレバ（2.4〜2.8%）はレバナスのドル先物調達（4%仮置き＋信託報酬）より安く、<b>中央値ではレバナス混合を上回る</b>（3,053万 vs 2,367万）。ただしレバナスには<b>追証・残債という即死リスクが構造的に存在しない</b>。コストで勝ち、テールリスクで負けるトレードオフ。</div></div>
+
+  <div class="vrf"><div class="q"><span class="tag">下限</span>最悪どうなるか</div>
+    <div class="a">下位5%で264〜298万（自己資金の3割弱）。歴史リプレイの最悪（2000年7月開始）は153〜182万まで沈む。さらに<b>一夜でドットコム級が来る極端想定では残債（借金が残る）</b>もあり得る——無レバ現物なら最悪でも0で止まる点が本質的に違う。</div></div>
+</section>
+
+<p class="foot">再現: <code>venv/bin/python ポートフォリオ移行/analysis/margin_loan_sim.py --offline</code>（前提変更は <code>--crash-d</code> / <code>--iji-buffer</code> / <code>--loan-alpha</code> / <code>--e0</code> 等）<br>
+制度値の出典はモジュール末尾 SOURCES（野村信託銀行 金利一覧・商品概要説明書 2026-06-15版 ／ SBI証券 信用取引各ページ・FAQ）。<br>
+投資助言ではなく試算。市場データは ^NDX（配当抜き）× USDJPY=X 日次、2000-01〜2026-07。</p>
+
+</div>
+</body>
+</html>
