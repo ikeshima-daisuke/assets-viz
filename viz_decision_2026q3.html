@@ -5,40 +5,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>決定の記録（2026-07-09）レバナス15 / ゴールド30 / 無レバ株式55</title>
 <style>
+  /* 入口（index.html）と同じダーク基調。テーマ切替は持たない */
   :root{
-    --bg:#f7f8fa; --card:#ffffff; --ink:#1a1d24; --sub:#5b6472; --line:#e3e7ee;
-    --accent:#0d7d6b; --accent2:#c2410c; --star:#b8860b;
-    --g1:#1a9e6f; --g2:#8bc34a; --g3:#f0ad4e; --g4:#e8743b; --g5:#c0392b;
-    --hl:#fff8e1; --hlline:#e6c65a;
-  }
-  @media (prefers-color-scheme:dark){
-    :root{--bg:#12151b; --card:#1b1f27; --ink:#e8ebf0; --sub:#9aa4b2; --line:#2c323d;
-      --accent:#2dd4bf; --accent2:#fb923c; --star:#e6b84a; --hl:#2a2410; --hlline:#5c4f1e;}
+    --bg:#0B1020; --card:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012));
+    --ink:#E8ECF5; --sub:#94A0B8; --line:rgba(255,255,255,.08);
+    --accent:#22D3AA; --accent2:#FB923C; --star:#E6B84A;
+    --hl:rgba(230,184,74,.10); --hlline:rgba(230,184,74,.55);
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+  body{margin:0;background:radial-gradient(1100px 560px at 12% -12%,rgba(139,125,255,.22),transparent 60%),radial-gradient(900px 480px at 112% 4%,rgba(34,211,170,.16),transparent 55%),#0B1020;min-height:100vh;color:var(--ink);-webkit-font-smoothing:antialiased;
+    font-family:Inter,'IBM Plex Sans JP',system-ui,'Hiragino Kaku Gothic ProN',Meiryo,sans-serif;
     line-height:1.6;-webkit-text-size-adjust:100%}
   .wrap{max-width:940px;margin:0 auto;padding:20px 16px 60px}
   header h1{font-size:22px;margin:0 0 4px;letter-spacing:.01em}
   header .date{color:var(--sub);font-size:13px}
   .disc{font-size:12px;color:var(--sub);margin:8px 0 0;padding:8px 12px;
-    border-left:3px solid var(--line);background:var(--card);border-radius:0 6px 6px 0}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;
-    padding:18px 18px 20px;margin:18px 0;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+    border-left:3px solid var(--accent);background:var(--card);border-radius:0 6px 6px 0}
+  .disc a{color:var(--accent)}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;background:rgba(255,255,255,.06);border-radius:4px;padding:.05rem .3rem}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 18px 20px;margin:18px 0}
   h2{font-size:16px;margin:0 0 12px;display:flex;align-items:center;gap:8px}
   h2 .n{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--accent);
-    color:#fff;font-size:12px;align-items:center;justify-content:center;flex:0 0 auto}
+    color:#0B1020;font-size:12px;align-items:center;justify-content:center;flex:0 0 auto}
   .hero{display:flex;flex-wrap:wrap;gap:20px;align-items:center}
   .hero .bar{flex:1 1 320px;min-width:280px}
   .split{display:flex;height:44px;border-radius:8px;overflow:hidden;font-size:13px;font-weight:600}
   .split div{display:flex;align-items:center;justify-content:center;color:#fff}
-  .lev{background:#c2410c}.gld{background:var(--star)}.stk{background:#0d7d6b}
+  .lev{background:#FB923C;color:#0B1020}.gld{background:var(--star);color:#0B1020}.stk{background:#22D3AA;color:#0B1020}
+  .split div{color:#0B1020}
   .legend{display:flex;gap:16px;margin-top:8px;font-size:12px;color:var(--sub);flex-wrap:wrap}
   .legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;
     margin-right:5px;vertical-align:middle}
-  .legend .l1::before{background:#c2410c}.legend .l2::before{background:var(--star)}
-  .legend .l3::before{background:#0d7d6b}
+  .legend .l1::before{background:#FB923C}.legend .l2::before{background:var(--star)}
+  .legend .l3::before{background:#22D3AA}
   .hero .why{flex:1 1 260px;font-size:13.5px;color:var(--sub)}
   .hero .why b{color:var(--ink)}
   table{border-collapse:collapse;width:100%;font-size:13px}
@@ -59,7 +59,7 @@
   .steps{margin:6px 0 0;padding-left:20px;font-size:13.5px}
   .steps li{margin:3px 0}
   .pill{display:inline-block;font-size:11px;padding:1px 8px;border-radius:10px;
-    background:var(--line);color:var(--sub);margin-left:6px}
+    background:rgba(255,255,255,.08);color:var(--sub);margin-left:6px}
   .rev{font-size:13px;margin:0;padding-left:18px}
   .rev li{margin:4px 0}
   .rev b{color:var(--accent2)}

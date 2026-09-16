@@ -5,50 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>信念別・配分早見表 — レバナス/ゴールド/無レバ株式</title>
 <style>
+  /* 入口（index.html）と同じダーク基調。テーマ切替は持たない */
   :root{
-    --paper:#f6f5f1; --ink:#23282b; --sub:#666f6a; --line:#ddd8ce; --line-strong:#c7c1b3;
-    --card:#ffffff; --accent:#3d5a80; --accent-ink:#ffffff;
-    --lev:#c2410c; --gold:#a9791f; --stk:#0d7d6b;
-    --lev-soft:#f3e2d6; --gold-soft:#f2e9d3; --stk-soft:#dcece7;
-    --risk-safe:#2f7d4f; --risk-ok:#7a9a2e; --risk-warn:#c08a1e; --risk-bad:#c2571f; --risk-severe:#a5333f;
-    --risk-safe-bg:#e4f0e7; --risk-ok-bg:#eef2df; --risk-warn-bg:#f8ecd7; --risk-bad-bg:#f8e2d4; --risk-severe-bg:#f5dde0;
-    --ring:#1c2321;
-  }
-  @media (prefers-color-scheme:dark){
-    :root{
-      --paper:#14171a; --ink:#e7e5df; --sub:#9aa39a; --line:#2c3134; --line-strong:#3c4247;
-      --card:#1b1f22; --accent:#8fb3d9; --accent-ink:#0d1114;
-      --lev:#e2782f; --gold:#d4ac53; --stk:#3fa695;
-      --lev-soft:#3a2818; --gold-soft:#39331c; --stk-soft:#173330;
-      --risk-safe:#5cbb85; --risk-ok:#a6c95a; --risk-warn:#e0b24d; --risk-bad:#e2793f; --risk-severe:#e1616f;
-      --risk-safe-bg:#173225; --risk-ok-bg:#2a3020; --risk-warn-bg:#3a2f18; --risk-bad-bg:#3a2418; --risk-severe-bg:#3a1e22;
-      --ring:#f1efe9;
-    }
-  }
-  :root[data-theme="dark"]{
-    --paper:#14171a; --ink:#e7e5df; --sub:#9aa39a; --line:#2c3134; --line-strong:#3c4247;
-    --card:#1b1f22; --accent:#8fb3d9; --accent-ink:#0d1114;
-    --lev:#e2782f; --gold:#d4ac53; --stk:#3fa695;
-    --lev-soft:#3a2818; --gold-soft:#39331c; --stk-soft:#173330;
-    --risk-safe:#5cbb85; --risk-ok:#a6c95a; --risk-warn:#e0b24d; --risk-bad:#e2793f; --risk-severe:#e1616f;
-    --risk-safe-bg:#173225; --risk-ok-bg:#2a3020; --risk-warn-bg:#3a2f18; --risk-bad-bg:#3a2418; --risk-severe-bg:#3a1e22;
-    --ring:#f1efe9;
-  }
-  :root[data-theme="light"]{
-    --paper:#f6f5f1; --ink:#23282b; --sub:#666f6a; --line:#ddd8ce; --line-strong:#c7c1b3;
-    --card:#ffffff; --accent:#3d5a80; --accent-ink:#ffffff;
-    --lev:#c2410c; --gold:#a9791f; --stk:#0d7d6b;
-    --lev-soft:#f3e2d6; --gold-soft:#f2e9d3; --stk-soft:#dcece7;
-    --risk-safe:#2f7d4f; --risk-ok:#7a9a2e; --risk-warn:#c08a1e; --risk-bad:#c2571f; --risk-severe:#a5333f;
-    --risk-safe-bg:#e4f0e7; --risk-ok-bg:#eef2df; --risk-warn-bg:#f8ecd7; --risk-bad-bg:#f8e2d4; --risk-severe-bg:#f5dde0;
-    --ring:#1c2321;
+    --paper:#0B1020; --ink:#E8ECF5; --sub:#94A0B8; --line:rgba(255,255,255,.08); --line-strong:rgba(255,255,255,.18);
+    --card:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012)); --accent:#22D3AA; --accent-ink:#0B1020;
+    --lev:#FB923C; --gold:#E6B84A; --stk:#22D3AA;
+    --lev-soft:rgba(251,146,60,.14); --gold-soft:rgba(230,184,74,.14); --stk-soft:rgba(34,211,170,.14);
+    --risk-safe:#22D3AA; --risk-ok:#A6C95A; --risk-warn:#E6B84A; --risk-bad:#FB923C; --risk-severe:#F87171;
+    --risk-safe-bg:rgba(34,211,170,.14); --risk-ok-bg:rgba(166,201,90,.14); --risk-warn-bg:rgba(230,184,74,.14); --risk-bad-bg:rgba(251,146,60,.16); --risk-severe-bg:rgba(248,113,113,.16);
+    --ring:#E8ECF5;
   }
 
   *{box-sizing:border-box}
   body{margin:0}
   .page{
-    background:var(--paper); color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+    background:radial-gradient(1100px 560px at 12% -12%,rgba(139,125,255,.22),transparent 60%),radial-gradient(900px 480px at 112% 4%,rgba(34,211,170,.16),transparent 55%),#0B1020; min-height:100vh; color:var(--ink); -webkit-font-smoothing:antialiased;
+    font-family:Inter,'IBM Plex Sans JP',system-ui,'Hiragino Kaku Gothic ProN',Meiryo,sans-serif;
     line-height:1.65; -webkit-text-size-adjust:100%;
   }
   .wrap{max-width:980px;margin:0 auto;padding:20px 18px 70px}
@@ -62,7 +34,6 @@
   .eyebrow{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub);
     font-weight:600;margin:0 0 10px}
   h1{
-    font-family:ui-serif,"Hiragino Mincho ProN","Noto Serif JP",Georgia,serif;
     font-weight:600; font-size:clamp(24px,4vw,32px); margin:0 0 10px; letter-spacing:.005em;
     text-wrap:balance; color:var(--ink);
   }
@@ -73,7 +44,6 @@
 
   section{margin:38px 0}
   h2{
-    font-family:ui-serif,"Hiragino Mincho ProN","Noto Serif JP",Georgia,serif;
     font-size:18px;font-weight:600;margin:0 0 6px;letter-spacing:.005em;text-wrap:balance;
     display:flex;align-items:baseline;gap:9px;
   }
