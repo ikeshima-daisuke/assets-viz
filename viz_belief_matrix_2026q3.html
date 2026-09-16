@@ -187,7 +187,7 @@
     「NASDAQ100は年11%・金は年8.5%（実績とCMAの中間）」という<b>本人の信念</b>を前提にした最適解。
     信念が変われば、最適な比率もこの表のとおり動く。</p>
   <p class="disclaimer">⚠️ 投資助言ではなく本人の保有データに基づく試算。数値は条件付きの目安。
-    各セルは実際に8,000パスのモンテカルロで計算した結果（架空の概算ではない）。</p>
+    各セルは実際に8,000パスのモンテカルロで計算した結果（架空の概算ではない）。数値は 2026-09-16 に現行の取り崩しルールで再計算済み。</p>
 </header>
 
 <section>
@@ -199,13 +199,13 @@
   <div class="axes">
     <div class="axis-card lev-tone">
       <p class="lbl">縦軸：株(NASDAQ100)への信念</p>
-      <p>年7%(悲観CMA)なら<b>レバなし</b>が枯渇・成長とも最良。年14%(実績)を信じるなら<b>レバ30%</b>まで
-        増やす価値がある——中央値が+40%以上伸びる一方、枯渇はわずかしか増えない。</p>
+      <p>年7%(悲観CMA)なら<b>レバなし</b>が下限割れ・成長とも最良。年14%(実績)を信じるなら<b>レバ30%</b>まで
+        増やす価値がある——中央値が大きく伸びる一方（金8.5%で 15.8倍→28.0倍）、下限割れは 0.1pt しか増えない。</p>
     </div>
     <div class="axis-card gold-tone">
       <p class="lbl">横軸：金への信念</p>
       <p>年0%(プレミアム消滅)なら金は<b>最小限</b>でよい。年12%(実績)を信じるなら<b>金34%</b>まで
-        厚くする価値がある——枯渇を下げながら中央値も上がる「フリーランチ」の領域。</p>
+        厚くする価値がある——下限割れを下げながら中央値も上がる「フリーランチ」の領域。</p>
     </div>
   </div>
 </section>
@@ -213,7 +213,7 @@
 <section>
   <h2><span class="idx">2</span>信念 × 信念 → 推奨配分（早見表）</h2>
   <p class="h2-note">各セル＝<span class="fig">レバナス/ゴールド/無レバ株式</span>の比率、
-    その下＝50年枯渇率・65歳時点の実質資産中央値（基準：中位相場・支出ガードレールあり・調達コスト年3%）。
+    その下＝50年下限割れ率（生活費3年分を割る確率）・65歳時点の実質資産中央値（基準：中位相場・現行の取り崩しルール・調達コスト年3%）。
     枠のあるセルが現在の決定。</p>
 
   <div class="toggle-row">
@@ -239,21 +239,28 @@
     <span class="sw"><i style="background:var(--gold)"></i>ゴールド</span>
     <span class="sw"><i style="background:var(--stk)"></i>無レバ株式</span>
     <span class="sw">｜</span>
-    <span class="sw"><i style="background:var(--risk-safe)"></i>枯渇 &lt;2%</span>
-    <span class="sw"><i style="background:var(--risk-ok)"></i>2〜5%</span>
-    <span class="sw"><i style="background:var(--risk-warn)"></i>5〜10%</span>
-    <span class="sw"><i style="background:var(--risk-bad)"></i>10〜20%</span>
-    <span class="sw"><i style="background:var(--risk-severe)"></i>20%〜</span>
+    <span class="sw"><i style="background:var(--risk-safe)"></i>下限割れ &lt;1%</span>
+    <span class="sw"><i style="background:var(--risk-ok)"></i>1〜2%</span>
+    <span class="sw"><i style="background:var(--risk-warn)"></i>2〜5%</span>
+    <span class="sw"><i style="background:var(--risk-bad)"></i>5〜10%</span>
+    <span class="sw"><i style="background:var(--risk-severe)"></i>10%〜</span>
   </div>
 
   <div class="callout">
-    <b>左下（株もCMA以下・金もほぼ消滅）の2マスだけは、配分をどう変えても50年枯渇が10〜22%と高いまま。</b>
+    <b>左上（株7%・金0%）のマスは、レバなしにしても50年下限割れが8%と高いまま。</b>
     これは配分の失敗ではなく、その相場観そのものが厳しいということ——配分では守りきれない領域で、
     ここに現実味を感じるなら、取り崩し額そのものを見直す話になる。
   </div>
+  <div class="callout">
+    <b>各マスの「最も尽きにくい」行は、同じ見立てで 5%刻みの全109配分を回したときに下限割れが最小だった配分（参考）。</b>
+    現行ルールでは収入と年金が生活費の大半を賄う期間があるため、どの配分も下限割れは小さく、その差は 0.1〜0.5pt 程度＝
+    乱数のブレ（±0.4pt）と同じ桁。だから「最も尽きにくい」は金を厚くした配分に寄るが、伸び（中央値）は推奨配分のほうが高いことが多い。
+    推奨配分は「守り」と「伸び」の中間を取る 2026-07-09 の判断規則（株の見立て→レバナス比率、金の見立て→ゴールド比率）のまま据え置いた。
+  </div>
   <p class="h2-note" style="margin-top:10px">
-    ※「現在の決定」セルは確定ドキュメントの数値と完全一致。他のセルはSP500の想定リターンを
-    NASDAQ100の信念に比例させた簡易推定のため、絶対値より<b style="color:var(--ink)">方向・大小関係</b>を見る目安。
+    ※ 数値は 2026-09-16 に現行の取り崩しルール（平常時60万・暴落時35万の段階型ガードレール・公的年金・アプリ収入・下限割れ36ヶ月・
+    リバランス帯10pt・8,000パス）で全マスを同じ方法で再計算した。SP500の想定リターンはNASDAQ100の見立てに合わせて 6/7/8/10% を用いる。
+    決定当時（月50万→40万の崖型・収入なし・残高ゼロで枯渇）の数値は git 履歴にある。
   </p>
 </section>
 
@@ -266,10 +273,10 @@
 
 <section>
   <h2><span class="idx">4</span>支出を柔軟にできるかどうかでも変わる</h2>
-  <p class="h2-note">暴落時に月50万→40万へ減らせるという前提（ガードレール）が、どれだけ枯渇率を下げるか。
-    悪い相場（株9%・金0%・為替中立・金株相関0.7の複合最悪）で比較。</p>
+  <p class="h2-note">暴落時に生活費を平常時60万→中間額→35万へ減らせるという前提（段階型ガードレール）が、どれだけ下限割れ率を下げるか。
+    悪い相場（株9%・金0%・悲観・円高-2%・金株相関0.7の複合最悪）で比較。</p>
   <div class="flexcompare" id="flex-cards"></div>
-  <p class="flex-delta">どちらの配分でも、支出を柔軟にできると50年枯渇が<b>約8pt</b>下がる——
+  <p class="flex-delta">どちらの配分でも、支出を柔軟にできると50年下限割れが<b>約20pt</b>下がる——
     これは配分をどう変えるより効く場合がある。「暴落時に減額できるか」を自分に問う価値がある。</p>
 </section>
 
@@ -293,29 +300,31 @@ const COLS = ["消滅","CMA本人信念","実績/CMA中間","実績"];
 
 // stock_label × gold_label → {lev,gold,stock,dep50,med30,dd,elig}
 const DATA = {
-"悲観CMA|消滅":{lev:0,gold:10,stock:90,dep50:22.44,med30:1.75,dd:-67,elig:64},
-"悲観CMA|CMA本人信念":{lev:0,gold:25,stock:75,dep50:17.27,med30:2.00,dd:-61,elig:69},
-"悲観CMA|実績/CMA中間":{lev:0,gold:30,stock:70,dep50:11.14,med30:2.72,dd:-57,elig:76},
-"悲観CMA|実績":{lev:0,gold:34,stock:66,dep50:5.14,med30:4.12,dd:-52,elig:86},
-"CMA|消滅":{lev:0,gold:10,stock:90,dep50:10.84,med30:3.60,dd:-62,elig:79},
-"CMA|CMA本人信念":{lev:0,gold:25,stock:75,dep50:7.89,med30:3.69,dd:-57,elig:82},
-"CMA|実績/CMA中間":{lev:0,gold:30,stock:70,dep50:4.78,med30:4.74,dd:-53,elig:87},
-"CMA|実績":{lev:0,gold:34,stock:66,dep50:2.23,med30:6.78,dd:-49,elig:93},
-"本人信念|消滅":{lev:15,gold:10,stock:75,dep50:5.67,med30:7.24,dd:-62,elig:88},
-"本人信念|CMA本人信念":{lev:15,gold:25,stock:60,dep50:4.14,med30:6.96,dd:-58,elig:90},
-"本人信念|実績/CMA中間":{lev:15,gold:30,stock:55,dep50:2.70,med30:8.49,dd:-56,elig:93,current:true},
-"本人信念|実績":{lev:15,gold:34,stock:51,dep50:1.34,med30:11.70,dd:-52,elig:96},
-"実績|消滅":{lev:30,gold:10,stock:60,dep50:1.82,med30:23.27,dd:-63,elig:96},
-"実績|CMA本人信念":{lev:30,gold:25,stock:45,dep50:1.39,med30:20.06,dd:-58,elig:97},
-"実績|実績/CMA中間":{lev:30,gold:30,stock:40,dep50:0.95,med30:23.65,dd:-56,elig:98},
-"実績|実績":{lev:30,gold:34,stock:36,dep50:0.54,med30:31.01,dd:-54,elig:99},
+// 2026-09-16 現行ルールで再計算（analysis/belief_matrix_2026q3.py → outputs/belief_matrix.json）。
+// dep50＝50年下限割れ率(%)。best＝同じ見立てで 5%刻みの grid 上「最も尽きにくい配分」（参考。株7%は grid に無い）
+"悲観CMA|消滅":{lev:0,gold:10,stock:90,dep50:8.03,med30:2.57,dd:-64,elig:75},
+"悲観CMA|CMA本人信念":{lev:0,gold:25,stock:75,dep50:4.65,med30:2.80,dd:-57,elig:79},
+"悲観CMA|実績/CMA中間":{lev:0,gold:30,stock:70,dep50:2.17,med30:3.77,dd:-53,elig:87},
+"悲観CMA|実績":{lev:0,gold:34,stock:66,dep50:0.75,med30:5.62,dd:-49,elig:94},
+"CMA|消滅":{lev:0,gold:10,stock:90,dep50:3.05,med30:4.85,dd:-61,elig:87,best:{lev:0,gold:15,stock:85,dep50:2.70,med30:4.27}},
+"CMA|CMA本人信念":{lev:0,gold:25,stock:75,dep50:1.85,med30:4.71,dd:-55,elig:89,best:{lev:0,gold:55,stock:45,dep50:1.23,med30:3.65}},
+"CMA|実績/CMA中間":{lev:0,gold:30,stock:70,dep50:0.80,med30:6.03,dd:-51,elig:94,best:{lev:0,gold:55,stock:45,dep50:0.15,med30:6.14}},
+"CMA|実績":{lev:0,gold:34,stock:66,dep50:0.21,med30:8.59,dd:-47,elig:97,best:{lev:5,gold:55,stock:40,dep50:0.05,med30:10.84}},
+"本人信念|消滅":{lev:15,gold:10,stock:75,dep50:1.54,med30:8.92,dd:-62,elig:93,best:{lev:0,gold:0,stock:100,dep50:1.05,med30:10.23}},
+"本人信念|CMA本人信念":{lev:15,gold:25,stock:60,dep50:0.95,med30:8.35,dd:-57,elig:94,best:{lev:0,gold:50,stock:50,dep50:0.40,med30:5.75}},
+"本人信念|実績/CMA中間":{lev:15,gold:30,stock:55,dep50:0.50,med30:10.46,dd:-54,elig:96,current:true,best:{lev:10,gold:55,stock:35,dep50:0.05,med30:9.14}},
+"本人信念|実績":{lev:15,gold:34,stock:51,dep50:0.14,med30:14.30,dd:-51,elig:98,best:{lev:0,gold:55,stock:45,dep50:0.03,med30:14.65}},
+"実績|消滅":{lev:30,gold:10,stock:60,dep50:0.39,med30:28.19,dd:-64,elig:98,best:{lev:0,gold:15,stock:85,dep50:0.12,med30:18.57}},
+"実績|CMA本人信念":{lev:30,gold:25,stock:45,dep50:0.27,med30:24.00,dd:-59,elig:98,best:{lev:0,gold:30,stock:70,dep50:0.05,med30:15.77}},
+"実績|実績/CMA中間":{lev:30,gold:30,stock:40,dep50:0.14,med30:28.02,dd:-56,elig:99,best:{lev:35,gold:45,stock:20,dep50:0.05,med30:25.93}},
+"実績|実績":{lev:30,gold:34,stock:36,dep50:0.05,med30:37.03,dd:-54,elig:100,best:{lev:10,gold:55,stock:35,dep50:0.00,med30:27.47}},
 };
 
 function riskClass(dep){
-  if(dep<2) return "risk-safe";
-  if(dep<5) return "risk-ok";
-  if(dep<10) return "risk-warn";
-  if(dep<20) return "risk-bad";
+  if(dep<1) return "risk-safe";
+  if(dep<2) return "risk-ok";
+  if(dep<5) return "risk-warn";
+  if(dep<10) return "risk-bad";
   return "risk-severe";
 }
 
@@ -339,8 +348,8 @@ ROWS.forEach(row=>{
         <span style="width:${d.stock}%;background:var(--stk)"></span>
       </div>
       <div class="ratio-label">${d.lev}/${d.gold}/${d.stock}</div>
-      <div class="stat-chip ${rc}">枯渇${d.dep50.toFixed(1)}%<span class="sep">・</span>中央値${d.med30.toFixed(1)}倍</div>
-      <div class="extra-stats">DD${d.dd}%・元本維持${d.elig}%</div>
+      <div class="stat-chip ${rc}">割れ${d.dep50.toFixed(1)}%<span class="sep">・</span>中央値${d.med30.toFixed(1)}倍</div>
+      <div class="extra-stats">DD${d.dd}%・元本維持${d.elig}%${d.best?`<br>最も尽きにくい: ${d.best.lev}/${d.best.gold}/${d.best.stock}（割れ${d.best.dep50.toFixed(1)}%・${d.best.med30.toFixed(1)}倍）`:''}</div>
     `;
     body.appendChild(cell);
   });
@@ -348,9 +357,9 @@ ROWS.forEach(row=>{
 
 // FX cards
 const FX = [
-  {label:"円安継続（実績）", dot:"var(--risk-safe)", dep50:2.70, med30:8.49, elig:93},
-  {label:"為替中立", dot:"var(--risk-warn)", dep50:8.94, med30:3.72, elig:81},
-  {label:"持続円高（年-2%）", dot:"var(--risk-severe)", dep50:22.19, med30:1.66, elig:63},
+  {label:"円安継続（実績）", dot:"var(--risk-safe)", dep50:0.50, med30:10.46, elig:96},
+  {label:"為替中立", dot:"var(--risk-warn)", dep50:2.29, med30:4.82, elig:88},
+  {label:"持続円高（年-2%）", dot:"var(--risk-severe)", dep50:7.51, med30:2.34, elig:74},
 ];
 const fxWrap = document.getElementById("fx-cards");
 FX.forEach(f=>{
@@ -358,7 +367,7 @@ FX.forEach(f=>{
   c.className = "fxcard";
   c.innerHTML = `
     <p class="fxlbl"><span class="dot" style="background:${f.dot}"></span>${f.label}</p>
-    <div class="fxstat"><span>50年枯渇</span><span class="v">${f.dep50.toFixed(1)}%</span></div>
+    <div class="fxstat"><span>50年下限割れ</span><span class="v">${f.dep50.toFixed(1)}%</span></div>
     <div class="fxstat"><span>65歳中央値</span><span class="v">${f.med30.toFixed(1)}倍</span></div>
     <div class="fxstat"><span>元本維持</span><span class="v">${f.elig}%</span></div>
   `;
@@ -367,16 +376,16 @@ FX.forEach(f=>{
 
 // spending flexibility cards
 const FLEX = [
-  {title:"15/30/55（決定配分）", on:37.45, off:45.56},
-  {title:"0/30/70（全脱レバ）", on:35.76, off:43.95},
+  {title:"15/30/55（決定配分）", on:45.91, off:65.18},
+  {title:"0/30/70（全脱レバ）", on:43.15, off:63.79},
 ];
 const flexWrap = document.getElementById("flex-cards");
-const FLEX_MAX = 48;
+const FLEX_MAX = 70;
 FLEX.forEach(f=>{
   const c = document.createElement("div");
   c.className = "flexcard";
   c.innerHTML = `
-    <h3>${f.title}（複合最悪相場・50年枯渇）</h3>
+    <h3>${f.title}（複合最悪相場・50年下限割れ）</h3>
     <div class="flexbar-row"><span class="tag">柔軟あり</span>
       <div class="flexbar"><span style="width:${f.on/FLEX_MAX*100}%;background:var(--risk-safe)"></span></div>
       <span class="num">${f.on.toFixed(1)}%</span></div>
