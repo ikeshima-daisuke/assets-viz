@@ -241,7 +241,7 @@
 <div class="wrap">
 
 <p class="breadcrumb"><a href="index.html">← ポートフォリオ移行 一覧</a> ／
-  <a href="viz_decision_2026q3.html">配分の確定（15/30/55）</a> ／
+  <a href="viz_decision_2026q3.html">決定の記録（いま 20/25/55・収入連動）</a> ／
   <a href="viz_belief_matrix_2026q3.html">信念別・配分早見表</a></p>
 
 <header>
@@ -249,7 +249,7 @@
   <h1>前提を動かして、自分で配分を確かめる</h1>
   <p class="lede">株・金の期待リターン信念や相場前提を切り替えながら、<b>全109配分（レバナス0〜40%
     ×ゴールド0〜55%）</b>の効率的フロンティア・標準偏差・最大下落・枯渇率を横並びで比較できる。
-    ★15/30/55（現行の確定配分）と○現状を常時マーカー表示。</p>
+    ★20/25/55（現行＝収入連動ルールの収入50万の段。2026-09-16）と○現状を常時マーカー表示。</p>
   <p class="disclaimer">⚠️ 投資助言ではなく本人の保有データに基づく試算。数値は条件付きの目安（標本・前提で動く）。
     全セル、現行の恒久エンジン（50年・税込み・レバ調達コスト込み・支出ガードレール）で実際にモンテカルロ
     計算した結果（架空の概算ではない）。金額は非表示。</p>
@@ -363,7 +363,7 @@
     <span class="sw"><i class="circle" style="background:var(--stk)"></i>総レバ低め</span>
     <span class="sw"><i class="circle" style="background:var(--lev)"></i>総レバ高め</span>
     <span class="sw"><i class="circle" style="background:var(--gray)"></i>候補外(枯渇&gt;5%)</span>
-    <span class="sw">★ 15/30/55（確定配分）</span>
+    <span class="sw">★ 20/25/55（現行）</span>
     <span class="sw">○ 現状</span>
     <span class="sw pin-swatch" id="pin-legend"></span>
   </div>
@@ -481,7 +481,7 @@
       <li><b>最大後悔</b>（Savage）→ レバ30〜40%の攻め。上振れを捨てない代償に生存率が落ちる</li>
       <li><b>前提勝率</b>→ 生存かつ各前提で中央値上位に入る配分＝生存と成長の両立度</li>
     </ul>
-    <p style="margin:8px 0 0"><b>★15/30/55 はどの基準でも中位</b>＝1位ではないが最下位にもならない
+    <p style="margin:8px 0 0"><b>15/30/55（2026-07-09 決定・いまは収入半減の段）はどの基準でも中位</b>＝1位ではないが最下位にもならない
       「基準を変えても大崩れしない妥協点」。これが確定配分が頑健である統計的な理由。
       なお悲観集合では<b>一部前提（株9〜11%＋金0〜5%＋悲観）は全配分が枯渇</b>し、配分だけでは救えない
       （取り崩し調整が要る）＝生存率が1.0に届かない領域がある。</p>
@@ -495,11 +495,11 @@
       <li><b>基準を巡回する</b>——「最悪中央値」「最大後悔」「前提勝率」へ順に切り替え、同じマスが基準ごとに
         どう色を変えるかを見る。<b>1つの基準の1位は狙わない</b>（1位＝他基準では極端になりがち）。</li>
       <li><b>探すのは「どの基準に切り替えても赤にならない（緑〜中間に留まる）配分」</b>＝基準を変えても大崩れしない点。
-        ★15/30/55がその代表（各基準で中位）。</li>
+        15/30/55 がその代表（各基準で中位）。</li>
       <li><b>候補をクリックしてピン留め</b>し、前提集合を「信念」「全部」に変えても順位が崩れないか
         （＝特定前提頼みでないか）を確認する。崩れる配分は前提を1つ外すと評価が反転する。</li>
       <li><b>最後に自分のスタンスで重心を決める</b>——破綻回避を最優先なら生存率寄り（金厚・低レバ）、
-        成長の取り逃しが最も嫌なら最大後悔寄り（レバ高め）、その中庸が★15/30/55。どこに寄せるかは
+        成長の取り逃しが最も嫌なら最大後悔寄り（レバ高め）、その中庸が 15/30/55。2026-09-16 からは収入の段でレバ量を動かす（現行★20/25/55）。どこに寄せるかは
         「暴落をどこまで許容するか」という<b>値判断</b>で、数式では決まらない。</li>
       <li><b>配分だけで破綻はゼロにできない</b>——生存率が低く止まる領域（株9〜11%＋金0〜5%＋悲観）は
         どの配分でも枯渇する。暴落時の取り崩し調整（平常時60万→暴落時35万のガードレール）まで含めて判断する。</li>
@@ -547,7 +547,7 @@ const CELLS = D.cells;
 const RB = JSON.parse(document.getElementById("robust-data").textContent);
 const RB_MIDX = {}; RB.meta.metric_keys.forEach((k,i)=>RB_MIDX[k]=i);
 const CUR_IDX = ALLOCS.length - 1;
-const STAR_IDX = ALLOCS.findIndex(a => a.lev === 15 && a.gold === 30 && !a.special);
+const STAR_IDX = ALLOCS.findIndex(a => a.lev === 20 && a.gold === 25 && !a.special);  // 2026-09-16 収入連動ルール・収入50万の段
 
 // クリックで選んだ配分の識別色（②③④⑤で共通。番号バッジと同じ並び）。両テーマで視認できる6色。
 const PIN_COLORS = ["#8b5cf6", "#3b82f6", "#ec4899", "#06b6d4", "#f59e0b", "#22c55e"];
@@ -575,7 +575,7 @@ const XTOGGLES = [
   {key:"sd", label:"年率標準偏差", neg:false},
 ];
 
-const state = { mode:"core", eq:11, gold:8.5, regime:"mid", stressKey:null, xMetric:"dep50",
+const state = { mode:"core", eq:14, gold:8.5, regime:"mid", stressKey:null, xMetric:"dep50",
   ghost:false, pinned:[], robSet:"pess", robMetric:"feas" };
 
 function currentPremise(){
@@ -919,7 +919,7 @@ function renderTable(){
     const a = ALLOCS[ci];
     const th = document.createElement("th");
     const isSpecial = ci === STAR_IDX || ci === CUR_IDX;
-    const label = ci === CUR_IDX ? "現状" : (ci === STAR_IDX ? "★ 15/30/55" : `レバ${a.lev}/金${a.gold}/株${a.stock}`);
+    const label = ci === CUR_IDX ? "現状" : (ci === STAR_IDX ? "★ 20/25/55" : `レバ${a.lev}/金${a.gold}/株${a.stock}`);
     const pinPos = state.pinned.indexOf(ci);
     const badge = pinPos >= 0
       ? `<span class="pin-badge" style="background:${PIN_COLORS[pinPos]}">${pinPos+1}</span>` : "";
@@ -1203,7 +1203,7 @@ function renderRobustMap(){
     + [0,0.25,0.5,0.75,1].map(t=>`<span style="background:${robColor(t)}"></span>`).join("")
     + `</span>&nbsp;悪い→良い</span>`
     + `<span class="sw">値の範囲: ${dirLbl}</span>`
-    + `<span class="sw">★ 15/30/55</span>`;
+    + `<span class="sw">★ 20/25/55</span>`;
 }
 
 function refresh(){

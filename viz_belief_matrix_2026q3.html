@@ -137,8 +137,9 @@
 <header>
   <p class="eyebrow">Portfolio Migration · 感度分析</p>
   <h1>結局、配分は「何を信じるか」で変わる</h1>
-  <p class="lede">2026-07-09 に確定した <b>レバナス15% / ゴールド30% / 無レバ株式55%</b> は、
-    「NASDAQ100は年11%・金は年8.5%（実績とCMAの中間）」という<b>本人の信念</b>を前提に、本人が採用した判断規則（株の見立て→レバナス比率、金の見立て→ゴールド比率）で選んだ配分。
+  <p class="lede"><b>2026-09-16：本人の見立ては株14%（実績どおり）に変わり、採用配分は収入連動（いま 20/25/55）になった。</b>この表の「実績」行の 30/34/36 は3枠だけで組む場合の規則の値で、採用配分はそれとは別に「収入が止まったときの保険」を優先して決めている（<a href="viz_decision_2026q3.html">決定の記録</a> §0）。<br>
+    2026-07-09 に確定した レバナス15% / ゴールド30% / 無レバ株式55% は、
+    「NASDAQ100は年11%・金は年8.5%（実績とCMAの中間）」という当時の<b>本人の信念</b>を前提に、本人が採用した判断規則（株の見立て→レバナス比率、金の見立て→ゴールド比率）で選んだ配分。
     見立てが変われば、同じ規則で選ぶ配分もこの表のとおり動く。「数値上の最良」ではなく、守りと伸びの中間を取る規則に沿った配分例で、マスによっては参考の「最も尽きにくい」配分のほうが数値は良い。</p>
   <p class="disclaimer">⚠️ 投資助言ではなく本人の保有データに基づく試算。数値は条件付きの目安。
     各セルは実際に8,000パスのモンテカルロで計算した結果（架空の概算ではない）。数値は 2026-09-16 に現行の取り崩しルールで再計算済み。</p>
@@ -168,7 +169,7 @@
   <h2><span class="idx">2</span>信念 × 信念 → 推奨配分（早見表）</h2>
   <p class="h2-note">各セル＝<span class="fig">レバナス/ゴールド/無レバ株式</span>の比率、
     その下＝50年下限割れ率（生活費3年分を割る確率）・65歳時点の実質資産中央値（基準：中位相場・現行の取り崩しルール・調達コスト年3%）。
-    枠のあるセルが現在の決定。<b>この表はレバナス・ゴールド・無レバ株式の3枠だけで組む場合。</b>金の見立てが 7% 以下になったときは、株から5%を米国長期債へ回す案も別にある（<a href="index.html#reverse">入口ページ「この結論が変わるとき」</a>）。先に見立てを決め、次にこの表で3枠の比率を引き、最後に債券の要否を判断する順。</p>
+    枠のあるセルが現在の見立て（株14%・金8.5%）。<b>この表はレバナス・ゴールド・無レバ株式の3枠だけで組む場合。</b>金の見立てが 7% 以下になったときは、株から5%を米国長期債へ回す案も別にある（<a href="index.html#reverse">入口ページ「この結論が変わるとき」</a>）。先に見立てを決め、次にこの表で3枠の比率を引き、最後に債券の要否を判断する順。</p>
 
   <div class="toggle-row">
     <input type="checkbox" id="detail">
@@ -240,8 +241,8 @@ document.getElementById("detail").addEventListener("change", e=> document.queryS
 const ROWS = [
   {label:"悲観CMA", pct:"年7%"},
   {label:"CMA",     pct:"年9%"},
-  {label:"本人信念", pct:"年11%", current:true},
-  {label:"実績",     pct:"年14%"},
+  {label:"本人信念", show:"中間",     pct:"年11%"},
+  {label:"実績",     show:"実績・本人の見立て", pct:"年14%", current:true},
 ];
 const COLS = ["消滅","CMA本人信念","実績/CMA中間","実績"];
 
@@ -259,11 +260,11 @@ const DATA = {
 "CMA|実績":{lev:0,gold:34,stock:66,dep50:0.21,med30:8.59,dd:-47,elig:97,best:{lev:5,gold:55,stock:40,dep50:0.05,med30:10.84}},
 "本人信念|消滅":{lev:15,gold:10,stock:75,dep50:1.54,med30:8.92,dd:-62,elig:93,best:{lev:0,gold:0,stock:100,dep50:1.05,med30:10.23}},
 "本人信念|CMA本人信念":{lev:15,gold:25,stock:60,dep50:0.95,med30:8.35,dd:-57,elig:94,best:{lev:0,gold:50,stock:50,dep50:0.40,med30:5.75}},
-"本人信念|実績/CMA中間":{lev:15,gold:30,stock:55,dep50:0.50,med30:10.46,dd:-54,elig:96,current:true,best:{lev:10,gold:55,stock:35,dep50:0.05,med30:9.14}},
+"本人信念|実績/CMA中間":{lev:15,gold:30,stock:55,dep50:0.50,med30:10.46,dd:-54,elig:96,best:{lev:10,gold:55,stock:35,dep50:0.05,med30:9.14}},
 "本人信念|実績":{lev:15,gold:34,stock:51,dep50:0.14,med30:14.30,dd:-51,elig:98,best:{lev:0,gold:55,stock:45,dep50:0.03,med30:14.65}},
 "実績|消滅":{lev:30,gold:10,stock:60,dep50:0.39,med30:28.19,dd:-64,elig:98,best:{lev:0,gold:15,stock:85,dep50:0.12,med30:18.57}},
 "実績|CMA本人信念":{lev:30,gold:25,stock:45,dep50:0.27,med30:24.00,dd:-59,elig:98,best:{lev:0,gold:30,stock:70,dep50:0.05,med30:15.77}},
-"実績|実績/CMA中間":{lev:30,gold:30,stock:40,dep50:0.14,med30:28.02,dd:-56,elig:99,best:{lev:35,gold:45,stock:20,dep50:0.05,med30:25.93}},
+"実績|実績/CMA中間":{lev:30,gold:30,stock:40,dep50:0.14,med30:28.02,dd:-56,elig:99,best:{lev:35,gold:45,stock:20,dep50:0.05,med30:25.93,current:true}},
 "実績|実績":{lev:30,gold:34,stock:36,dep50:0.05,med30:37.03,dd:-54,elig:100,best:{lev:10,gold:55,stock:35,dep50:0.00,med30:27.47}},
 };
 
@@ -279,7 +280,7 @@ const body = document.getElementById("grid-body");
 ROWS.forEach(row=>{
   const rh = document.createElement("div");
   rh.className = "rowhead" + (row.current?" current":"");
-  rh.innerHTML = `${row.label}<span class="pct">株 ${row.pct}</span>`;
+  rh.innerHTML = `${row.show||row.label}<span class="pct">株 ${row.pct}</span>`;
   body.appendChild(rh);
 
   COLS.forEach(col=>{
