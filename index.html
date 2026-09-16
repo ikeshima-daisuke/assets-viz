@@ -96,6 +96,9 @@
  .arow .num{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;line-height:1.35}
  .arow .num b{color:var(--ink)}
  .rank{font-size:12.5px;color:var(--muted);margin:.5rem 0 0}
+ .fwrap{margin:.4rem 0 0} .fwrap svg{width:100%;height:auto;display:block}
+ .fnote{font-size:12.5px;color:var(--ink);min-height:1.4em;margin-top:.3rem}
+ .fnote b{color:var(--teal)}
  .rank b{color:var(--ink)}
  .vcard{display:flex;align-items:center;gap:1rem;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem;margin:.7rem 0;transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease}
  .vcard:hover{transform:translateY(-2px);border-color:rgba(139,125,255,.55);box-shadow:0 18px 50px -24px rgba(0,0,0,.85),0 0 0 1px rgba(139,125,255,.25)}
@@ -263,6 +266,14 @@
     <div id="pv-best"></div>
     <p class="fn" style="margin:.6rem 0 0">「尽きる」＝生活費3年分（36か月）を割った時点。「ふつうの結果」＝65歳（30年後）時点の実質倍率の真ん中。計算済み 4,000通り／前提。乱数のブレは ±0.4pt ほどあるので、0.5pt 未満の差は「同じ」と読んでください。109通りすべてを見比べたい人は <a href="viz_allocation_explorer_2026q3.html">配分エクスプローラ</a> へ。</p>
   </div>
+</div>
+
+<div class="sechead">伸びと守りの地図 <span class="hint">全109配分を1枚に。上ほど増え、左ほど尽きにくい。引き出し額はパネルに連動</span></div>
+<div class="panel" id="fpanel">
+  <div class="ctl" id="c-fx"><span class="lab">横軸（守り）</span></div>
+  <div class="fwrap"><svg id="frontier" viewBox="0 0 760 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="全109配分の伸びと守りの散布図"></svg></div>
+  <div class="fnote" id="fnote"></div>
+  <p class="fn" style="margin:.6rem 0 0">緑の階段線＝<b>同じ守りの範囲で最も伸びる配分</b>（フロンティア）。線より右下の点は「同じ守りでもっと伸びる配分がある」＝選ぶ理由がない。<b>線が右へ行っても上がらなくなる場所</b>が、配分で伸びを取る限界。点の色はレバナス比率（濃いほど高い）。点をタップすると配分と数字が出る。</p>
 </div>
 
 <div class="sechead">よくある疑問 <span class="hint">タップで開く。まず1行の答え、その下に理由</span></div>
@@ -561,6 +572,57 @@
     if(iCur>=0 && state.w===W_MAIN) html += row(allocs[iCur], rows[iCur], '');
     $('pv-best').innerHTML = html;
   }
+  // ── 伸びと守りの地図（散布図＋フロンティア） ──
+  const FX_AXES = [
+    ['start2000','2000年型（始めた直後に大暴落）'], ['eq11_au8.5_pess','悪い相場'], ['eq9_au5_pess','株も金もCMA・悪い相場'], ['fx_m2','円高 −2%/年']
+  ].filter(([k]) => G.premises.some(p=>p.key===k));
+  const fstate = { axis: FX_AXES[0] ? FX_AXES[0][0] : null, pick: null };
+  buildCtl('c-fx','axis',FX_AXES);
+  $('c-fx').querySelectorAll('button').forEach(b => { b.onclick = null; b.addEventListener('click', ()=>{ fstate.axis = b.dataset.v; renderFrontier(); }, {capture:true}); });
+  const NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs, text){ const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text!=null) e.textContent = text; return e; }
+  function levColor(l){ const t = l/40; const r = Math.round(255), g = Math.round(240 - 160*t), b = Math.round(150 - 130*t); return `rgb(${r},${g},${b})`; }
+  function renderFrontier(){
+    const svg = $('frontier'); if (!svg || !fstate.axis) return;
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    $('c-fx').querySelectorAll('button').forEach(b=> b.classList.toggle('on', b.dataset.v===fstate.axis));
+    const cells = (G.cells_w && G.cells_w[state.w]) || G.cells;
+    const rowsX = cells[fstate.axis], rowsY = cells['eq11_au8.5_mid'];
+    if (!rowsX || !rowsY) return;
+    const pts = allocs.map((a,i)=>({a, i, x: rowsX[i][ix(RUIN)], y: rowsY[i][ix('med')]})).filter(p=>p.a.special!=='current' && p.x!=null && p.y!=null);
+    const W=760, H=440, L=52, R=16, T=18, B=46;
+    const xmax = Math.max(5, Math.ceil(Math.max(...pts.map(p=>p.x))/5)*5);
+    const ymin = Math.floor(Math.min(...pts.map(p=>p.y))*2)/2 - 0.25, ymax = Math.ceil(Math.max(...pts.map(p=>p.y))*2)/2 + 0.25;
+    const sx = x => L + (x/xmax)*(W-L-R), sy = y => T + (1-(y-ymin)/(ymax-ymin))*(H-T-B);
+    // grid & axes
+    for (let x=0; x<=xmax; x+= xmax>30?10:5){ svg.appendChild(el('line',{x1:sx(x),y1:T,x2:sx(x),y2:H-B,stroke:'rgba(255,255,255,.07)'})); svg.appendChild(el('text',{x:sx(x),y:H-B+16,fill:'#94A0B8','font-size':'11','text-anchor':'middle'},x+'%')); }
+    for (let y=Math.ceil(ymin); y<=ymax; y+=0.5){ if (Math.abs(y-Math.round(y))>0.01 && ymax-ymin>4) continue; svg.appendChild(el('line',{x1:L,y1:sy(y),x2:W-R,y2:sy(y),stroke:'rgba(255,255,255,.07)'})); svg.appendChild(el('text',{x:L-6,y:sy(y)+4,fill:'#94A0B8','font-size':'11','text-anchor':'end'},y.toFixed(1)+'倍')); }
+    svg.appendChild(el('text',{x:(L+W-R)/2,y:H-6,fill:'#94A0B8','font-size':'11.5','text-anchor':'middle'},'← 左ほど尽きにくい　　守り：'+(FX_AXES.find(a=>a[0]===fstate.axis)||[])[1]+' で50年内にお金が尽きる確率'));
+    svg.appendChild(el('text',{x:14,y:(T+H-B)/2,fill:'#94A0B8','font-size':'11.5','text-anchor':'middle',transform:`rotate(-90 14 ${(T+H-B)/2})`},'伸び：ふつうの相場・30年後の資産（倍）　上ほど増える →'));
+    // frontier
+    const sorted = [...pts].sort((p,q)=> (p.x-q.x) || (q.y-p.y));
+    let best=-Infinity, d='', prev=null;
+    sorted.forEach(p=>{ if (p.y>best){ if(prev) d += ` H${sx(p.x)}`; d += (prev?` V${sy(p.y)}`:`M${sx(p.x)} ${sy(p.y)}`); best=p.y; prev=p; } });
+    if (prev) d += ` H${sx(xmax)}`;
+    svg.appendChild(el('path',{d, fill:'none', stroke:'#22D3AA','stroke-width':'1.8', opacity:'.9'}));
+    // +10% line
+    const star = pts.find(p=>p.a.lev===15&&p.a.gold===30&&p.a.stock===55);
+    if (star){ const y10 = star.y*1.10; if (y10<ymax){ svg.appendChild(el('line',{x1:L,y1:sy(y10),x2:W-R,y2:sy(y10),stroke:'#8B7DFF','stroke-dasharray':'4 4',opacity:'.8'})); svg.appendChild(el('text',{x:W-R-4,y:sy(y10)-4,fill:'#8B7DFF','font-size':'11','text-anchor':'end'},'決定した配分 +10% の線')); } }
+    // points
+    pts.forEach(p=>{
+      const c = el('circle',{cx:sx(p.x),cy:sy(p.y),r: p.i===fstate.pick?7:4.2, fill:levColor(p.a.lev), opacity:'.92', style:'cursor:pointer'});
+      c.addEventListener('click', ()=>{ fstate.pick = (fstate.pick===p.i)?null:p.i; renderFrontier(); });
+      svg.appendChild(c);
+    });
+    // marks
+    const marks = [[15,30,55,'決定した配分','#E8ECF5'],[10,35,55,'Claude 推奨','#22D3AA']];
+    marks.forEach(([l,g,s,lab,col])=>{ const p = pts.find(q=>q.a.lev===l&&q.a.gold===g&&q.a.stock===s); if(!p) return;
+      svg.appendChild(el('circle',{cx:sx(p.x),cy:sy(p.y),r:9,fill:'none',stroke:col,'stroke-width':'2'}));
+      svg.appendChild(el('text',{x:sx(p.x)+12,y:sy(p.y)+(l===15?18:-10),fill:col,'font-size':'11.5','font-weight':'600'},`${lab} ${l}/${g}/${s}`)); });
+    const pk = pts.find(q=>q.i===fstate.pick);
+    $('fnote').innerHTML = pk ? `選択：<b>${pk.a.lev}／${pk.a.gold}／${pk.a.stock}</b>　伸び ${fmtX(pk.y)}　尽きる確率 ${fmtP(pk.x)}${star?`　（決定した配分との差：伸び ${((pk.y/star.y-1)*100).toFixed(0)>0?'+':''}${((pk.y/star.y-1)*100).toFixed(0)}%・尽きる確率 ${(pk.x-star.x)>0?'+':''}${(pk.x-star.x).toFixed(1)}pt）`:''}` : '点をタップすると配分と数字が出ます。';
+  }
+  const _render = render; render = function(){ _render(); renderFrontier(); };
   // 見出しの KPI（既定前提＝株11%・金8.5%）
   (function(){
     const mid = G.cells['eq11_au8.5_mid'], pess = G.cells['eq11_au8.5_pess'];
