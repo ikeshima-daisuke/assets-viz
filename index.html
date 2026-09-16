@@ -268,12 +268,13 @@
   </div>
 </div>
 
-<div class="sechead">伸びと守りの地図 <span class="hint">全109配分を1枚に。上ほど増え、左ほど尽きにくい。引き出し額はパネルに連動</span></div>
+<div class="sechead">この条件での、全配分の地図 <span class="hint">上のパネルで選んだ条件（引き出し額・相場・見立て）で全109配分を1枚に。上ほど増え、左ほど尽きにくい</span></div>
 <div class="panel" id="fpanel">
+  <div class="fnote" id="fcond" style="margin:0 0 .3rem;color:var(--muted)"></div>
   <div class="ctl" id="c-fx"><span class="lab">横軸（守り）</span></div>
   <div class="fwrap"><svg id="frontier" viewBox="0 0 760 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="全109配分の伸びと守りの散布図"></svg></div>
   <div class="fnote" id="fnote"></div>
-  <p class="fn" style="margin:.6rem 0 0">緑の階段線＝<b>同じ守りの範囲で最も伸びる配分</b>（フロンティア）。線より右下の点は「同じ守りでもっと伸びる配分がある」＝選ぶ理由がない。<b>線が右へ行っても上がらなくなる場所</b>が、配分で伸びを取る限界。点の色はレバナス比率（濃いほど高い）。点をタップすると配分と数字が出る。</p>
+  <p class="fn" style="margin:.6rem 0 0">縦軸の「伸び」はパネルで選んだ前提（相場・株と金の見立て・追加ストレス）での30年後の中央値。横軸の「守り」は既定でその同じ前提の尽きる確率、切り替えると別のストレスでの尽きる確率や落ち込みの深さ。緑の階段線＝<b>同じ守りの範囲で最も伸びる配分</b>（フロンティア）。線より右下の点は「同じ守りでもっと伸びる配分がある」＝選ぶ理由がない。<b>線が右へ行っても上がらなくなる場所</b>が、配分で伸びを取る限界。点の色はレバナス比率（濃いほど高い）。点をタップすると配分と数字が出る。</p>
 </div>
 
 <div class="sechead">よくある疑問 <span class="hint">タップで開く。まず1行の答え、その下に理由</span></div>
@@ -574,9 +575,11 @@
   }
   // ── 伸びと守りの地図（散布図＋フロンティア） ──
   const FX_AXES = [
-    ['start2000','2000年型（始めた直後に大暴落）'], ['eq11_au8.5_pess','悪い相場'], ['eq9_au5_pess','株も金もCMA・悪い相場'], ['fx_m2','円高 −2%/年']
-  ].filter(([k]) => G.premises.some(p=>p.key===k));
-  const fstate = { axis: FX_AXES[0] ? FX_AXES[0][0] : null, pick: null };
+    ['same','パネルと同じ条件'], ['start2000','2000年型'], ['start2008','2008年型'], ['eq11_au8.5_pess','悪い相場'],
+    ['eq9_au5_pess','株も金もCMA・悪い相場'], ['fx_zero','円安除去'], ['fx_m2','円高 −2%/年'], ['infl4','インフレ 4%'],
+    ['adhere50','減額できない確率 50%'], ['guard_off','ガードレールなし'], ['worst','複合最悪'], ['mdd','落ち込みの深さ（同じ条件）']
+  ].filter(([k]) => k==='same' || k==='mdd' || G.premises.some(p=>p.key===k));
+  const fstate = { axis: 'same', pick: null };
   buildCtl('c-fx','axis',FX_AXES);
   $('c-fx').querySelectorAll('button').forEach(b => { b.onclick = null; b.addEventListener('click', ()=>{ fstate.axis = b.dataset.v; renderFrontier(); }, {capture:true}); });
   const NS = 'http://www.w3.org/2000/svg';
@@ -587,9 +590,17 @@
     while (svg.firstChild) svg.removeChild(svg.firstChild);
     $('c-fx').querySelectorAll('button').forEach(b=> b.classList.toggle('on', b.dataset.v===fstate.axis));
     const cells = (G.cells_w && G.cells_w[state.w]) || G.cells;
-    const rowsX = cells[fstate.axis], rowsY = cells['eq11_au8.5_mid'];
-    if (!rowsX || !rowsY) return;
-    const pts = allocs.map((a,i)=>({a, i, x: rowsX[i][ix(RUIN)], y: rowsY[i][ix('med')]})).filter(p=>p.a.special!=='current' && p.x!=null && p.y!=null);
+    const pkey = keyOf();                       // パネルで選んだ前提
+    const prem = G.premises.find(q=>q.key===pkey);
+    const rowsY = cells[pkey];
+    const isMdd = fstate.axis==='mdd';
+    const xkey = (fstate.axis==='same' || isMdd) ? pkey : fstate.axis;
+    const rowsX = cells[xkey];
+    if (!rowsX || !rowsY || !prem) return;
+    const xmet = isMdd ? 'mddmed' : RUIN;
+    const pts = allocs.map((a,i)=>({a, i, x: isMdd ? -rowsX[i][ix(xmet)] : rowsX[i][ix(xmet)], y: rowsY[i][ix('med')]})).filter(p=>p.a.special!=='current' && p.x!=null && p.y!=null);
+    $('fcond').innerHTML = `いまの条件：<b>平常時 ${(Number(state.w)/1e4).toFixed(0)}万・${prem.label}</b>`;
+    const xlabel = isMdd ? `守り：${prem.label} での途中の一番の落ち込み（中央）` : (fstate.axis==='same' ? `守り：${prem.label} で50年内にお金が尽きる確率` : `守り：${(FX_AXES.find(a=>a[0]===fstate.axis)||[])[1]} で50年内にお金が尽きる確率`);
     const W=760, H=440, L=52, R=16, T=18, B=46;
     const xmax = Math.max(5, Math.ceil(Math.max(...pts.map(p=>p.x))/5)*5);
     const ymin = Math.floor(Math.min(...pts.map(p=>p.y))*2)/2 - 0.25, ymax = Math.ceil(Math.max(...pts.map(p=>p.y))*2)/2 + 0.25;
@@ -597,8 +608,8 @@
     // grid & axes
     for (let x=0; x<=xmax; x+= xmax>30?10:5){ svg.appendChild(el('line',{x1:sx(x),y1:T,x2:sx(x),y2:H-B,stroke:'rgba(255,255,255,.07)'})); svg.appendChild(el('text',{x:sx(x),y:H-B+16,fill:'#94A0B8','font-size':'11','text-anchor':'middle'},x+'%')); }
     for (let y=Math.ceil(ymin); y<=ymax; y+=0.5){ if (Math.abs(y-Math.round(y))>0.01 && ymax-ymin>4) continue; svg.appendChild(el('line',{x1:L,y1:sy(y),x2:W-R,y2:sy(y),stroke:'rgba(255,255,255,.07)'})); svg.appendChild(el('text',{x:L-6,y:sy(y)+4,fill:'#94A0B8','font-size':'11','text-anchor':'end'},y.toFixed(1)+'倍')); }
-    svg.appendChild(el('text',{x:(L+W-R)/2,y:H-6,fill:'#94A0B8','font-size':'11.5','text-anchor':'middle'},'← 左ほど尽きにくい　　守り：'+(FX_AXES.find(a=>a[0]===fstate.axis)||[])[1]+' で50年内にお金が尽きる確率'));
-    svg.appendChild(el('text',{x:14,y:(T+H-B)/2,fill:'#94A0B8','font-size':'11.5','text-anchor':'middle',transform:`rotate(-90 14 ${(T+H-B)/2})`},'伸び：ふつうの相場・30年後の資産（倍）　上ほど増える →'));
+    svg.appendChild(el('text',{x:(L+W-R)/2,y:H-6,fill:'#94A0B8','font-size':'11.5','text-anchor':'middle'},(isMdd?'← 左ほど浅い　　':'← 左ほど尽きにくい　　')+xlabel));
+    svg.appendChild(el('text',{x:14,y:(T+H-B)/2,fill:'#94A0B8','font-size':'11.5','text-anchor':'middle',transform:`rotate(-90 14 ${(T+H-B)/2})`},'伸び：この条件での30年後の資産（倍）　上ほど増える →'));
     // frontier
     const sorted = [...pts].sort((p,q)=> (p.x-q.x) || (q.y-p.y));
     let best=-Infinity, d='', prev=null;
@@ -620,7 +631,8 @@
       svg.appendChild(el('circle',{cx:sx(p.x),cy:sy(p.y),r:9,fill:'none',stroke:col,'stroke-width':'2'}));
       svg.appendChild(el('text',{x:sx(p.x)+12,y:sy(p.y)+(l===15?18:-10),fill:col,'font-size':'11.5','font-weight':'600'},`${lab} ${l}/${g}/${s}`)); });
     const pk = pts.find(q=>q.i===fstate.pick);
-    $('fnote').innerHTML = pk ? `選択：<b>${pk.a.lev}／${pk.a.gold}／${pk.a.stock}</b>　伸び ${fmtX(pk.y)}　尽きる確率 ${fmtP(pk.x)}${star?`　（決定した配分との差：伸び ${((pk.y/star.y-1)*100).toFixed(0)>0?'+':''}${((pk.y/star.y-1)*100).toFixed(0)}%・尽きる確率 ${(pk.x-star.x)>0?'+':''}${(pk.x-star.x).toFixed(1)}pt）`:''}` : '点をタップすると配分と数字が出ます。';
+    const xname = isMdd ? '落ち込み' : '尽きる確率';
+    $('fnote').innerHTML = pk ? `選択：<b>${pk.a.lev}／${pk.a.gold}／${pk.a.stock}</b>　伸び ${fmtX(pk.y)}　${xname} ${fmtP(pk.x)}${star?`　（決定した配分との差：伸び ${((pk.y/star.y-1)*100).toFixed(0)>0?'+':''}${((pk.y/star.y-1)*100).toFixed(0)}%・${xname} ${(pk.x-star.x)>0?'+':''}${(pk.x-star.x).toFixed(1)}pt）`:''}` : '点をタップすると配分と数字が出ます。';
   }
   const _render = render; render = function(){ _render(); renderFrontier(); };
   // 見出しの KPI（既定前提＝株11%・金8.5%）
