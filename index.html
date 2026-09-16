@@ -311,7 +311,7 @@
       <tr><td>年 3％ を差し引く（今の金利水準）</td><td class="n">7.9倍</td></tr>
     </table></div>
     <p>同じ条件でレバナス 15％（15／25／60）は 9.6倍 → 8.8倍 → 8.4倍。コストを無視すると 33％ が勝ち、年 3％ を引くと 15％ が勝ちます。コストを正しく引くと、レバナスを増やす効果は 10〜15％ あたりで頭打ちになり、その先は「沈みだけ深くなる」領域です。だから 15％。</p>
-    <span class="cite">※ 現行ルール（60万／35万・年金と収入込み）で 2026-09-16 に再計算。詳しい表：<a href="viz_decision_2026q3.html">配分の確定</a> §2「なぜ33→15か」</span>
+    <span class="cite">※ 現行ルール（60万／35万・年金と収入込み）で 2026-09-16 に再計算。決めた経緯：<a href="viz_decision_2026q3.html">決定の記録</a></span>
   </div>
 </details>
 
@@ -339,6 +339,14 @@
   <div class="body">
     <p>「円高と株の暴落が同時に来る」ことを心配して、以前はヘッジありのレバナスを持っていました。しかし為替と株の月次の動きに相関はほぼゼロで、ヘッジしても悪い結果やお金が尽きる確率はほとんど改善しませんでした。ヘッジのコスト（年 2.7％ 前後）だけが確実に漏れます。</p>
     <p>ヘッジが得になるのは<b>「年 3％ を超える円高が何年も続く」</b>と信じる場合だけです。その見立てに変わったら見直します。上のパネルの「円高 −2%/年」で、円高がどれだけ効くかは確かめられます。</p>
+    <p><b>為替の見立てで、同じ配分の結果がどれだけ動くか：</b>配分は 15／30／55 のまま、円の前提だけを変えた結果です。資産のほぼ全部がドル建てなので、配分より為替が結果の大きさを決めています。</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>円の見立て</th><th class="n">お金が尽きる確率</th><th class="n">30年後・ふつうの結果</th><th class="n">元本を維持</th></tr>
+      <tr><td>円安が続く（過去実績どおり）</td><td class="n">0.5%</td><td class="n">10.5倍</td><td class="n">96%</td></tr>
+      <tr><td>為替中立（円安の追い風ゼロ）</td><td class="n">2.3%</td><td class="n">4.8倍</td><td class="n">88%</td></tr>
+      <tr><td>円高 −2%／年 が続く</td><td class="n">7.5%</td><td class="n">2.3倍</td><td class="n">74%</td></tr>
+    </table></div>
+    <span class="cite">※ ふつうの相場・現行ルール・8,000通り（2026-09-16）。「元本を維持」＝30年後に実質で開始時を上回っている割合。</span>
     <span class="cite">検証記録：為替ヘッジ（レバナスあり→なし）移行の検証まとめ</span>
   </div>
 </details>
@@ -374,6 +382,13 @@
     <tr><td>月 70万</td><td class="n">4.1%</td><td class="n">9.0%</td></tr>
   </table></div>
   <span class="fn">※ 配分 15／30／55・8,000通り・公的年金込み。3.4％ は信号でいうと🟡（2〜5％）。</span>
+  <p style="margin:.8rem 0 .4rem"><b>「暴落時に減額できるか」は、配分の違いより効きます。</b>すべての前提を同時に悪くした複合最悪（株9%・金0%・悲観・円高−2%・金株相関0.7）で、減額できる場合とできない場合を比べた結果です。</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>配分</th><th class="n">減額できる（段階型ガードレール）</th><th class="n">減額できない</th></tr>
+    <tr><td class="hl">15／30／55（採用）</td><td class="n hl">45.9%</td><td class="n">65.2%</td></tr>
+    <tr><td>0／30／70（レバナス0）</td><td class="n">43.2%</td><td class="n">63.8%</td></tr>
+  </table></div>
+  <span class="fn">※ 50年でお金が尽きる確率。減額できるかどうかで約20pt、配分の違いでは3pt弱。上のパネルの「ガードレールなし」で他の前提でも確かめられます。</span>
 </div>
 
 <div class="sechead">ことば <span class="hint">このページで使った平易な言い方と、本来の用語</span></div>
@@ -405,11 +420,11 @@
   <div class="sechead">決定の詳細（4ページ）</div>
   <a class="vcard" href="viz_decision_2026q3.html" style="border-color:rgba(34,211,170,.55)">
      <div class="vbadge">★</div>
-     <div class="vbody"><div class="vtitle">配分の確定 — レバナス15 / ゴールド30 / 無レバ株式55</div><div class="vdesc">なぜレバナスを15まで削るのか（調達コストを課すとレバの成長優位が消える）／なぜ金30か（金信念8.5%）／6前提での頑健性テーブル／移行プラン（税込み）／この結論が変わる条件。数表は 2026-09-16 に現行ルールで再計算済み。</div></div>
+     <div class="vbody"><div class="vtitle">決定の記録 — 2026-07-09 に何を、なぜ決めたか</div><div class="vdesc">いつ・何から何へ・理由の要点3つ・移行プラン（売る物・買う物・一回限りの税 3.8%）・決定後の変更履歴。理由の説明と数表・見直し条件はこのページ（入口）が正本で、記録側には複製しない。</div></div>
      <div class="varrow">→</div></a>
   <a class="vcard" href="viz_belief_matrix_2026q3.html" style="border-color:rgba(230,184,74,.4)">
      <div class="vbadge sub">☆</div>
-     <div class="vbody"><div class="vtitle">信念別・配分早見表 — 前提が変わったらどう動くか</div><div class="vdesc">株と金それぞれの期待リターン信念を軸にした4×4早見表（2軸はほぼ独立）。為替観・支出柔軟性による違いも併記。信念が変わったときにどこへ動くかを引く表。</div></div>
+     <div class="vbody"><div class="vtitle">信念別・配分早見表 — 前提が変わったらどう動くか</div><div class="vdesc">株と金それぞれの期待リターン信念を軸にした4×4早見表（2軸はほぼ独立）。「見立てが変わったら、どの配分へ動くか」だけを引く表。為替観や支出の柔軟性は配分でなく成績が動く話なので、このページのパネルと「毎月いくら使えるか」に置いた。</div></div>
      <div class="varrow">→</div></a>
   <a class="vcard" href="viz_margin_loan_2026q3.html" style="border-color:rgba(42,120,214,.45)">
      <div class="vbadge sub">◆</div>

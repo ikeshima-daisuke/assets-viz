@@ -142,25 +142,6 @@
     border-left:3px solid var(--risk-bad);border-radius:0 10px 10px 0;padding:13px 16px;font-size:13.5px}
   .callout b{color:var(--ink)}
 
-  /* ---- FX / spending sections ---- */
-  .cardrow{display:flex;gap:12px;flex-wrap:wrap}
-  .fxcard{flex:1 1 200px;background:var(--card);border:1px solid var(--line);border-radius:10px;
-    padding:14px 16px}
-  .fxcard .fxlbl{font-size:12.5px;font-weight:600;margin:0 0 10px;display:flex;align-items:center;gap:6px}
-  .fxcard .fxlbl .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
-  .fxstat{display:flex;justify-content:space-between;font-size:13px;margin:4px 0}
-  .fxstat .v{font-family:ui-monospace,monospace;font-weight:700}
-
-  .flexcompare{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .flexcard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
-  .flexcard h3{margin:0 0 10px;font-size:13.5px;font-weight:600}
-  .flexbar-row{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:12.5px}
-  .flexbar-row .tag{width:76px;flex:0 0 auto;color:var(--sub)}
-  .flexbar{flex:1;height:16px;background:var(--line);border-radius:4px;overflow:hidden;position:relative}
-  .flexbar > span{display:block;height:100%;background:var(--risk-bad)}
-  .flexbar-row .num{width:52px;text-align:right;font-family:ui-monospace,monospace;font-weight:600}
-  .flex-delta{margin-top:10px;font-size:12px;color:var(--sub)}
-  .flex-delta b{color:var(--risk-safe)}
 
   footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);
     font-size:11.5px;color:var(--sub);text-align:center}
@@ -169,7 +150,6 @@
   @media (max-width:640px){
     .matrix{grid-template-columns:88px repeat(4,1fr);gap:5px}
     .colhead,.rowhead{padding:6px 5px;font-size:11px}
-    .flexcompare{grid-template-columns:1fr}
   }
 </style>
 </head>
@@ -178,7 +158,7 @@
 <div class="wrap">
 
 <p class="breadcrumb"><a href="index.html">← ポートフォリオ移行 一覧</a> ／
-  <a href="viz_decision_2026q3.html">配分の確定（15/30/55）</a></p>
+  <a href="viz_decision_2026q3.html">決定の記録（2026-07-09）</a></p>
 
 <header>
   <p class="eyebrow">Portfolio Migration · 感度分析</p>
@@ -265,19 +245,11 @@
 </section>
 
 <section>
-  <h2><span class="idx">3</span>為替観でも変わる（比率は同じ、結果が変わる）</h2>
-  <p class="h2-note">配分は15/30/55のまま、円安がどれだけ続くと考えるかで結果だけが変わる。
-    レバナスは為替ヘッジなしで持つ決定なので、円の見通しがそのまま効く。</p>
-  <div class="cardrow" id="fx-cards"></div>
-</section>
-
-<section>
-  <h2><span class="idx">4</span>支出を柔軟にできるかどうかでも変わる</h2>
-  <p class="h2-note">暴落時に生活費を平常時60万→中間額→35万へ減らせるという前提（段階型ガードレール）が、どれだけ下限割れ率を下げるか。
-    悪い相場（株9%・金0%・悲観・円高-2%・金株相関0.7の複合最悪）で比較。</p>
-  <div class="flexcompare" id="flex-cards"></div>
-  <p class="flex-delta">どちらの配分でも、支出を柔軟にできると50年下限割れが<b>約20pt</b>下がる——
-    これは配分をどう変えるより効く場合がある。「暴落時に減額できるか」を自分に問う価値がある。</p>
+  <h2><span class="idx">3</span>この表に無いもの</h2>
+  <p class="h2-note">為替観（円安継続／為替中立／円高−2%）や、暴落時に支出を減らせるかどうかで結果がどう変わるかは、
+    配分の比率ではなく<b>同じ配分の成績</b>が動く話なので、この表には載せない。
+    <a href="index.html">入口ページ</a>の「条件を変えて自分で判断する」パネル（追加のストレス＝円安除去・円高・ガードレールなし）と
+    「毎月いくら使えるか」で確かめられる。決めた経緯は <a href="viz_decision_2026q3.html">決定の記録</a>。</p>
 </section>
 
 <footer>
@@ -355,46 +327,6 @@ ROWS.forEach(row=>{
   });
 });
 
-// FX cards
-const FX = [
-  {label:"円安継続（実績）", dot:"var(--risk-safe)", dep50:0.50, med30:10.46, elig:96},
-  {label:"為替中立", dot:"var(--risk-warn)", dep50:2.29, med30:4.82, elig:88},
-  {label:"持続円高（年-2%）", dot:"var(--risk-severe)", dep50:7.51, med30:2.34, elig:74},
-];
-const fxWrap = document.getElementById("fx-cards");
-FX.forEach(f=>{
-  const c = document.createElement("div");
-  c.className = "fxcard";
-  c.innerHTML = `
-    <p class="fxlbl"><span class="dot" style="background:${f.dot}"></span>${f.label}</p>
-    <div class="fxstat"><span>50年下限割れ</span><span class="v">${f.dep50.toFixed(1)}%</span></div>
-    <div class="fxstat"><span>65歳中央値</span><span class="v">${f.med30.toFixed(1)}倍</span></div>
-    <div class="fxstat"><span>元本維持</span><span class="v">${f.elig}%</span></div>
-  `;
-  fxWrap.appendChild(c);
-});
-
-// spending flexibility cards
-const FLEX = [
-  {title:"15/30/55（決定配分）", on:45.91, off:65.18},
-  {title:"0/30/70（全脱レバ）", on:43.15, off:63.79},
-];
-const flexWrap = document.getElementById("flex-cards");
-const FLEX_MAX = 70;
-FLEX.forEach(f=>{
-  const c = document.createElement("div");
-  c.className = "flexcard";
-  c.innerHTML = `
-    <h3>${f.title}（複合最悪相場・50年下限割れ）</h3>
-    <div class="flexbar-row"><span class="tag">柔軟あり</span>
-      <div class="flexbar"><span style="width:${f.on/FLEX_MAX*100}%;background:var(--risk-safe)"></span></div>
-      <span class="num">${f.on.toFixed(1)}%</span></div>
-    <div class="flexbar-row"><span class="tag">柔軟なし</span>
-      <div class="flexbar"><span style="width:${f.off/FLEX_MAX*100}%"></span></div>
-      <span class="num">${f.off.toFixed(1)}%</span></div>
-  `;
-  flexWrap.appendChild(c);
-});
 </script>
 </body>
 </html>
