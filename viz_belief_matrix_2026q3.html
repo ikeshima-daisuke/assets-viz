@@ -102,7 +102,11 @@
   .toggle-row{display:flex;align-items:center;gap:8px;margin:14px 0 10px;font-size:12.5px;color:var(--sub)}
   .toggle-row input{accent-color:var(--accent)}
   .toggle-row label{cursor:pointer}
-  #detail:checked ~ .matrix-scroll .extra-stats{display:block}
+  .matrix-scroll.detail .extra-stats{display:block}
+  .h2-note a,.lede a{color:var(--accent)}
+  .rowhead,.corner{position:sticky;left:0;z-index:2;background:linear-gradient(rgba(251,146,60,.14),rgba(251,146,60,.14)),#0B1020}
+  .corner{background:#0B1020}
+  @media (max-width:640px){.matrix-scroll::after{content:"← 横にスクロールできます →";display:block;font-size:11px;color:var(--sub);text-align:center;margin-top:4px}}
 
   .legend-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:11.5px;color:var(--sub)}
   .legend-row .sw{display:inline-flex;align-items:center;gap:5px}
@@ -134,8 +138,8 @@
   <p class="eyebrow">Portfolio Migration · 感度分析</p>
   <h1>結局、配分は「何を信じるか」で変わる</h1>
   <p class="lede">2026-07-09 に確定した <b>レバナス15% / ゴールド30% / 無レバ株式55%</b> は、
-    「NASDAQ100は年11%・金は年8.5%（実績とCMAの中間）」という<b>本人の信念</b>を前提にした最適解。
-    信念が変われば、最適な比率もこの表のとおり動く。</p>
+    「NASDAQ100は年11%・金は年8.5%（実績とCMAの中間）」という<b>本人の信念</b>を前提に、本人が採用した判断規則（株の見立て→レバナス比率、金の見立て→ゴールド比率）で選んだ配分。
+    見立てが変われば、同じ規則で選ぶ配分もこの表のとおり動く。「数値上の最良」ではなく、守りと伸びの中間を取る規則に沿った配分例で、マスによっては参考の「最も尽きにくい」配分のほうが数値は良い。</p>
   <p class="disclaimer">⚠️ 投資助言ではなく本人の保有データに基づく試算。数値は条件付きの目安。
     各セルは実際に8,000パスのモンテカルロで計算した結果（架空の概算ではない）。数値は 2026-09-16 に現行の取り崩しルールで再計算済み。</p>
 </header>
@@ -164,11 +168,11 @@
   <h2><span class="idx">2</span>信念 × 信念 → 推奨配分（早見表）</h2>
   <p class="h2-note">各セル＝<span class="fig">レバナス/ゴールド/無レバ株式</span>の比率、
     その下＝50年下限割れ率（生活費3年分を割る確率）・65歳時点の実質資産中央値（基準：中位相場・現行の取り崩しルール・調達コスト年3%）。
-    枠のあるセルが現在の決定。</p>
+    枠のあるセルが現在の決定。<b>この表はレバナス・ゴールド・無レバ株式の3枠だけで組む場合。</b>金の見立てが 7% 以下になったときは、株から5%を米国長期債へ回す案も別にある（<a href="index.html#reverse">入口ページ「この結論が変わるとき」</a>）。先に見立てを決め、次にこの表で3枠の比率を引き、最後に債券の要否を判断する順。</p>
 
   <div class="toggle-row">
     <input type="checkbox" id="detail">
-    <label for="detail">最大下落・元本維持率も表示する</label>
+    <label for="detail">最大下落・元本維持率・「最も尽きにくい配分」も表示する</label>
   </div>
 
   <div class="matrix-scroll">
@@ -218,7 +222,7 @@
   <h2><span class="idx">3</span>この表に無いもの</h2>
   <p class="h2-note">為替観（円安継続／為替中立／円高−2%）や、暴落時に支出を減らせるかどうかで結果がどう変わるかは、
     配分の比率ではなく<b>同じ配分の成績</b>が動く話なので、この表には載せない。
-    <a href="index.html">入口ページ</a>の「条件を変えて自分で判断する」パネル（追加のストレス＝円安除去・円高・ガードレールなし）と
+    <a href="index.html#panel">入口ページ</a>の「条件を変えて自分で判断する」パネル（追加のストレス＝円安除去・円高・ガードレールなし）と
     「毎月いくら使えるか」で確かめられる。決めた経緯は <a href="viz_decision_2026q3.html">決定の記録</a>。</p>
 </section>
 
@@ -232,6 +236,7 @@
 </div>
 
 <script>
+document.getElementById("detail").addEventListener("change", e=> document.querySelector(".matrix-scroll").classList.toggle("detail", e.target.checked));
 const ROWS = [
   {label:"悲観CMA", pct:"年7%"},
   {label:"CMA",     pct:"年9%"},
