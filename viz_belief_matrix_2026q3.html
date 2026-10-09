@@ -142,7 +142,7 @@
     「NASDAQ100は年11%・金は年8.5%（実績とCMAの中間）」という当時の<b>本人の信念</b>を前提に、本人が採用した判断規則（株の見立て→レバナス比率、金の見立て→ゴールド比率）で選んだ配分。
     見立てが変われば、同じ規則で選ぶ配分もこの表のとおり動く。「数値上の最良」ではなく、守りと伸びの中間を取る規則に沿った配分例で、マスによっては参考の「最も尽きにくい」配分のほうが数値は良い。</p>
   <p class="disclaimer">⚠️ 投資助言ではなく本人の保有データに基づく試算。数値は条件付きの目安。
-    各セルは実際に8,000パスのモンテカルロで計算した結果（架空の概算ではない）。数値は 2026-09-16 に現行の取り崩しルールで再計算済み。</p>
+    各セルは実際に8,000パスのモンテカルロで計算した結果（架空の概算ではない）。数値は 2026-10-09 に現行の取り崩しルール（平常時68万）で再計算済み。</p>
 </header>
 
 <section>
@@ -202,18 +202,18 @@
   </div>
 
   <div class="callout">
-    <b>左上（株7%・金0%）のマスは、レバなしにしても50年下限割れが8%と高いまま。</b>
+    <b>左上（株7%・金0%）のマスは、レバなしにしても50年下限割れが約11%と高いまま。</b>
     これは配分の失敗ではなく、その相場観そのものが厳しいということ——配分では守りきれない領域で、
     ここに現実味を感じるなら、取り崩し額そのものを見直す話になる。
   </div>
   <div class="callout">
     <b>各マスの「最も尽きにくい」行は、同じ見立てで 5%刻みの全109配分を回したときに下限割れが最小だった配分（参考）。</b>
-    現行ルールでは収入と年金が生活費の大半を賄う期間があるため、どの配分も下限割れは小さく、その差は 0.1〜0.5pt 程度＝
-    乱数のブレ（±0.4pt）と同じ桁。だから「最も尽きにくい」は金を厚くした配分に寄るが、伸び（中央値）は推奨配分のほうが高いことが多い。
+    現行ルールでは収入と年金が生活費の大半を賄う期間があるため、どの配分も下限割れは小さく、その差は 0.1〜0.9pt 程度＝
+    乱数のブレ（±0.4pt）と同じか2倍ほどの桁。だから「最も尽きにくい」は金を厚くした配分に寄る。伸び（中央値）は12マスのうち6マスで推奨配分のほうが高く、株14%の行は4マスとも推奨が上。
     推奨配分は「守り」と「伸び」の中間を取る 2026-07-09 の判断規則（株の見立て→レバナス比率、金の見立て→ゴールド比率）のまま据え置いた。
   </div>
   <p class="h2-note" style="margin-top:10px">
-    ※ 数値は 2026-09-16 に現行の取り崩しルール（平常時60万・暴落時35万の段階型ガードレール・公的年金・アプリ収入・下限割れ36ヶ月・
+    ※ 数値は 2026-10-09 に現行の取り崩しルール（2026-09-27 改定＝平常時68万・暴落時35万の段階型ガードレール・公的年金・アプリ収入46万・下限割れ36ヶ月・
     リバランス帯10pt・8,000パス）で全マスを同じ方法で再計算した。SP500の想定リターンはNASDAQ100の見立てに合わせて 6/7/8/10% を用いる。
     決定当時（月50万→40万の崖型・収入なし・残高ゼロで枯渇）の数値は git 履歴にある。
   </p>
@@ -248,24 +248,24 @@ const COLS = ["消滅","CMA本人信念","実績/CMA中間","実績"];
 
 // stock_label × gold_label → {lev,gold,stock,dep50,med30,dd,elig}
 const DATA = {
-// 2026-09-16 現行ルールで再計算（analysis/belief_matrix_2026q3.py → outputs/belief_matrix.json）。
+// 2026-10-09 今の支出ルール（平常時68万）で再計算（analysis/belief_matrix_2026q3.py --rule current → outputs/belief_matrix_current.json）。
 // dep50＝50年下限割れ率(%)。best＝同じ見立てで 5%刻みの grid 上「最も尽きにくい配分」（参考。株7%は grid に無い）
-"悲観CMA|消滅":{lev:0,gold:10,stock:90,dep50:8.03,med30:2.57,dd:-64,elig:75},
-"悲観CMA|CMA本人信念":{lev:0,gold:25,stock:75,dep50:4.65,med30:2.80,dd:-57,elig:79},
-"悲観CMA|実績/CMA中間":{lev:0,gold:30,stock:70,dep50:2.17,med30:3.77,dd:-53,elig:87},
-"悲観CMA|実績":{lev:0,gold:34,stock:66,dep50:0.75,med30:5.62,dd:-49,elig:94},
-"CMA|消滅":{lev:0,gold:10,stock:90,dep50:3.05,med30:4.85,dd:-61,elig:87,best:{lev:0,gold:15,stock:85,dep50:2.70,med30:4.27}},
-"CMA|CMA本人信念":{lev:0,gold:25,stock:75,dep50:1.85,med30:4.71,dd:-55,elig:89,best:{lev:0,gold:55,stock:45,dep50:1.23,med30:3.65}},
-"CMA|実績/CMA中間":{lev:0,gold:30,stock:70,dep50:0.80,med30:6.03,dd:-51,elig:94,best:{lev:0,gold:55,stock:45,dep50:0.15,med30:6.14}},
-"CMA|実績":{lev:0,gold:34,stock:66,dep50:0.21,med30:8.59,dd:-47,elig:97,best:{lev:5,gold:55,stock:40,dep50:0.05,med30:10.84}},
-"本人信念|消滅":{lev:15,gold:10,stock:75,dep50:1.54,med30:8.92,dd:-62,elig:93,best:{lev:0,gold:0,stock:100,dep50:1.05,med30:10.23}},
-"本人信念|CMA本人信念":{lev:15,gold:25,stock:60,dep50:0.95,med30:8.35,dd:-57,elig:94,best:{lev:0,gold:50,stock:50,dep50:0.40,med30:5.75}},
-"本人信念|実績/CMA中間":{lev:15,gold:30,stock:55,dep50:0.50,med30:10.46,dd:-54,elig:96,best:{lev:10,gold:55,stock:35,dep50:0.05,med30:9.14}},
-"本人信念|実績":{lev:15,gold:34,stock:51,dep50:0.14,med30:14.30,dd:-51,elig:98,best:{lev:0,gold:55,stock:45,dep50:0.03,med30:14.65}},
-"実績|消滅":{lev:30,gold:10,stock:60,dep50:0.39,med30:28.19,dd:-64,elig:98,best:{lev:0,gold:15,stock:85,dep50:0.12,med30:18.57}},
-"実績|CMA本人信念":{lev:30,gold:25,stock:45,dep50:0.27,med30:24.00,dd:-59,elig:98,best:{lev:0,gold:30,stock:70,dep50:0.05,med30:15.77}},
-"実績|実績/CMA中間":{lev:30,gold:30,stock:40,dep50:0.14,med30:28.02,dd:-56,elig:99,best:{lev:35,gold:45,stock:20,dep50:0.05,med30:25.93},current:true},
-"実績|実績":{lev:30,gold:34,stock:36,dep50:0.05,med30:37.03,dd:-54,elig:100,best:{lev:10,gold:55,stock:35,dep50:0.00,med30:27.47}},
+"悲観CMA|消滅":{lev:0,gold:10,stock:90,dep50:10.72,med30:2.28,dd:-66,elig:72},
+"悲観CMA|CMA本人信念":{lev:0,gold:25,stock:75,dep50:6.79,med30:2.47,dd:-60,elig:75},
+"悲観CMA|実績/CMA中間":{lev:0,gold:30,stock:70,dep50:3.59,med30:3.31,dd:-55,elig:83},
+"悲観CMA|実績":{lev:0,gold:34,stock:66,dep50:1.29,med30:5.00,dd:-50,elig:91},
+"CMA|消滅":{lev:0,gold:10,stock:90,dep50:4.25,med30:4.40,dd:-62,elig:84,best:{lev:0,gold:0,stock:100,dep50:3.88,med30:4.90}},
+"CMA|CMA本人信念":{lev:0,gold:25,stock:75,dep50:2.71,med30:4.33,dd:-56,elig:87,best:{lev:0,gold:50,stock:50,dep50:1.85,med30:3.55}},
+"CMA|実績/CMA中間":{lev:0,gold:30,stock:70,dep50:1.39,med30:5.50,dd:-53,elig:91,best:{lev:0,gold:55,stock:45,dep50:0.47,med30:5.67}},
+"CMA|実績":{lev:0,gold:34,stock:66,dep50:0.44,med30:7.88,dd:-49,elig:96,best:{lev:0,gold:55,stock:45,dep50:0.05,med30:9.92}},
+"本人信念|消滅":{lev:15,gold:10,stock:75,dep50:1.91,med30:8.42,dd:-63,elig:91,best:{lev:0,gold:0,stock:100,dep50:1.32,med30:9.51}},
+"本人信念|CMA本人信念":{lev:15,gold:25,stock:60,dep50:1.31,med30:7.93,dd:-57,elig:93,best:{lev:0,gold:40,stock:60,dep50:0.78,med30:6.30}},
+"本人信念|実績/CMA中間":{lev:15,gold:30,stock:55,dep50:0.73,med30:9.77,dd:-55,elig:95,best:{lev:0,gold:55,stock:45,dep50:0.10,med30:8.29}},
+"本人信念|実績":{lev:15,gold:34,stock:51,dep50:0.27,med30:13.29,dd:-52,elig:98,best:{lev:15,gold:55,stock:30,dep50:0.05,med30:15.20}},
+"実績|消滅":{lev:30,gold:10,stock:60,dep50:0.51,med30:26.95,dd:-63,elig:98,best:{lev:0,gold:10,stock:90,dep50:0.25,med30:22.55}},
+"実績|CMA本人信念":{lev:30,gold:25,stock:45,dep50:0.35,med30:23.38,dd:-59,elig:98,best:{lev:0,gold:45,stock:55,dep50:0.05,med30:12.24}},
+"実績|実績/CMA中間":{lev:30,gold:30,stock:40,dep50:0.25,med30:27.17,dd:-57,elig:99,best:{lev:15,gold:45,stock:40,dep50:0.05,med30:20.04},current:true},
+"実績|実績":{lev:30,gold:34,stock:36,dep50:0.09,med30:35.47,dd:-54,elig:99,best:{lev:0,gold:55,stock:45,dep50:0.00,med30:23.47}},
 };
 
 function riskClass(dep){
